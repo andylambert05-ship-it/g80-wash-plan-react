@@ -61,8 +61,8 @@ export default function App() {
         <div className="hdr-top">
           <div className="hdr-left">
             <div className="bmw-badge">
-              <div className="bq bl" /><div className="bq wh" />
-              <div className="bq wh" /><div className="bq bl" />
+              <div className="bq iom" /><div className="bq wh" />
+              <div className="bq wh" /><div className="bq iom" />
             </div>
             <div>
               <div className="hdr-title">{meta.title}</div>

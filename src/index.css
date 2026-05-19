@@ -1,25 +1,45 @@
 :root {
-  --bg: #f5f5f7;
+  /* ── Isle of Man Green palette ── */
+  --iom: #22CE83;
+  --iom-deep: #147f50;
+  --iom-darker: #0c4a2f;
+  --iom-bg: #eaf8f2;
+  --iom-bg2: #d4f0e4;
+  --iom-bd: #85c6aa;
+
+  /* ── Surfaces ── */
+  --bg: #f4f6f5;
   --card: #ffffff;
-  --card2: #f8f8fa;
-  --bd: rgba(0,0,0,0.1);
-  --bd2: rgba(0,0,0,0.18);
-  --t1: #1a1a1a;
-  --t2: #4a4a4a;
-  --t3: #8a8a8a;
-  --blue: #1358d4;
-  --blue-lt: #1358d4;
-  --blue-bg: #e8f0fb;
-  --blue-bd: #b5cef5;
-  --green: #1a7a3a;
-  --green-bg: #e6f4ea;
-  --green-bd: #a8d5b5;
+  --card2: #f7faf8;
+  --bd: rgba(0,0,0,0.09);
+  --bd2: rgba(0,0,0,0.16);
+
+  /* ── Text ── */
+  --t1: #111a14;
+  --t2: #3a4a3e;
+  --t3: #7a8f82;
+
+  /* ── Primary accent — IOM Green replaces blue ── */
+  --blue: #22CE83;
+  --blue-lt: #0c4a2f;
+  --blue-bg: #eaf8f2;
+  --blue-bd: #85c6aa;
+
+  /* ── Maint. green — slightly different shade ── */
+  --green: #0c4a2f;
+  --green-bg: #d4f0e4;
+  --green-bd: #6dba98;
+
+  /* ── Amber / warning — unchanged ── */
   --amber: #a05a00;
   --amber-bg: #fef3e2;
   --amber-bd: #f5c842;
+
+  /* ── Red / danger — unchanged ── */
   --red: #c0282a;
   --red-bg: #fdeaea;
   --red-bd: #f5b8b8;
+
   --r: 12px;
   --r-sm: 8px;
   --shadow: 0 1px 3px rgba(0,0,0,0.08);
@@ -45,7 +65,7 @@ body { background: var(--bg); min-height: 100vh; }
 .bmw-badge { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--t1); flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; position: relative; }
 .bmw-badge::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--t1); }
 .bq { width: 100%; height: 100%; }
-.bq.bl { background: #1358d4; }
+.bq.iom { background: #22CE83; }
 .bq.wh { background: #f4f4f8; }
 .hdr-title { font-size: 15px; font-weight: 600; color: var(--t1); letter-spacing: -0.2px; }
 .hdr-sub { font-size: 11px; color: var(--t3); margin-top: 1px; }
@@ -54,14 +74,14 @@ body { background: var(--bg); min-height: 100vh; }
 /* ── Mode buttons ── */
 .mode-row { display: flex; gap: 6px; padding-bottom: 10px; }
 .mbtn { display: flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 20px; border: 0.5px solid var(--bd2); background: transparent; color: var(--t2); font-size: 12px; cursor: pointer; font-weight: 500; transition: all 0.15s; }
-.mbtn.normal { background: var(--blue-bg); color: var(--blue); border-color: var(--blue-bd); }
+.mbtn.normal { background: var(--iom-bg); color: var(--iom-deep); border-color: var(--iom-bd); }
 .mbtn.maint { background: var(--green-bg); color: var(--green); border-color: var(--green-bd); }
 
 /* ── Tabs ── */
 .tabs { display: flex; background: var(--card); border-bottom: 0.5px solid var(--bd); overflow-x: auto; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
 .tab-btn { padding: 9px 14px; border: none; background: transparent; color: var(--t3); font-size: 11px; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; letter-spacing: 0.06em; font-weight: 500; text-transform: uppercase; transition: all 0.15s; }
-.tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+.tab-btn.active { color: var(--iom-deep); border-bottom-color: var(--iom); }
 
 /* ── Panel ── */
 .panel { padding: 16px; max-width: 900px; }
@@ -79,7 +99,7 @@ body { background: var(--bg); min-height: 100vh; }
 .prog-lbl { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--t3); }
 .prog-ct { font-size: 13px; font-weight: 500; color: var(--t1); }
 .prog-track { height: 3px; background: var(--card2); border-radius: 2px; overflow: hidden; }
-.prog-bar { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.prog-bar { height: 100%; background: var(--iom); border-radius: 2px; transition: width 0.4s ease; }
 
 /* ── Reset button ── */
 .rbtn { display: inline-flex; align-items: center; gap: 5px; border: 0.5px solid var(--bd2); background: transparent; color: var(--t3); font-size: 10px; padding: 4px 10px; border-radius: 20px; cursor: pointer; margin-bottom: 12px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500; }
@@ -92,7 +112,7 @@ body { background: var(--bg); min-height: 100vh; }
 .steps-list { display: flex; flex-direction: column; gap: 5px; }
 .step { background: var(--card); border: 0.5px solid var(--bd); border-radius: var(--r-sm); padding: 11px 13px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; transition: opacity 0.15s; position: relative; overflow: hidden; }
 .step::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
-.step.normal::before { background: var(--blue); opacity: 0.6; }
+.step.normal::before { background: var(--iom); opacity: 0.8; }
 .step.maint::before { background: var(--green); opacity: 0.7; }
 .step.optional::before { background: var(--bd2); }
 .step.done { opacity: 0.35; }
@@ -105,7 +125,7 @@ body { background: var(--bg); min-height: 100vh; }
 .step-d { font-size: 12px; color: var(--t2); line-height: 1.55; margin-bottom: 6px; }
 .tags { display: flex; flex-wrap: wrap; gap: 3px; }
 .tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
-.tag.tl { background: var(--blue-bg); color: var(--blue-lt); border: 0.5px solid var(--blue-bd); }
+.tag.tl { background: var(--iom-bg); color: var(--iom-deep); border: 0.5px solid var(--iom-bd); }
 .tag.tc { background: var(--amber-bg); color: var(--amber); border: 0.5px solid var(--amber-bd); }
 .pill { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 500; text-transform: uppercase; }
 .pill.pm { background: var(--green-bg); color: var(--green); border: 0.5px solid var(--green-bd); }
@@ -113,14 +133,14 @@ body { background: var(--bg); min-height: 100vh; }
 
 /* ── Timer buttons on step ── */
 .timer-btns { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 7px; }
-.timer-btn { font-size: 11px; padding: 4px 10px; border-radius: 6px; border: 0.5px solid var(--blue-bd); background: var(--blue-bg); color: var(--blue-lt); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+.timer-btn { font-size: 11px; padding: 4px 10px; border-radius: 6px; border: 0.5px solid var(--iom-bd); background: var(--iom-bg); color: var(--iom-deep); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 4px; }
 
 /* ── Floating timer ── */
 .float-timer { position: fixed; bottom: 24px; right: 18px; z-index: 999; background: var(--card); border: 0.5px solid var(--bd2); border-radius: 16px; padding: 14px 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 14px; min-width: 200px; }
 .timer-ring-wrap { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
 .timer-svg { width: 52px; height: 52px; transform: rotate(-90deg); }
 .timer-bg { fill: none; stroke: var(--card2); stroke-width: 4; }
-.timer-fg { fill: none; stroke: var(--blue); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 113.1; transition: stroke-dashoffset 1s linear; }
+.timer-fg { fill: none; stroke: var(--iom); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 113.1; transition: stroke-dashoffset 1s linear; }
 .timer-fg.warning { stroke: var(--amber); }
 .timer-fg.expired { stroke: var(--red); }
 .timer-time { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--t1); }
@@ -140,7 +160,7 @@ body { background: var(--bg); min-height: 100vh; }
 .cc-brand { background: var(--bg); font-weight: 500; color: var(--t2); }
 .cc-name { font-weight: 500; }
 .cc-use { color: var(--t2); }
-.cc-ratio { font-weight: 600; color: var(--blue); }
+.cc-ratio { font-weight: 600; color: var(--iom-deep); }
 .cc-legend { font-size: 11px; color: var(--t3); margin-bottom: 14px; padding: 0 2px; }
 .cc-pill { font-size: 9px; padding: 1px 5px; border-radius: 3px; font-weight: 700; margin-left: 4px; vertical-align: middle; display: inline-block; }
 .cc-pm { background: var(--green-bg); color: var(--green); border: 0.5px solid var(--green-bd); }
@@ -156,7 +176,7 @@ body { background: var(--bg); min-height: 100vh; }
 .chem-used { font-size: 12px; color: var(--t2); margin-bottom: 8px; line-height: 1.5; }
 .dil { background: var(--card2); border: 0.5px solid var(--bd); border-radius: var(--r-sm); padding: 8px 10px; margin-bottom: 5px; }
 .dil-ctx { font-size: 10px; color: var(--t3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; font-weight: 500; }
-.dil-ratio { font-size: 18px; font-weight: 500; color: var(--blue); letter-spacing: -0.5px; line-height: 1.1; }
+.dil-ratio { font-size: 18px; font-weight: 500; color: var(--iom-deep); letter-spacing: -0.5px; line-height: 1.1; }
 .dil-amt { font-size: 12px; color: var(--t1); margin-top: 3px; }
 .dil-note { font-size: 11px; color: var(--t3); margin-top: 4px; line-height: 1.5; }
 .chem-tool { font-size: 11px; color: var(--t3); margin-top: 8px; display: flex; gap: 5px; align-items: flex-start; }
