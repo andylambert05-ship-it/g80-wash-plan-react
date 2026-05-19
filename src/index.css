@@ -62,7 +62,11 @@ body { background: var(--bg); min-height: 100vh; }
 .hdr { background: var(--card); border-bottom: 0.5px solid var(--bd); padding: 0 16px; }
 .hdr-top { display: flex; align-items: center; justify-content: space-between; padding: 12px 0 8px; }
 .hdr-left { display: flex; align-items: center; gap: 10px; }
-/* BMW M logo now uses inline SVG component */
+.bmw-badge { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--t1); flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; position: relative; }
+.bmw-badge::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--t1); }
+.bq { width: 100%; height: 100%; }
+.bq.iom { background: #1a9e62; }
+.bq.wh { background: #f4f4f8; }
 .hdr-title { font-size: 15px; font-weight: 600; color: var(--t1); letter-spacing: -0.2px; }
 .hdr-sub { font-size: 11px; color: var(--t3); margin-top: 1px; }
 .ver { font-size: 10px; background: var(--card2); border: 0.5px solid var(--bd2); color: var(--t3); padding: 2px 8px; border-radius: 20px; font-weight: 500; white-space: nowrap; }
