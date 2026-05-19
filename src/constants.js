@@ -40,6 +40,7 @@ export function getBrand(name) {
   if (name.startsWith('DIY Detail')) return 'DIY Detail'
   if (name.startsWith('Brake Buster')) return 'Brake Buster'
   if (name.startsWith('303')) return '303 Products'
+  if (name.startsWith('Garage Therapy')) return 'Garage Therapy'
   return 'Other'
 }
 
@@ -48,6 +49,7 @@ export function getShortName(name) {
     .replace(/^CarPro /, '').replace(/^Bilt Hamber /, '').replace(/^Koch Chemie /, '')
     .replace(/^Autofinesse /, '').replace(/^McKee's 37 /, '').replace(/^P21S /, '')
     .replace(/^DIY Detail /, '').replace(/^Colourlock /, '').replace(/^303 Products /, '')
+    .replace(/^Garage Therapy /, '')
 }
 
 export function getVisibleSteps(data, mode) {
@@ -65,8 +67,9 @@ export function getVisibleSteps(data, mode) {
 
 export const CAT_ORDER = [
   'Spot pre-treatment', 'Wheel cleaner', 'Wheel cleaner (option)', 'Wheel cleaner — iron-reactive',
-  'Tire cleaner', 'All-purpose cleaner', 'All-purpose cleaner / degreaser (APC)', 'Iron / fallout decon',
-  'Iron / fallout remover — paint', 'Ceramic maintenance pre-wash — step 1', 'Ceramic maintenance pre-wash — step 2',
+  'Wheel shampoo', 'Tire cleaner', 'All-purpose cleaner', 'All-purpose cleaner / degreaser (APC)', 'Iron / fallout decon',
+  'Iron / fallout remover — paint', 'Alkaline pre-wash', 'Decon shampoo',
+  'Ceramic maintenance pre-wash — step 1', 'Ceramic maintenance pre-wash — step 2',
   'Main wash shampoo', 'Tire dressing', 'Paint sealant / coating topper — both modes', 'Exhaust & metal cleaning',
   'Glass cleaner', 'Glass cleaner — alternative to BH Trace-Less', 'Screen cleaner — interior',
   'Quick detailer / rinseless wash', 'Trim & finishing', 'Finishing', 'Ceramic coating topper / paint protection',

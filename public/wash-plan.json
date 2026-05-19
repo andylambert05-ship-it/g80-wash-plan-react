@@ -822,6 +822,97 @@
         }
       ],
       "tool": "Spray direct onto surface or MF cloth; cleaning gun for vents and textiles"
+    },
+    {
+      "name": "Garage Therapy /ONE: Wheel Shampoo V2",
+      "category": "Wheel shampoo",
+      "modes": ["normal", "maint"],
+      "usedOn": "Wheel faces — pH-neutral maintenance wheel shampoo. Not iron-reactive.",
+      "dilutions": [
+        {
+          "context": "All use — see garagetherapy.co.uk",
+          "ratio": "TBD",
+          "amount": "Dilution not yet documented",
+          "note": "Inventory only — not yet integrated into wash steps."
+        }
+      ],
+      "openedDate": ""
+    },
+    {
+      "name": "Garage Therapy /TWO: Sigma V3",
+      "category": "Alkaline pre-wash",
+      "modes": ["normal", "maint"],
+      "usedOn": "Full exterior — alkaline pre-wash and decontamination shampoo (PROTECTION range)",
+      "dilutions": [
+        {
+          "context": "All use — see garagetherapy.co.uk",
+          "ratio": "TBD",
+          "amount": "Dilution not yet documented",
+          "note": "Inventory only — not yet integrated into wash steps."
+        }
+      ],
+      "openedDate": ""
+    },
+    {
+      "name": "Garage Therapy /ZERO: Decon Shampoo",
+      "category": "Decon shampoo",
+      "modes": ["normal", "maint"],
+      "usedOn": "Full exterior — high-alkaline decontamination shampoo for stripping waxes, sealants, and contamination (CLEANSE range)",
+      "dilutions": [
+        {
+          "context": "All use — see garagetherapy.co.uk",
+          "ratio": "TBD",
+          "amount": "Dilution not yet documented",
+          "note": "Inventory only — not yet integrated into wash steps."
+        }
+      ],
+      "openedDate": ""
+    },
+    {
+      "name": "Garage Therapy /ONE: Car Shampoo V3",
+      "category": "Main wash shampoo",
+      "modes": ["normal", "maint"],
+      "usedOn": "All painted panels — pH-neutral ceramic-safe maintenance car shampoo",
+      "dilutions": [
+        {
+          "context": "All use — see garagetherapy.co.uk",
+          "ratio": "TBD",
+          "amount": "Dilution not yet documented",
+          "note": "Inventory only — not yet integrated into wash steps."
+        }
+      ],
+      "openedDate": ""
+    },
+    {
+      "name": "Garage Therapy /ONE: Glass",
+      "category": "Glass cleaner",
+      "modes": ["normal", "maint"],
+      "usedOn": "All exterior and interior glass",
+      "dilutions": [
+        {
+          "context": "All use — see garagetherapy.co.uk",
+          "ratio": "RTU",
+          "amount": "No dilution",
+          "note": "Inventory only — not yet integrated into wash steps."
+        }
+      ],
+      "openedDate": ""
+    },
+    {
+      "name": "DIY Detail All Clean RTU",
+      "category": "All-purpose cleaner",
+      "modes": ["normal", "maint"],
+      "usedOn": "Multi-surface — ready-to-use APC. Complement to DIY Detail AllClean concentrate.",
+      "dilutions": [
+        {
+          "context": "All use",
+          "ratio": "RTU",
+          "amount": "No dilution — ready to use",
+          "note": "Inventory only — not yet integrated into wash steps. RTU version of AllClean concentrate."
+        }
+      ],
+      "storageNote": "3 bottles in stock.",
+      "openedDate": ""
     }
   ],
   "washSteps": {
