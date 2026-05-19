@@ -8,19 +8,19 @@ export const PHASE_ICONS = {
 }
 
 export const PHASE_COLORS = {
-  'Wheels & Tires': '#1358d4',
-  'Pre-treatment': '#c0282a',
-  'Prewash': '#7a3db0',
-  '2-Bucket Method Wash': '#b07000',
-  'Dry & Protect': '#0a7a4a',
-  'Finish': '#505068',
+  'Wheels & Tires': '#0066b1',
+  'Pre-treatment': '#cc1e1e',
+  'Prewash': '#9b4fd4',
+  '2-Bucket Method Wash': '#c8860a',
+  'Dry & Protect': '#1a9e62',
+  'Finish': '#666680',
 }
 
 export const SEASON_COLORS = {
-  'Winter (Nov-Mar)': '#1358d4',
-  'Spring (Mar-May)': '#0a7a4a',
-  'Summer (Jun-Sep)': '#b07000',
-  'Fall (Sep-Nov)': '#c0282a',
+  'Winter (Nov-Mar)': '#0066b1',
+  'Spring (Mar-May)': '#1a9e62',
+  'Summer (Jun-Sep)': '#c8860a',
+  'Fall (Sep-Nov)': '#cc1e1e',
 }
 
 export function fmtTime(sec) {

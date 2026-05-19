@@ -60,9 +60,10 @@ export default function App() {
       <div className="hdr" style={{ position: 'relative' }}>
         <div className="hdr-top">
           <div className="hdr-left">
-            <div className="bmw-badge">
-              <div className="bq iom" /><div className="bq wh" />
-              <div className="bq wh" /><div className="bq iom" />
+            <div className="m-stripe">
+              <div className="ms ms1" />
+              <div className="ms ms2" />
+              <div className="ms ms3" />
             </div>
             <div>
               <div className="hdr-title">{meta.title}</div>
