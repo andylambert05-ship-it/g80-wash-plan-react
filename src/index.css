@@ -133,7 +133,7 @@ body { background: var(--bg); min-height: 100vh; }
 .timer-ring-wrap { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
 .timer-svg { width: 52px; height: 52px; transform: rotate(-90deg); }
 .timer-bg { fill: none; stroke: var(--bd2); stroke-width: 4; }
-.timer-fg { fill: none; stroke: var(--iom); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 113.1; transition: stroke-dashoffset 1s linear; }
+.timer-fg { fill: none; stroke: #0066b1; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 113.1; transition: stroke-dashoffset 1s linear; }
 .timer-fg.warning { stroke: var(--amber); }
 .timer-fg.expired { stroke: var(--red); }
 .timer-time { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--t1); letter-spacing: 0.04em; }
