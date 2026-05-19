@@ -3,6 +3,7 @@ import './index.css'
 import { useTimer } from './hooks/useTimer'
 import { useWashState } from './hooks/useWashState'
 import FloatingTimer from './components/FloatingTimer'
+import BMWMLogo from './components/BMWMLogo'
 import TabSteps from './components/TabSteps'
 import TabChemicals from './components/TabChemicals'
 import {
@@ -60,10 +61,7 @@ export default function App() {
       <div className="hdr" style={{ position: 'relative' }}>
         <div className="hdr-top">
           <div className="hdr-left">
-            <div className="bmw-badge">
-              <div className="bq iom" /><div className="bq wh" />
-              <div className="bq wh" /><div className="bq iom" />
-            </div>
+            <BMWMLogo height={18} />
             <div>
               <div className="hdr-title">{meta.title}</div>
               <div className="hdr-sub">{meta.car} &middot; Updated {meta.lastUpdated}</div>
