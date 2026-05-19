@@ -1,6 +1,6 @@
 :root {
   /* ── Isle of Man Green palette ── */
-  --iom: #22CE83;
+  --iom: #1a9e62;
   --iom-deep: #147f50;
   --iom-darker: #0c4a2f;
   --iom-bg: #eaf8f2;
@@ -20,7 +20,7 @@
   --t3: #7a8f82;
 
   /* ── Primary accent — IOM Green replaces blue ── */
-  --blue: #22CE83;
+  --blue: #1a9e62;
   --blue-lt: #0c4a2f;
   --blue-bg: #eaf8f2;
   --blue-bd: #85c6aa;
@@ -65,7 +65,7 @@ body { background: var(--bg); min-height: 100vh; }
 .bmw-badge { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--t1); flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; position: relative; }
 .bmw-badge::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--t1); }
 .bq { width: 100%; height: 100%; }
-.bq.iom { background: #22CE83; }
+.bq.iom { background: #1a9e62; }
 .bq.wh { background: #f4f4f8; }
 .hdr-title { font-size: 15px; font-weight: 600; color: var(--t1); letter-spacing: -0.2px; }
 .hdr-sub { font-size: 11px; color: var(--t3); margin-top: 1px; }
