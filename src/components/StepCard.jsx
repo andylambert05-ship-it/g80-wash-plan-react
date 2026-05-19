@@ -30,9 +30,8 @@ export default function StepCard({ step, index, isDone, onToggle, onStartTimer }
           {step.optional && <span className="pill po">optional</span>}
         </div>
 
-        {(step.estMins || step.dwellMin) && (
+        {step.dwellMin && (
           <div className="step-timing">
-            {step.estMins && <span className="step-meta">~{step.estMins} min</span>}
             {step.dwellMin && (
               <span className="step-meta step-dwell">
                 <i className="ti ti-clock" style={{ fontSize: 10 }} aria-hidden="true" />
