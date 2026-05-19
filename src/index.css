@@ -13,8 +13,8 @@
   --bd2: #2a2a2a;
 
   --t1: #f0f0f0;
-  --t2: #888888;
-  --t3: #444444;
+  --t2: #aaaaaa;
+  --t3: #888888;
 
   --blue: #0066b1;
   --blue-bg: #0d1a2e;
@@ -64,14 +64,14 @@ body { background: var(--bg); min-height: 100vh; }
 
 /* ── Mode buttons ── */
 .mode-row { display: flex; gap: 8px; padding-bottom: 12px; }
-.mbtn { display: flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 0; border: 1px solid var(--bd2); background: transparent; color: var(--t3); font-size: 9px; cursor: pointer; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Inter', sans-serif; transition: all 0.15s; }
+.mbtn { display: flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 0; border: 1px solid var(--bd2); background: transparent; color: #888888; font-size: 9px; cursor: pointer; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Inter', sans-serif; transition: all 0.15s; }
 .mbtn.normal { background: var(--iom); color: #fff; border-color: var(--iom); }
 .mbtn.maint { background: var(--blue); color: #fff; border-color: var(--blue); }
 
 /* ── Tabs ── */
 .tabs { display: flex; background: var(--bg); border-bottom: 1px solid var(--bd); overflow-x: auto; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
-.tab-btn { padding: 11px 16px; border: none; background: transparent; color: var(--t3); font-size: 9px; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; letter-spacing: 0.12em; font-weight: 700; text-transform: uppercase; font-family: 'Inter', sans-serif; transition: all 0.15s; }
+.tab-btn { padding: 11px 16px; border: none; background: transparent; color: #888888; font-size: 9px; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; letter-spacing: 0.12em; font-weight: 700; text-transform: uppercase; font-family: 'Inter', sans-serif; transition: all 0.15s; }
 .tab-btn.active { color: var(--iom); border-bottom-color: var(--iom); }
 
 /* ── Panel ── */
@@ -93,7 +93,7 @@ body { background: var(--bg); min-height: 100vh; }
 .prog-bar { height: 100%; background: #cc1e1e; transition: width 0.4s ease; }
 
 /* ── Reset button ── */
-.rbtn { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--bd2); background: transparent; color: var(--t3); font-size: 9px; padding: 5px 12px; cursor: pointer; margin-bottom: 14px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; font-family: 'Inter', sans-serif; }
+.rbtn { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--bd2); background: transparent; color: #888888; font-size: 9px; padding: 5px 12px; cursor: pointer; margin-bottom: 14px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; font-family: 'Inter', sans-serif; }
 
 /* ── Phase header ── */
 .phase-hdr { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; padding: 10px 0 6px; margin-top: 8px; display: flex; align-items: center; gap: 10px; border-left: 2px solid transparent; padding-left: 10px; color: #ffffff !important; }
