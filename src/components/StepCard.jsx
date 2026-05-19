@@ -2,13 +2,13 @@ import { PHASE_ICONS, PHASE_COLORS, fmtTime } from '../constants'
 
 export function PhaseHeader({ phase }) {
   const color = PHASE_COLORS[phase] || '#505068'
-  const icon = PHASE_ICONS[phase] || ''
   return (
     <div
       className="phase-hdr"
-      style={{ background: color + '18', color, borderLeftColor: color }}
+      style={{ background: color + '18', borderLeftColor: color }}
     >
-      {icon}&nbsp;&nbsp;{phase}
+      <span style={{ display:'inline-block', width:10, height:10, borderRadius:'50%', background:'#ffffff', flexShrink:0 }} />
+      {phase}
     </div>
   )
 }
