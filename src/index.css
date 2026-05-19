@@ -1,0 +1,205 @@
+:root {
+  --bg: #f5f5f7;
+  --card: #ffffff;
+  --card2: #f8f8fa;
+  --bd: rgba(0,0,0,0.1);
+  --bd2: rgba(0,0,0,0.18);
+  --t1: #1a1a1a;
+  --t2: #4a4a4a;
+  --t3: #8a8a8a;
+  --blue: #1358d4;
+  --blue-lt: #1358d4;
+  --blue-bg: #e8f0fb;
+  --blue-bd: #b5cef5;
+  --green: #1a7a3a;
+  --green-bg: #e6f4ea;
+  --green-bd: #a8d5b5;
+  --amber: #a05a00;
+  --amber-bg: #fef3e2;
+  --amber-bd: #f5c842;
+  --red: #c0282a;
+  --red-bg: #fdeaea;
+  --red-bd: #f5b8b8;
+  --r: 12px;
+  --r-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--t1);
+  background: var(--bg);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body { height: 100%; overflow-y: auto; }
+body { background: var(--bg); min-height: 100vh; }
+
+/* ── App shell ── */
+.app { width: 100%; min-height: 100vh; height: auto; background: var(--bg); padding-bottom: 160px; }
+
+/* ── Header ── */
+.hdr { background: var(--card); border-bottom: 0.5px solid var(--bd); padding: 0 16px; }
+.hdr-top { display: flex; align-items: center; justify-content: space-between; padding: 12px 0 8px; }
+.hdr-left { display: flex; align-items: center; gap: 10px; }
+.bmw-badge { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--t1); flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; position: relative; }
+.bmw-badge::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--t1); }
+.bq { width: 100%; height: 100%; }
+.bq.bl { background: #1358d4; }
+.bq.wh { background: #f4f4f8; }
+.hdr-title { font-size: 15px; font-weight: 600; color: var(--t1); letter-spacing: -0.2px; }
+.hdr-sub { font-size: 11px; color: var(--t3); margin-top: 1px; }
+.ver { font-size: 10px; background: var(--card2); border: 0.5px solid var(--bd2); color: var(--t3); padding: 2px 8px; border-radius: 20px; font-weight: 500; white-space: nowrap; }
+
+/* ── Mode buttons ── */
+.mode-row { display: flex; gap: 6px; padding-bottom: 10px; }
+.mbtn { display: flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 20px; border: 0.5px solid var(--bd2); background: transparent; color: var(--t2); font-size: 12px; cursor: pointer; font-weight: 500; transition: all 0.15s; }
+.mbtn.normal { background: var(--blue-bg); color: var(--blue); border-color: var(--blue-bd); }
+.mbtn.maint { background: var(--green-bg); color: var(--green); border-color: var(--green-bd); }
+
+/* ── Tabs ── */
+.tabs { display: flex; background: var(--card); border-bottom: 0.5px solid var(--bd); overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn { padding: 9px 14px; border: none; background: transparent; color: var(--t3); font-size: 11px; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; letter-spacing: 0.06em; font-weight: 500; text-transform: uppercase; transition: all 0.15s; }
+.tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+/* ── Panel ── */
+.panel { padding: 16px; max-width: 900px; }
+
+/* ── Notice ── */
+.notice { border-radius: var(--r-sm); padding: 10px 13px; font-size: 12px; line-height: 1.6; margin-bottom: 14px; display: flex; gap: 9px; align-items: flex-start; }
+.notice i { font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+.notice.info { background: var(--card2); border: 0.5px solid var(--bd2); color: var(--t2); }
+.notice.warn { background: var(--amber-bg); border: 0.5px solid var(--amber-bd); color: var(--amber); }
+.notice.opt { background: var(--green-bg); border: 0.5px solid var(--green-bd); color: var(--green); }
+
+/* ── Progress ── */
+.prog-wrap { margin-bottom: 12px; }
+.prog-meta { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.prog-lbl { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--t3); }
+.prog-ct { font-size: 13px; font-weight: 500; color: var(--t1); }
+.prog-track { height: 3px; background: var(--card2); border-radius: 2px; overflow: hidden; }
+.prog-bar { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+
+/* ── Reset button ── */
+.rbtn { display: inline-flex; align-items: center; gap: 5px; border: 0.5px solid var(--bd2); background: transparent; color: var(--t3); font-size: 10px; padding: 4px 10px; border-radius: 20px; cursor: pointer; margin-bottom: 12px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500; }
+
+/* ── Phase header ── */
+.phase-hdr { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 8px 12px 5px; border-radius: var(--r-sm); margin-top: 8px; display: flex; align-items: center; gap: 6px; border-left: 3px solid transparent; }
+.phase-hdr:first-child { margin-top: 0; }
+
+/* ── Step card ── */
+.steps-list { display: flex; flex-direction: column; gap: 5px; }
+.step { background: var(--card); border: 0.5px solid var(--bd); border-radius: var(--r-sm); padding: 11px 13px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; transition: opacity 0.15s; position: relative; overflow: hidden; }
+.step::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+.step.normal::before { background: var(--blue); opacity: 0.6; }
+.step.maint::before { background: var(--green); opacity: 0.7; }
+.step.optional::before { background: var(--bd2); }
+.step.done { opacity: 0.35; }
+.step-n { width: 24px; height: 24px; border-radius: 50%; background: var(--card2); border: 0.5px solid var(--bd2); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--t3); flex-shrink: 0; }
+.step-b { flex: 1; min-width: 0; }
+.step-t { font-size: 13px; font-weight: 500; color: var(--t1); margin-bottom: 3px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; line-height: 1.3; }
+.step-timing { display: flex; gap: 5px; margin-bottom: 5px; flex-wrap: wrap; }
+.step-meta { font-size: 10px; font-weight: 500; color: var(--t3); background: var(--card2); padding: 2px 7px; border-radius: 20px; display: inline-flex; align-items: center; gap: 3px; }
+.step-dwell { color: var(--amber); background: var(--amber-bg); border: 0.5px solid var(--amber-bd); }
+.step-d { font-size: 12px; color: var(--t2); line-height: 1.55; margin-bottom: 6px; }
+.tags { display: flex; flex-wrap: wrap; gap: 3px; }
+.tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
+.tag.tl { background: var(--blue-bg); color: var(--blue-lt); border: 0.5px solid var(--blue-bd); }
+.tag.tc { background: var(--amber-bg); color: var(--amber); border: 0.5px solid var(--amber-bd); }
+.pill { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 500; text-transform: uppercase; }
+.pill.pm { background: var(--green-bg); color: var(--green); border: 0.5px solid var(--green-bd); }
+.pill.po { background: var(--card2); color: var(--t3); border: 0.5px solid var(--bd2); }
+
+/* ── Timer buttons on step ── */
+.timer-btns { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 7px; }
+.timer-btn { font-size: 11px; padding: 4px 10px; border-radius: 6px; border: 0.5px solid var(--blue-bd); background: var(--blue-bg); color: var(--blue-lt); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+
+/* ── Floating timer ── */
+.float-timer { position: fixed; bottom: 24px; right: 18px; z-index: 999; background: var(--card); border: 0.5px solid var(--bd2); border-radius: 16px; padding: 14px 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 14px; min-width: 200px; }
+.timer-ring-wrap { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
+.timer-svg { width: 52px; height: 52px; transform: rotate(-90deg); }
+.timer-bg { fill: none; stroke: var(--card2); stroke-width: 4; }
+.timer-fg { fill: none; stroke: var(--blue); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 113.1; transition: stroke-dashoffset 1s linear; }
+.timer-fg.warning { stroke: var(--amber); }
+.timer-fg.expired { stroke: var(--red); }
+.timer-time { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--t1); }
+.timer-info { flex: 1; min-width: 0; }
+.timer-label { font-size: 11px; color: var(--t3); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.timer-status { font-size: 12px; color: var(--t2); margin-top: 2px; }
+.timer-close { width: 26px; height: 26px; border-radius: 50%; border: 0.5px solid var(--bd2); background: transparent; color: var(--t3); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+
+/* ── Chemical chart ── */
+.chem-chart { background: var(--card); border: 0.5px solid var(--bd); border-radius: var(--r); overflow: hidden; margin-bottom: 8px; }
+.cc-head { display: grid; grid-template-columns: 100px 1fr 1.6fr 80px; background: var(--card2); border-bottom: 0.5px solid var(--bd); }
+.cc-row { display: grid; grid-template-columns: 100px 1fr 1.6fr 80px; border-bottom: 0.5px solid var(--bd); }
+.cc-row:last-child { border-bottom: none; }
+.cc-row:hover { background: var(--card2); }
+.cc-cell { padding: 7px 10px; font-size: 12px; color: var(--t1); line-height: 1.4; }
+.cc-head .cc-cell { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--t3); padding: 6px 10px; }
+.cc-brand { background: var(--bg); font-weight: 500; color: var(--t2); }
+.cc-name { font-weight: 500; }
+.cc-use { color: var(--t2); }
+.cc-ratio { font-weight: 600; color: var(--blue); }
+.cc-legend { font-size: 11px; color: var(--t3); margin-bottom: 14px; padding: 0 2px; }
+.cc-pill { font-size: 9px; padding: 1px 5px; border-radius: 3px; font-weight: 700; margin-left: 4px; vertical-align: middle; display: inline-block; }
+.cc-pm { background: var(--green-bg); color: var(--green); border: 0.5px solid var(--green-bd); }
+.cc-pn { background: var(--blue-bg); color: var(--blue); border: 0.5px solid var(--blue-bd); }
+@media(max-width:480px) { .cc-head, .cc-row { grid-template-columns: 80px 1fr 80px; } .cc-use { display: none; } }
+
+/* ── Chemical card ── */
+.chem-card { background: var(--card); border: 0.5px solid var(--bd); border-radius: var(--r-sm); overflow: hidden; margin-bottom: 7px; }
+.chem-hd { background: var(--card2); padding: 9px 12px; border-bottom: 0.5px solid var(--bd); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.chem-nm { font-size: 13px; font-weight: 500; color: var(--t1); }
+.chem-cat { font-size: 10px; color: var(--t3); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 1px; }
+.chem-bd { padding: 10px 12px; }
+.chem-used { font-size: 12px; color: var(--t2); margin-bottom: 8px; line-height: 1.5; }
+.dil { background: var(--card2); border: 0.5px solid var(--bd); border-radius: var(--r-sm); padding: 8px 10px; margin-bottom: 5px; }
+.dil-ctx { font-size: 10px; color: var(--t3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; font-weight: 500; }
+.dil-ratio { font-size: 18px; font-weight: 500; color: var(--blue); letter-spacing: -0.5px; line-height: 1.1; }
+.dil-amt { font-size: 12px; color: var(--t1); margin-top: 3px; }
+.dil-note { font-size: 11px; color: var(--t3); margin-top: 4px; line-height: 1.5; }
+.chem-tool { font-size: 11px; color: var(--t3); margin-top: 8px; display: flex; gap: 5px; align-items: flex-start; }
+.chem-shelf { font-size: 11px; color: var(--t3); margin-top: 5px; display: flex; align-items: flex-start; gap: 5px; line-height: 1.5; }
+
+/* ── Section label ── */
+.slbl { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--t3); margin: 16px 0 8px; display: flex; align-items: center; gap: 8px; }
+.slbl:first-child { margin-top: 0; }
+.slbl::after { content: ''; flex: 1; height: 0.5px; background: var(--bd); }
+
+/* ── Tools table ── */
+.tbl { background: var(--card); border: 0.5px solid var(--bd); border-radius: var(--r-sm); overflow: hidden; margin-bottom: 8px; }
+.tr { display: grid; border-bottom: 0.5px solid var(--bd); }
+.tr:last-child { border-bottom: none; }
+.tr.th { background: var(--card2); }
+.tc3 { grid-template-columns: 1.5fr 0.6fr 1.4fr; }
+.tc2 { grid-template-columns: 1.5fr 1.5fr; }
+.td { padding: 8px 11px; font-size: 12px; color: var(--t1); line-height: 1.4; }
+.td.m { color: var(--t2); }
+.tr.th .td { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--t3); padding: 6px 11px; }
+
+/* ── ShortList ── */
+.sl-header { margin-bottom: 16px; }
+.sl-title { display: block; font-size: 15px; font-weight: 600; color: var(--t1); }
+.sl-sub { display: block; font-size: 11px; color: var(--t3); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+.sl-list { display: flex; flex-direction: column; }
+.sl-item { display: flex; align-items: baseline; gap: 14px; padding: 10px 0; border-bottom: 0.5px solid var(--bd); }
+.sl-item:last-child { border-bottom: none; }
+.sl-num { font-size: 12px; font-weight: 600; color: var(--t3); width: 22px; flex-shrink: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.sl-text { font-size: 13px; color: var(--t1); line-height: 1.4; flex: 1; }
+.sl-note { font-size: 12px; color: var(--t2); }
+
+/* ── Season card ── */
+.season-card { background: var(--card); border: 0.5px solid var(--bd); border-radius: var(--r); padding: 14px 16px; margin-bottom: 10px; } .season-card:last-child { margin-bottom: 0; }
+.season-hdr { font-size: 14px; font-weight: 500; margin-bottom: 10px; }
+.season-list { padding-left: 16px; display: flex; flex-direction: column; gap: 7px; }
+.season-list li { font-size: 13px; color: var(--t2); line-height: 1.55; }
+
+/* ── Changelog ── */
+.changelog-entry { font-size: 12px; color: var(--t2); line-height: 1.6; padding: 10px 0; border-bottom: 0.5px solid var(--bd); }
+.changelog-entry:last-child { border-bottom: none; }
+
+/* ── Between wash ── */
+.bw-step { background: var(--card); border: 0.5px solid var(--bd); border-radius: var(--r-sm); padding: 11px 13px; margin-bottom: 5px; }
+.bw-step-t { font-size: 13px; font-weight: 500; color: var(--t1); margin-bottom: 4px; }
+.bw-step-d { font-size: 12px; color: var(--t2); line-height: 1.55; margin-bottom: 6px; }
