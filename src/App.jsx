@@ -84,7 +84,7 @@ export default function App() {
             className={`mbtn ${mode === 'maint' ? 'maint' : ''}`}
             onClick={() => setMode('maint')}
           >
-            <i className="ti ti-shield-check" aria-hidden="true" /> Ceramic maintenance
+            <i className="ti ti-shield-check" aria-hidden="true" /> Deep Clean
           </button>
         </div>
       </div>

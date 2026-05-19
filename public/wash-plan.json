@@ -16,7 +16,7 @@
       "name": "IK E Foam Pro 12",
       "type": "Electric battery-powered foam sprayer",
       "usableVolume": "6L",
-      "note": "Primary pre-soak sprayer. Used for Reset pre-foam, BH Touchless (maint. wash)."
+      "note": "Primary pre-soak sprayer. Used for Reset pre-foam, BH Touchless (Deep Clean)."
     },
     "ikFoamPro2": {
       "name": "IK E Foam Pro 2",
@@ -36,7 +36,7 @@
       "category": "Foam / Pre-wash",
       "name": "IK E Foam Pro 12",
       "qty": "1",
-      "usedFor": "Snow foam pre-soak \u2014 Reset (normal wash); BH Touchless (maint. wash). Total tank 8L \u2014 6L usable (leave headspace for air pressure)."
+      "usedFor": "Snow foam pre-soak \u2014 Reset (normal wash); BH Touchless (Deep Clean). Total tank 8L \u2014 6L usable (leave headspace for air pressure)."
     },
     {
       "category": "Foam / Pre-wash",
@@ -428,7 +428,7 @@
     },
     {
       "name": "Bilt Hamber Touchless",
-      "category": "Ceramic maintenance pre-wash \u2014 step 1",
+      "category": "Deep Clean pre-wash \u2014 step 1",
       "modes": [
         "maint"
       ],
@@ -466,7 +466,7 @@
     },
     {
       "name": "CarPro Descale",
-      "category": "Ceramic maintenance pre-wash \u2014 step 2",
+      "category": "Deep Clean pre-wash \u2014 step 2",
       "modes": [
         "maint"
       ],
@@ -1369,7 +1369,7 @@
         "id": "g06",
         "priority": "recommended",
         "name": "Foam or MF applicator pads \u2014 Descale hand application",
-        "why": "2\u20133 pads needed to apply Descale 1:100 by hand panel by panel on maint. wash.",
+        "why": "2\u20133 pads needed to apply Descale 1:100 by hand panel by panel on Deep Clean.",
         "washTypes": [
           "maint"
         ]
@@ -1485,7 +1485,7 @@
       {
         "id": "c03",
         "priority": "recommended",
-        "name": "Between-wash ceramic maintenance spray",
+        "name": "Between-wash Deep Clean spray",
         "why": "For ION Green between bi-weekly washes \u2014 bird drops, tree sap, light road film. Gyeon Q\u00b2M Cure or CarPro ELIXIR.",
         "washTypes": [
           "normal",
@@ -1496,7 +1496,7 @@
         "id": "c04",
         "priority": "recommended",
         "name": "CarPro HydrO2 Foam (ceramic SiO2 topper)",
-        "why": "Slotted into maint. wash as touchless coating topper. Applied via IK E Foam Pro 12, flashes and blows off with leaf blower.",
+        "why": "Slotted into Deep Clean as touchless coating topper. Applied via IK E Foam Pro 12, flashes and blows off with leaf blower.",
         "washTypes": [
           "maint"
         ]
@@ -1515,7 +1515,7 @@
         "id": "c06",
         "priority": "optional",
         "name": "Wheel coating / sealant (one-time application)",
-        "why": "CarPro CQuartz Wheel or Gtechniq C5 Wheel Armour. Reduces how hard MWC has to work each wash. Best applied at next maint. wash.",
+        "why": "CarPro CQuartz Wheel or Gtechniq C5 Wheel Armour. Reduces how hard MWC has to work each wash. Best applied at next Deep Clean.",
         "washTypes": [
           "maint"
         ]
@@ -1885,7 +1885,7 @@
         "season": "Spring (Mar-May)",
         "icon": "\ud83c\udf31",
         "notes": [
-          "Spring is the ideal time for a full ceramic maintenance wash \u2014 decon the coating from winter salt, fallout, and road film buildup.",
+          "Spring is the ideal time for a full Deep Clean wash \u2014 decon the coating from winter salt, fallout, and road film buildup.",
           "Run a full Korrosol + Iron X decon pass \u2014 spring fallout (tree pollen, industrial) embeds fast in ceramic coatings.",
           "Check coating condition with a water bead test after spring decon. If beading has degraded significantly, consider a full Reload 2.0 application or consult Angelwax on coating refresh.",
           "Tree sap season begins in spring \u2014 act on drops immediately (see between-wash section).",

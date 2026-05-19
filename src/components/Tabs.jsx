@@ -38,7 +38,7 @@ const SL_MAINT = [
 
 export function TabShortList({ mode }) {
   const list = mode === 'normal' ? SL_NORMAL : SL_MAINT
-  const title = mode === 'normal' ? 'Bi-weekly Wash' : 'Ceramic Maintenance Wash'
+  const title = mode === 'normal' ? 'Bi-weekly Wash' : 'Deep Clean'
   return (
     <div className="panel">
       <div className="sl-header">
