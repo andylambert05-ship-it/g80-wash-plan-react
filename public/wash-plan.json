@@ -827,28 +827,28 @@
       "name": "Garage Therapy /ONE: Wheel Shampoo V2",
       "category": "Wheel shampoo",
       "modes": ["normal", "maint"],
-      "usedOn": "Wheel faces — pH-neutral maintenance wheel shampoo. Not iron-reactive.",
+      "usedOn": "Wheel faces, arches, and suspension components — pH-neutral maintenance wheel shampoo with high-cling foam technology. Not iron-reactive.",
       "dilutions": [
         {
-          "context": "All use — see garagetherapy.co.uk",
-          "ratio": "TBD",
-          "amount": "Dilution not yet documented",
-          "note": "Inventory only — not yet integrated into wash steps."
+          "context": "Dedicated wheel bucket — 4 gallon (15L) fill — per garagetherapy.co.uk",
+          "ratio": "~1500:1",
+          "amount": "10ml per 4 gal (15L) — moderate soiling. 20ml for heavy soiling.",
+          "note": "Shake well before use. Rinse wheels first with high pressure to remove loose brake dust. Apply to wheel face and barrel with EZ Detail brushes. Rinse thoroughly. Can also be foamed via trigger sprayer or foam lance for extended dwell — no official IK foam ratio published by GT."
         }
       ],
       "openedDate": ""
     },
     {
       "name": "Garage Therapy /TWO: Sigma V3",
-      "category": "Alkaline pre-wash",
+      "category": "Spray sealant / paint protection",
       "modes": ["normal", "maint"],
-      "usedOn": "Full exterior — alkaline pre-wash and decontamination shampoo (PROTECTION range)",
+      "usedOn": "All painted surfaces — hybrid SiO2 spray sealant and detailer. Compatible with ceramic coatings, waxes, and sealants as a topper. Not a pre-wash.",
       "dilutions": [
         {
-          "context": "All use — see garagetherapy.co.uk",
-          "ratio": "TBD",
-          "amount": "Dilution not yet documented",
-          "note": "Inventory only — not yet integrated into wash steps."
+          "context": "All painted surfaces — per garagetherapy.co.uk",
+          "ratio": "RTU",
+          "amount": "No dilution — supplied with trigger spray",
+          "note": "Spray sealant with up to 9 weeks durability per application. Can be layered for enhanced protection and slickness. Apply to clean dry surface after wash and dry stage. Do not use in direct sunlight or on hot surfaces. Inventory only — not yet integrated into wash steps."
         }
       ],
       "openedDate": ""
@@ -857,13 +857,25 @@
       "name": "Garage Therapy /ZERO: Decon Shampoo",
       "category": "Decon shampoo",
       "modes": ["normal", "maint"],
-      "usedOn": "Full exterior — high-alkaline decontamination shampoo for stripping waxes, sealants, and contamination (CLEANSE range)",
+      "usedOn": "Full exterior — high-alkaline decontamination shampoo. Strips waxes, sealants, and bonded contamination. Use before applying new paint protection.",
       "dilutions": [
         {
-          "context": "All use — see garagetherapy.co.uk",
-          "ratio": "TBD",
-          "amount": "Dilution not yet documented",
-          "note": "Inventory only — not yet integrated into wash steps."
+          "context": "Wash bucket — 4 gallon (15L) fill — per garagetherapy.co.uk",
+          "ratio": "~300:1",
+          "amount": "50ml per 4 gal (15L) deep cleansing. 65ml for strong decon on heavily soiled vehicle.",
+          "note": "Shake well before use. Do not apply to hot surfaces. Do not allow to dry on surface. Dwell 4–5 min when foamed. Rinse thoroughly."
+        },
+        {
+          "context": "IK E Foam Pro 2 (~1.2L usable fill) — calculated from GT 1:50 trigger ratio",
+          "ratio": "1:50",
+          "amount": "~24ml per 1.2L fill",
+          "note": "GT official trigger sprayer ratio: 10ml per 500ml. Do not fill chamber completely — leave air space for pressure. Dwell 4–5 min, do not allow to dry."
+        },
+        {
+          "context": "IK E Foam Pro 12 (6L usable fill) — calculated from GT 1:50 trigger ratio",
+          "ratio": "1:50",
+          "amount": "~120ml per 6L fill",
+          "note": "GT official trigger sprayer ratio: 10ml per 500ml. Apply panel by panel to cool surface in shade. Dwell 4–5 min, do not allow to dry. Rinse thoroughly."
         }
       ],
       "openedDate": ""
@@ -872,13 +884,13 @@
       "name": "Garage Therapy /ONE: Car Shampoo V3",
       "category": "Main wash shampoo",
       "modes": ["normal", "maint"],
-      "usedOn": "All painted panels — pH-neutral ceramic-safe maintenance car shampoo",
+      "usedOn": "All painted panels — pH-neutral, high-concentration, ceramic-safe maintenance car shampoo",
       "dilutions": [
         {
-          "context": "All use — see garagetherapy.co.uk",
-          "ratio": "TBD",
-          "amount": "Dilution not yet documented",
-          "note": "Inventory only — not yet integrated into wash steps."
+          "context": "Wash bucket — 4 gallon (15L) fill — per garagetherapy.co.uk",
+          "ratio": "~750:1",
+          "amount": "20ml per 4 gal (15L) moderately dirty. 30ml for heavily soiled. GT testing achieved good results from 10–15ml.",
+          "note": "Shake well before use. Highly concentrated — 10ml may be sufficient, experiment to preference. GT states foam lance compatible but does not publish official IK foam sprayer ratios."
         }
       ],
       "openedDate": ""
@@ -887,13 +899,13 @@
       "name": "Garage Therapy /ONE: Glass",
       "category": "Glass cleaner",
       "modes": ["normal", "maint"],
-      "usedOn": "All exterior and interior glass",
+      "usedOn": "All exterior and interior glass, windshield, windows, mirrors. Can also spot-treat insects, tree sap, and bird droppings on paint.",
       "dilutions": [
         {
-          "context": "All use — see garagetherapy.co.uk",
+          "context": "All glass surfaces — per garagetherapy.co.uk",
           "ratio": "RTU",
-          "amount": "No dilution",
-          "note": "Inventory only — not yet integrated into wash steps."
+          "amount": "No dilution — shake well before use",
+          "note": "Spray onto glass or onto short-pile glass MF towel to avoid overspray. Spread evenly — allow surfactants to work 5–10 sec. Buff residue with a second clean glass towel. Do not use in direct sunlight or on hot glass. Two-towel method: one for application, one for buff-off."
         }
       ],
       "openedDate": ""

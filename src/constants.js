@@ -68,9 +68,10 @@ export function getVisibleSteps(data, mode) {
 export const CAT_ORDER = [
   'Spot pre-treatment', 'Wheel cleaner', 'Wheel cleaner (option)', 'Wheel cleaner — iron-reactive',
   'Wheel shampoo', 'Tire cleaner', 'All-purpose cleaner', 'All-purpose cleaner / degreaser (APC)', 'Iron / fallout decon',
-  'Iron / fallout remover — paint', 'Alkaline pre-wash', 'Decon shampoo',
+  'Iron / fallout remover — paint', 'Decon shampoo',
   'Ceramic maintenance pre-wash — step 1', 'Ceramic maintenance pre-wash — step 2',
-  'Main wash shampoo', 'Tire dressing', 'Paint sealant / coating topper — both modes', 'Exhaust & metal cleaning',
+  'Main wash shampoo', 'Tire dressing', 'Paint sealant / coating topper — both modes',
+  'Spray sealant / paint protection', 'Exhaust & metal cleaning',
   'Glass cleaner', 'Glass cleaner — alternative to BH Trace-Less', 'Screen cleaner — interior',
   'Quick detailer / rinseless wash', 'Trim & finishing', 'Finishing', 'Ceramic coating topper / paint protection',
   'Interior APC / surface cleaner',
