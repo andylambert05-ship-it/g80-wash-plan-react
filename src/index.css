@@ -53,8 +53,8 @@ body { background: var(--bg); min-height: 100vh; }
 .hdr { background: var(--bg); border-bottom: 1px solid var(--bd); padding: 0 20px; }
 .hdr-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 10px; }
 .hdr-left { display: flex; align-items: center; gap: 14px; }
-.m-stripe { display: flex; gap: 3px; height: 30px; align-items: stretch; }
-.ms { width: 7px; }
+.m-stripe { display: flex; gap: 4px; height: 30px; align-items: stretch; transform: skewX(-14deg); }
+.ms { width: 8px; }
 .ms1 { background: #1c2e6e; }
 .ms2 { background: #0066b1; }
 .ms3 { background: #cc1e1e; }
