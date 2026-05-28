@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(python3 -c \"import json; json.load\\(open\\('/Users/andylambert/g80-wash-plan-react/public/wash-plan.json'\\)\\); print\\('JSON valid'\\)\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}
