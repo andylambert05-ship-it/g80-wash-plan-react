@@ -1,0 +1,31 @@
+{
+  "name": "BMW M3 Competition xDrive Care Plan",
+  "short_name": "M3 Care",
+  "description": "Wash plan, chemicals, tools, and upgrade tracker for the G80 M3.",
+  "start_url": "/g80-wash-plan-react/",
+  "scope": "/g80-wash-plan-react/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d0d0d",
+  "theme_color": "#0d0d0d",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

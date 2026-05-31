@@ -2,13 +2,75 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffffff" />
-    <title>G80 M3 Wash Plan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d0d0d" />
+    <title>BMW M3 Competition xDrive Care Plan</title>
+
+    <!-- PWA manifest -->
+    <link rel="manifest" href="manifest.webmanifest" />
+
+    <!-- iOS PWA support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="M3 Care" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+    <link rel="icon" type="image/png" href="icon-192.png" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+
+    <style>
+      /* Branded loading splash — shown until React mounts */
+      #boot-splash {
+        position: fixed;
+        inset: 0;
+        background: #0d0d0d;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 22px;
+        z-index: 9999;
+        transition: opacity 0.4s ease;
+      }
+      #boot-splash.hide { opacity: 0; pointer-events: none; }
+      .boot-stripe { display: flex; gap: 5px; height: 46px; align-items: stretch; transform: skewX(-14deg); }
+      .boot-ms { width: 12px; animation: bootpulse 1.4s ease-in-out infinite; }
+      .boot-ms:nth-child(1) { background: #1c2e6e; animation-delay: 0s; }
+      .boot-ms:nth-child(2) { background: #0066b1; animation-delay: 0.18s; }
+      .boot-ms:nth-child(3) { background: #cc1e1e; animation-delay: 0.36s; }
+      @keyframes bootpulse {
+        0%, 100% { opacity: 0.35; transform: scaleY(0.82); }
+        50% { opacity: 1; transform: scaleY(1); }
+      }
+      .boot-text {
+        font-family: 'Inter', -apple-system, sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #444;
+      }
+    </style>
   </head>
   <body>
+    <div id="boot-splash">
+      <div class="boot-stripe">
+        <div class="boot-ms"></div>
+        <div class="boot-ms"></div>
+        <div class="boot-ms"></div>
+      </div>
+      <div class="boot-text">M3 Care Plan</div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Service worker registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js').catch(() => {})
+        })
+      }
+    </script>
   </body>
 </html>

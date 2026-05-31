@@ -217,3 +217,10 @@ body { background: var(--bg); min-height: 100vh; }
 .bw-step { background: var(--card); border: 1px solid var(--bd); padding: 13px 16px; margin-bottom: 4px; }
 .bw-step-t { font-size: 11px; font-weight: 700; color: var(--t1); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; }
 .bw-step-d { font-size: 12px; color: var(--t2); line-height: 1.6; margin-bottom: 8px; font-weight: 300; }
+
+/* ── Tab transition ── */
+.tab-panel { animation: tabfade 0.18s ease-out; }
+@keyframes tabfade {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

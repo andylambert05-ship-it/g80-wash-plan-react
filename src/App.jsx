@@ -23,7 +23,6 @@ import TabChemicals from './components/TabChemicals'
 import {
   TabShortList, TabTools, TabInterior, TabEngine, TabBetweenWash, TabSeasonal
 } from './components/Tabs'
-import TabUpgrades from './components/TabUpgrades'
 
 const TABS = [
   { id: 'steps', label: 'Steps' },
@@ -43,6 +42,10 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('steps')
   const { mode, setMode, done, toggleStep, resetSteps, engDone, toggleEng, resetEng, intDone, toggleInt, resetInt } = useWashState()
   const { timer, start: startTimer, stop: stopTimer } = useTimer()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [activeTab])
 
   useEffect(() => {
     fetch('wash-plan.json')
@@ -119,31 +122,33 @@ export default function App() {
         ))}
       </div>
 
-      {/* Panels */}
-      {activeTab === 'steps' && (
-        <TabSteps
-          data={data} mode={mode} done={done}
-          onToggle={toggleStep} onReset={resetSteps} onStartTimer={startTimer}
-        />
-      )}
-      {activeTab === 'chems' && <TabChemicals data={data} mode={mode} />}
-      {activeTab === 'shortlist' && <TabShortList mode={mode} />}
-      {activeTab === 'tools' && <TabTools data={data} />}
-      {activeTab === 'interior' && (
-        <TabInterior
-          data={data} intDone={intDone}
-          onToggle={toggleInt} onReset={resetInt} onStartTimer={startTimer}
-        />
-      )}
-      {activeTab === 'engine' && (
-        <TabEngine
-          data={data} engDone={engDone}
-          onToggle={toggleEng} onReset={resetEng}
-        />
-      )}
-      {activeTab === 'between' && <TabBetweenWash data={data} />}
-      {activeTab === 'seasonal' && <TabSeasonal data={data} />}
-      {activeTab === 'upgrades' && <ErrorBoundary><TabUpgrades data={data} /></ErrorBoundary>}
+      {/* Panels — keyed div re-triggers fade on every tab change */}
+      <div key={activeTab} className="tab-panel">
+        {activeTab === 'steps' && (
+          <TabSteps
+            data={data} mode={mode} done={done}
+            onToggle={toggleStep} onReset={resetSteps} onStartTimer={startTimer}
+          />
+        )}
+        {activeTab === 'chems' && <TabChemicals data={data} mode={mode} />}
+        {activeTab === 'shortlist' && <TabShortList mode={mode} />}
+        {activeTab === 'tools' && <TabTools data={data} />}
+        {activeTab === 'interior' && (
+          <TabInterior
+            data={data} intDone={intDone}
+            onToggle={toggleInt} onReset={resetInt} onStartTimer={startTimer}
+          />
+        )}
+        {activeTab === 'engine' && (
+          <TabEngine
+            data={data} engDone={engDone}
+            onToggle={toggleEng} onReset={resetEng}
+          />
+        )}
+        {activeTab === 'between' && <TabBetweenWash data={data} />}
+        {activeTab === 'seasonal' && <TabSeasonal data={data} />}
+        {activeTab === 'upgrades' && <ErrorBoundary><TabUpgrades data={data} /></ErrorBoundary>}
+      </div>
 
       {/* Floating timer */}
       {timer && <FloatingTimer timer={timer} onStop={stopTimer} />}
