@@ -18,6 +18,7 @@ const TABS = [
   { id: 'engine', label: 'Engine Bay' },
   { id: 'between', label: 'Between Washes' },
   { id: 'seasonal', label: 'Seasonal' },
+  { id: 'upgrades', label: 'Upgrades' },
 ]
 
 export default function App() {
@@ -126,6 +127,7 @@ export default function App() {
       )}
       {activeTab === 'between' && <TabBetweenWash data={data} />}
       {activeTab === 'seasonal' && <TabSeasonal data={data} />}
+      {activeTab === 'upgrades' && <TabUpgrades data={data} />}
 
       {/* Floating timer */}
       {timer && <FloatingTimer timer={timer} onStop={stopTimer} />}

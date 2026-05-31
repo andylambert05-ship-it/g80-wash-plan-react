@@ -1910,5 +1910,190 @@
         ]
       }
     ]
+  },
+  "upgrades": {
+    "note": "BMW M3 Competition xDrive upgrade plan \u2014 phases represent logical batching of work. Self = DIY install. Shop = professional install required.",
+    "items": [
+      {
+        "id": "u01",
+        "phase": "Phase 1 \u2014 Protection & Safety",
+        "priority": 1,
+        "item": "Dash Cam",
+        "source": "Self",
+        "done": false,
+        "notes": "Pair with radar detector \u2014 one wiring session covers both."
+      },
+      {
+        "id": "u02",
+        "phase": "Phase 1 \u2014 Protection & Safety",
+        "priority": 2,
+        "item": "Radar Detector",
+        "source": "Self",
+        "done": false,
+        "notes": "Hardwire alongside dash cam to share one wiring session."
+      },
+      {
+        "id": "u03",
+        "phase": "Phase 1 \u2014 Protection & Safety",
+        "priority": 3,
+        "item": "Megachip Splash Guard Set",
+        "source": "Self",
+        "done": false,
+        "notes": "Rock-chip protection for paint behind wheels; bolt-on, fully reversible."
+      },
+      {
+        "id": "u04",
+        "phase": "Phase 2 \u2014 Quick Self Cosmetic Batch",
+        "priority": 4,
+        "item": "Sto N Sho License Plate Bracket",
+        "source": "Self",
+        "done": false,
+        "notes": "Install early as a tow-hook plate mount; transfer the plate here later when the front lip goes on. No drilling, fully reversible."
+      },
+      {
+        "id": "u05",
+        "phase": "Phase 2 \u2014 Quick Self Cosmetic Batch",
+        "priority": 5,
+        "item": "Door Projectors",
+        "source": "Self",
+        "done": false,
+        "notes": "Independent, low-effort \u2014 knock out with the rest of the quick batch."
+      },
+      {
+        "id": "u06",
+        "phase": "Phase 2 \u2014 Quick Self Cosmetic Batch",
+        "priority": 6,
+        "item": "Goldenwrench Blackline Performance Cap Covers",
+        "source": "Self",
+        "done": false,
+        "notes": "Engine bay cosmetic upgrade; snap/twist-on over OEM caps, fully reversible."
+      },
+      {
+        "id": "u07",
+        "phase": "Phase 2 \u2014 Quick Self Cosmetic Batch",
+        "priority": 7,
+        "item": "Kies Motorsports Hood Latch Handle",
+        "source": "Self",
+        "done": false,
+        "notes": "Billet replacement for the OEM plastic hood release handle. Quick swap."
+      },
+      {
+        "id": "u08",
+        "phase": "Phase 2 \u2014 Quick Self Cosmetic Batch",
+        "priority": 8,
+        "item": "JQ Werks Madtrace Paddle Shifters",
+        "source": "Self",
+        "done": false,
+        "notes": "Extended billet paddles. Slips over or replaces OEM paddles, fully reversible."
+      },
+      {
+        "id": "u09",
+        "phase": "Phase 3 \u2014 Wheels & Fitment",
+        "priority": 9,
+        "item": "Spacers",
+        "source": "Self",
+        "done": false,
+        "notes": "Install once purchased; revisit thickness after the front lip is on if stance needs tweaking."
+      },
+      {
+        "id": "u10",
+        "phase": "Phase 3 \u2014 Wheels & Fitment",
+        "priority": 10,
+        "item": "Wheel Arch Clearance Kit",
+        "source": "Self",
+        "done": false,
+        "notes": "Install with spacers to prevent inner liner rub at full compression. Bolt-on, fully reversible."
+      },
+      {
+        "id": "u11",
+        "phase": "Phase 4 \u2014 Performance Prep",
+        "priority": 11,
+        "item": "BMC Filters",
+        "source": "Self",
+        "done": false,
+        "notes": "Quick install ahead of any future exhaust work; clean intake baseline."
+      },
+      {
+        "id": "u12",
+        "phase": "Phase 5 \u2014 Interior Trim",
+        "priority": 12,
+        "item": "Alcantara Armrest/Sides",
+        "source": "Self",
+        "done": false,
+        "notes": "Lower-risk interior trim warm-up before the audio build push."
+      },
+      {
+        "id": "u13",
+        "phase": "Phase 6 \u2014 Audio Build",
+        "priority": 13,
+        "item": "Audio System",
+        "source": "Self",
+        "done": false,
+        "notes": "Largest active self-project (rear shelf baffles, distribution block). Multi-month sustained effort."
+      },
+      {
+        "id": "u14",
+        "phase": "Phase 7 \u2014 Shop: Brakes",
+        "priority": 14,
+        "item": "Brake Pads",
+        "source": "Shop",
+        "done": false,
+        "notes": "Standalone shop visit. Schedule earlier if pads show meaningful wear."
+      },
+      {
+        "id": "u15",
+        "phase": "Phase 8 \u2014 Shop: Front-End Batch",
+        "priority": 15,
+        "item": "Vorsteiner Grill/Mesh",
+        "source": "Shop",
+        "done": false,
+        "notes": "Front fascia work \u2014 batch with lip, guard, and inlets."
+      },
+      {
+        "id": "u16",
+        "phase": "Phase 8 \u2014 Shop: Front-End Batch",
+        "priority": 16,
+        "item": "Front Lip",
+        "source": "Shop",
+        "done": false,
+        "notes": "Bumper-off install. Transfer plate to Sto N Sho before/after install."
+      },
+      {
+        "id": "u17",
+        "phase": "Phase 8 \u2014 Shop: Front-End Batch",
+        "priority": 17,
+        "item": "Oil Cooler Guard",
+        "source": "Shop",
+        "done": false,
+        "notes": "Bumper-off install; same session as grille/lip saves 1-2 hours labor."
+      },
+      {
+        "id": "u18",
+        "phase": "Phase 8 \u2014 Shop: Front-End Batch",
+        "priority": 18,
+        "item": "Inlets",
+        "source": "Shop",
+        "done": false,
+        "notes": "Front-end access \u2014 keep in the same shop visit."
+      },
+      {
+        "id": "u19",
+        "phase": "Phase 9 \u2014 Shop: Exhaust",
+        "priority": 19,
+        "item": "IRL or MAD Midpipe",
+        "source": "Shop",
+        "done": false,
+        "notes": "Pair with exhaust controller install in same underbody session."
+      },
+      {
+        "id": "u20",
+        "phase": "Phase 9 \u2014 Shop: Exhaust",
+        "priority": 20,
+        "item": "AST Exhaust Controller",
+        "source": "Shop",
+        "done": false,
+        "notes": "Install with midpipe to dial in sound on day one; avoids a second underbody visit."
+      }
+    ]
   }
 }
