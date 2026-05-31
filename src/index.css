@@ -248,3 +248,18 @@ body { background: var(--bg); min-height: 100vh; }
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── Sticky mini progress (top of viewport, Steps tab) ── */
+.mini-progress {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--bd2); z-index: 200;
+}
+.mini-progress-bar {
+  height: 100%; background: #cc1e1e;
+  transition: width 0.4s ease;
+}
+
+/* ── Reset button confirming state ── */
+.rbtn.confirming {
+  border-color: var(--amber); color: var(--amber); background: var(--amber-bg);
+}

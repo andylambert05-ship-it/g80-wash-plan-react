@@ -1,5 +1,6 @@
 import { SEASON_COLORS } from '../constants'
 import StepCard from './StepCard'
+import ResetButton from './ResetButton'
 
 // ── ShortList ────────────────────────────────────────────────────────────────
 const SL_NORMAL = [
@@ -113,9 +114,7 @@ export function TabInterior({ data, intDone, onToggle, onReset, onStartTimer }) 
         </div>
         <div className="prog-track"><div className="prog-bar" style={{ width: `${pct}%` }} /></div>
       </div>
-      <button className="rbtn" onClick={onReset}>
-        <i className="ti ti-refresh" aria-hidden="true" /> Reset interior steps
-      </button>
+      <ResetButton onReset={onReset} label="Reset interior steps" />
       <div className="steps-list">
         {steps.map((s, idx) => (
           <StepCard
@@ -197,9 +196,7 @@ export function TabEngine({ data, engDone, onToggle, onReset }) {
         </div>
         <div className="prog-track"><div className="prog-bar" style={{ width: `${pct}%` }} /></div>
       </div>
-      <button className="rbtn" onClick={onReset}>
-        <i className="ti ti-refresh" aria-hidden="true" /> Reset engine steps
-      </button>
+      <ResetButton onReset={onReset} label="Reset engine steps" />
       <div className="steps-list">
         {steps.map((s, idx) => (
           <StepCard

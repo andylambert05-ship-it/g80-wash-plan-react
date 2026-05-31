@@ -1,4 +1,5 @@
 import StepCard, { PhaseHeader } from './StepCard'
+import ResetButton from './ResetButton'
 import { getVisibleSteps } from '../constants'
 
 export default function TabSteps({ data, mode, done, activeId, onToggle, onReset, onStartTimer }) {
@@ -31,9 +32,7 @@ export default function TabSteps({ data, mode, done, activeId, onToggle, onReset
         </div>
       </div>
 
-      <button className="rbtn" onClick={onReset}>
-        <i className="ti ti-refresh" aria-hidden="true" /> Reset all
-      </button>
+      <ResetButton onReset={onReset} label="Reset all" />
 
       <div className="steps-list">
         {steps.map((step, idx) => {

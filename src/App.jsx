@@ -16,6 +16,7 @@ class ErrorBoundary extends Component {
 }
 import './index.css'
 import { useTimer } from './hooks/useTimer'
+import { getVisibleSteps } from './constants'
 import { useWashState } from './hooks/useWashState'
 import FloatingTimer from './components/FloatingTimer'
 import TabSteps from './components/TabSteps'
@@ -75,8 +76,20 @@ export default function App() {
 
   const { meta } = data
 
+  // Sticky mini-progress — only meaningful on the Steps tab
+  const visibleSteps = getVisibleSteps(data, mode)
+  const stepsDone = visibleSteps.filter(s => done.has(s.id)).length
+  const stepsPct = visibleSteps.length > 0 ? Math.round((stepsDone / visibleSteps.length) * 100) : 0
+  const showMiniProgress = activeTab === 'steps' && stepsDone > 0
+
   return (
     <div className="app">
+      {/* Sticky mini progress — top of viewport on Steps tab */}
+      {showMiniProgress && (
+        <div className="mini-progress">
+          <div className="mini-progress-bar" style={{ width: `${stepsPct}%` }} />
+        </div>
+      )}
       {/* Header */}
       <div className="hdr" style={{ position: 'relative' }}>
         <div className="hdr-top">
