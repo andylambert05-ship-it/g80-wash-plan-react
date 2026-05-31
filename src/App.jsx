@@ -1,4 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Component } from 'react'
+
+class ErrorBoundary extends Component {
+  constructor(props) { super(props); this.state = { error: null } }
+  static getDerivedStateFromError(error) { return { error } }
+  componentDidCatch(error, info) { console.error('Tab error:', error, info) }
+  render() {
+    if (this.state.error) return (
+      <div style={{ padding: 20, color: '#cc1e1e', fontSize: 12, fontFamily: 'Inter, sans-serif' }}>
+        <div style={{ fontWeight: 700, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Error loading tab</div>
+        <div style={{ color: '#888', fontWeight: 300 }}>{this.state.error.message}</div>
+      </div>
+    )
+    return this.props.children
+  }
+}
 import './index.css'
 import { useTimer } from './hooks/useTimer'
 import { useWashState } from './hooks/useWashState'
@@ -127,7 +142,7 @@ export default function App() {
       )}
       {activeTab === 'between' && <TabBetweenWash data={data} />}
       {activeTab === 'seasonal' && <TabSeasonal data={data} />}
-      {activeTab === 'upgrades' && <TabUpgrades data={data} />}
+      {activeTab === 'upgrades' && <ErrorBoundary><TabUpgrades data={data} /></ErrorBoundary>}
 
       {/* Floating timer */}
       {timer && <FloatingTimer timer={timer} onStop={stopTimer} />}
