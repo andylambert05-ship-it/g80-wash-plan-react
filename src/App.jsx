@@ -96,7 +96,7 @@ export default function App() {
     <div className="app">
       {/* Pull-to-refresh indicator */}
       {(pullState.pulling || pullState.refreshing) && (
-        <div className="ptr-indicator" style={{ height: pullState.pullDistance }}>
+        <div className="ptr-indicator" style={{ height: `calc(${pullState.pullDistance}px + env(safe-area-inset-top, 0px))` }}>
           <div className={`ptr-spinner${pullState.refreshing ? ' spinning' : ''}`}>
             {pullState.refreshing ? (
               <i className="ti ti-loader-2" aria-hidden="true" />
