@@ -8,11 +8,11 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>,
 )
 
-// Hide the branded boot splash once the app has painted
-requestAnimationFrame(() => {
+// Hide the branded boot splash after 3 seconds
+setTimeout(() => {
   const splash = document.getElementById('boot-splash')
   if (splash) {
     splash.classList.add('hide')
     setTimeout(() => splash.remove(), 450)
   }
-})
+}, 3000)
