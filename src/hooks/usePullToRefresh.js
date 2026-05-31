@@ -32,10 +32,15 @@ export function usePullToRefresh(onRefresh) {
 
     setPullState(s => {
       if (s.pullDistance >= THRESHOLD) {
-        // Trigger refresh
+        // Trigger refresh — show spinner for minimum 2 seconds
         setPullState({ pulling: false, pullDistance: 40, refreshing: true })
+        const start = Date.now()
         onRefresh().finally(() => {
-          setPullState({ pulling: false, pullDistance: 0, refreshing: false })
+          const elapsed = Date.now() - start
+          const remaining = Math.max(0, 2000 - elapsed)
+          setTimeout(() => {
+            setPullState({ pulling: false, pullDistance: 0, refreshing: false })
+          }, remaining)
         })
       } else {
         return { pulling: false, pullDistance: 0, refreshing: false }
