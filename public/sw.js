@@ -1,6 +1,6 @@
 // Service worker for offline support
-// Cache name includes a version — bump to force a refresh of cached assets
-const CACHE = 'm3care-v1'
+// Bump CACHE version on every deploy to purge stale assets
+const CACHE = 'm3care-v2'
 const BASE = '/g80-wash-plan-react/'
 
 // Core files to pre-cache on install
@@ -33,9 +33,9 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url)
 
-  // Network-first for wash-plan.json so data updates show when online,
-  // but fall back to cache when offline.
-  if (url.pathname.endsWith('wash-plan.json')) {
+  // Network-first for HTML and wash-plan.json so updates show immediately.
+  // Falls back to cache when offline.
+  if (request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('wash-plan.json')) {
     event.respondWith(
       fetch(request)
         .then((res) => {
@@ -48,19 +48,17 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // Cache-first for everything else (app shell, JS, CSS, icons)
+  // Cache-first for everything else (JS bundles, CSS, icons, fonts)
   event.respondWith(
     caches.match(request).then((cached) => {
       if (cached) return cached
       return fetch(request).then((res) => {
-        // Only cache same-origin successful responses
         if (res.ok && url.origin === self.location.origin) {
           const copy = res.clone()
           caches.open(CACHE).then((cache) => cache.put(request, copy))
         }
         return res
       }).catch(() => {
-        // Offline and not cached — for navigation, serve the app shell
         if (request.mode === 'navigate') return caches.match(BASE + 'index.html')
       })
     })
