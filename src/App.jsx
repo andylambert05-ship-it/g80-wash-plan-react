@@ -23,6 +23,7 @@ import TabChemicals from './components/TabChemicals'
 import {
   TabShortList, TabTools, TabInterior, TabEngine, TabBetweenWash, TabSeasonal
 } from './components/Tabs'
+import TabUpgrades from './components/TabUpgrades'
 
 const TABS = [
   { id: 'steps', label: 'Steps' },
