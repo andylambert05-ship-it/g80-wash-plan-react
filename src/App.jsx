@@ -127,7 +127,7 @@ export default function App() {
       <div key={activeTab} className="tab-panel">
         {activeTab === 'steps' && (
           <TabSteps
-            data={data} mode={mode} done={done}
+            data={data} mode={mode} done={done} activeId={timer?.activeId}
             onToggle={toggleStep} onReset={resetSteps} onStartTimer={startTimer}
           />
         )}

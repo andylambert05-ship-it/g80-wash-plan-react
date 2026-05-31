@@ -13,8 +13,8 @@ export function PhaseHeader({ phase }) {
   )
 }
 
-export default function StepCard({ step, index, isDone, onToggle, onStartTimer }) {
-  const cls = ['step', step.isMaint ? 'maint' : step.optional ? 'optional' : 'normal', isDone ? 'done' : ''].join(' ')
+export default function StepCard({ step, index, isDone, isActive, onToggle, onStartTimer }) {
+  const cls = ['step', step.isMaint ? 'maint' : step.optional ? 'optional' : 'normal', isDone ? 'done' : '', isActive ? 'active-timer' : ''].join(' ')
 
   return (
     <div className={cls} onClick={() => onToggle(step.id)}>
@@ -72,7 +72,7 @@ export default function StepCard({ step, index, isDone, onToggle, onStartTimer }
             {step.dwellMin === step.dwellMax ? (
               <button
                 className="timer-btn"
-                onClick={() => onStartTimer(step.dwellMin, step.title.substring(0, 30))}
+                onClick={() => onStartTimer(step.dwellMin, step.title.substring(0, 30), step.id)}
               >
                 <i className="ti ti-clock" style={{ fontSize: 11 }} aria-hidden="true" />
                 Start {fmtTime(step.dwellMin)}
@@ -81,14 +81,14 @@ export default function StepCard({ step, index, isDone, onToggle, onStartTimer }
               <>
                 <button
                   className="timer-btn"
-                  onClick={() => onStartTimer(step.dwellMin, step.title.substring(0, 30))}
+                  onClick={() => onStartTimer(step.dwellMin, step.title.substring(0, 30), step.id)}
                 >
                   <i className="ti ti-clock" style={{ fontSize: 11 }} aria-hidden="true" />
                   {fmtTime(step.dwellMin)}
                 </button>
                 <button
                   className="timer-btn"
-                  onClick={() => onStartTimer(step.dwellMax, step.title.substring(0, 30))}
+                  onClick={() => onStartTimer(step.dwellMax, step.title.substring(0, 30), step.id)}
                 >
                   <i className="ti ti-clock" style={{ fontSize: 11 }} aria-hidden="true" />
                   {fmtTime(step.dwellMax)}

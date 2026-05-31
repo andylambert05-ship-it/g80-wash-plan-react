@@ -39,6 +39,7 @@ export default function TabUpgrades({ data }) {
     const next = { ...doneState, [id]: !doneState[id] }
     setDoneState(next)
     saveUpgradeState(next)
+    try { navigator.vibrate && navigator.vibrate(12) } catch (e) {}
   }
 
   const addItem = () => {

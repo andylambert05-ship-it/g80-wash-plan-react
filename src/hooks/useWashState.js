@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react'
 
+// Short haptic tap on toggle — like iDrive's confirmation feedback
+function haptic() {
+  try { navigator.vibrate && navigator.vibrate(12) } catch (e) {}
+}
+
 function loadSet(key) {
   try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')) } catch { return new Set() }
 }
@@ -28,6 +33,7 @@ export function useWashState() {
     const next = new Set(prev)
     next.has(id) ? next.delete(id) : next.add(id)
     saveSet('gwp_done', next)
+    haptic()
     return next
   })
 
@@ -35,6 +41,7 @@ export function useWashState() {
     const next = new Set(prev)
     next.has(id) ? next.delete(id) : next.add(id)
     saveSet('gwp_eng', next)
+    haptic()
     return next
   })
 
@@ -42,6 +49,7 @@ export function useWashState() {
     const next = new Set(prev)
     next.has(id) ? next.delete(id) : next.add(id)
     saveSet('gwp_int', next)
+    haptic()
     return next
   })
 

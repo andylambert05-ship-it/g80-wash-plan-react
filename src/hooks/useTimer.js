@@ -32,10 +32,10 @@ export function useTimer() {
     } catch (e) {}
   }
 
-  const start = useCallback((seconds, label) => {
+  const start = useCallback((seconds, label, activeId = null) => {
     if (intervalRef.current) clearInterval(intervalRef.current)
     requestWakeLock()
-    setTimer({ label, remaining: seconds, total: seconds, done: false })
+    setTimer({ label, remaining: seconds, total: seconds, done: false, activeId })
     intervalRef.current = setInterval(() => {
       setTimer(prev => {
         if (!prev || prev.remaining <= 0) return prev

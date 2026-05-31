@@ -1,16 +1,26 @@
 import StepCard, { PhaseHeader } from './StepCard'
 import { getVisibleSteps } from '../constants'
 
-export default function TabSteps({ data, mode, done, onToggle, onReset, onStartTimer }) {
+export default function TabSteps({ data, mode, done, activeId, onToggle, onReset, onStartTimer }) {
   const steps = getVisibleSteps(data, mode)
   const n = steps.filter(s => done.has(s.id)).length
   const t = steps.length
   const pct = t > 0 ? Math.round((n / t) * 100) : 0
+  const allDone = t > 0 && n === t
 
   let lastPhase = ''
 
   return (
     <div className="panel">
+      {allDone && (
+        <div className="wash-complete">
+          <i className="ti ti-circle-check" aria-hidden="true" />
+          <div>
+            <div className="wc-title">Wash Complete</div>
+            <div className="wc-sub">All {t} steps done — she's ready.</div>
+          </div>
+        </div>
+      )}
       <div className="prog-wrap">
         <div className="prog-meta">
           <span className="prog-lbl">Progress</span>
@@ -37,6 +47,7 @@ export default function TabSteps({ data, mode, done, onToggle, onReset, onStartT
                 step={step}
                 index={idx}
                 isDone={done.has(step.id)}
+                isActive={activeId === step.id}
                 onToggle={onToggle}
                 onStartTimer={onStartTimer}
               />
