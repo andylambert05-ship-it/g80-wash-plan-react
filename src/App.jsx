@@ -1,4 +1,4 @@
-import { useState, useEffect, Component } from 'react'
+import { useState, useEffect, useCallback, Component } from 'react'
 
 class ErrorBoundary extends Component {
   constructor(props) { super(props); this.state = { error: null } }
@@ -16,6 +16,7 @@ class ErrorBoundary extends Component {
 }
 import './index.css'
 import { useTimer } from './hooks/useTimer'
+import { usePullToRefresh } from './hooks/usePullToRefresh'
 import { getVisibleSteps } from './constants'
 import { useWashState } from './hooks/useWashState'
 import FloatingTimer from './components/FloatingTimer'
@@ -44,6 +45,15 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('steps')
   const { mode, setMode, done, toggleStep, resetSteps, engDone, toggleEng, resetEng, intDone, toggleInt, resetInt } = useWashState()
   const { timer, start: startTimer, stop: stopTimer } = useTimer()
+
+  // Pull-to-refresh — re-fetches wash-plan.json
+  const refreshData = useCallback(() => {
+    return fetch('wash-plan.json?' + Date.now())
+      .then(r => r.json())
+      .then(d => { setData(d); setError(null) })
+      .catch(() => {})
+  }, [])
+  const pullState = usePullToRefresh(refreshData)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -84,6 +94,23 @@ export default function App() {
 
   return (
     <div className="app">
+      {/* Pull-to-refresh indicator */}
+      {(pullState.pulling || pullState.refreshing) && (
+        <div className="ptr-indicator" style={{ height: pullState.pullDistance }}>
+          <div className={`ptr-spinner${pullState.refreshing ? ' spinning' : ''}`}>
+            {pullState.refreshing ? (
+              <i className="ti ti-loader-2" aria-hidden="true" />
+            ) : pullState.pullDistance >= 80 ? (
+              <i className="ti ti-arrow-down" aria-hidden="true" />
+            ) : (
+              <i className="ti ti-arrow-down" style={{ opacity: pullState.pullDistance / 80 }} aria-hidden="true" />
+            )}
+          </div>
+          <div className="ptr-text">
+            {pullState.refreshing ? 'Updating…' : pullState.pullDistance >= 80 ? 'Release to refresh' : 'Pull to refresh'}
+          </div>
+        </div>
+      )}
       {/* Sticky mini progress — top of viewport on Steps tab */}
       {showMiniProgress && (
         <div className="mini-progress">
