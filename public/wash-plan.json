@@ -2014,6 +2014,15 @@
         "notes": "Quick install ahead of any future exhaust work; clean intake baseline."
       },
       {
+        "id": "u20",
+        "phase": "Phase 4 \u2014 Performance Prep",
+        "priority": 11.5,
+        "item": "Cando+ Exhaust Controller",
+        "source": "Self",
+        "done": false,
+        "notes": "Install with midpipe to dial in sound on day one; avoids a second underbody visit."
+      },
+      {
         "id": "u12",
         "phase": "Phase 5 \u2014 Interior Trim",
         "priority": 12,
@@ -2084,15 +2093,6 @@
         "source": "Shop",
         "done": false,
         "notes": "Pair with exhaust controller install in same underbody session."
-      },
-      {
-        "id": "u20",
-        "phase": "Phase 9 \u2014 Shop: Exhaust",
-        "priority": 20,
-        "item": "AST Exhaust Controller",
-        "source": "Shop",
-        "done": false,
-        "notes": "Install with midpipe to dial in sound on day one; avoids a second underbody visit."
       }
     ]
   }
