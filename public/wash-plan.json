@@ -1987,6 +1987,15 @@
         "notes": "Extended billet paddles. Slips over or replaces OEM paddles, fully reversible."
       },
       {
+        "id": "u22",
+        "phase": "Phase 2 \u2014 Quick Self Cosmetic Batch",
+        "priority": 8.5,
+        "item": "Ceramic coat grill/mesh, front lip, and inlets",
+        "source": "Self",
+        "done": false,
+        "notes": "Apply ceramic coating to grill/mesh, front lip, and inlets prior to formal shop install in Phase 8. Coat while parts are off the car or accessible for best coverage. Ensures protection is in place before the pieces go on permanently."
+      },
+      {
         "id": "u09",
         "phase": "Phase 3 \u2014 Wheels & Fitment",
         "priority": 9,
