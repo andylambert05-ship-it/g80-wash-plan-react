@@ -5,14 +5,6 @@ function haptic() {
   try { navigator.vibrate && navigator.vibrate(12) } catch (e) {}
 }
 
-// Play completion sound when a task is marked done
-function playComplete() {
-  try {
-    const audio = new Audio('startup_cut2.wav')
-    audio.volume = 0.75
-    audio.play().catch(() => {})
-  } catch (e) {}
-}
 
 function loadSet(key) {
   try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')) } catch { return new Set() }
@@ -40,7 +32,7 @@ export function useWashState() {
 
   const toggleStep = (id) => setDone(prev => {
     const next = new Set(prev)
-    if (next.has(id)) { next.delete(id) } else { next.add(id); playComplete() }
+    next.has(id) ? next.delete(id) : next.add(id)
     saveSet('gwp_done', next)
     haptic()
     return next
@@ -56,7 +48,7 @@ export function useWashState() {
 
   const toggleInt = (id) => setIntDone(prev => {
     const next = new Set(prev)
-    if (next.has(id)) { next.delete(id) } else { next.add(id); playComplete() }
+    next.has(id) ? next.delete(id) : next.add(id)
     saveSet('gwp_int', next)
     haptic()
     return next
