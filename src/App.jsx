@@ -46,28 +46,6 @@ export default function App() {
   const { mode, setMode, done, toggleStep, resetSteps, engDone, toggleEng, resetEng, intDone, toggleInt, resetInt } = useWashState()
   const { timer, start: startTimer, stop: stopTimer } = useTimer()
 
-  // Play startup sound on first interaction after boot splash
-  useEffect(() => {
-    let played = false
-    const play = () => {
-      if (played) return
-      played = true
-      try {
-        const audio = new Audio('startup_cut2.wav')
-        audio.volume = 0.8
-        audio.play().catch(() => {})
-      } catch (e) {}
-      document.removeEventListener('touchstart', play)
-      document.removeEventListener('click', play)
-    }
-    document.addEventListener('touchstart', play, { once: true, passive: true })
-    document.addEventListener('click', play, { once: true })
-    return () => {
-      document.removeEventListener('touchstart', play)
-      document.removeEventListener('click', play)
-    }
-  }, [])
-
   // Pull-to-refresh — re-fetches wash-plan.json
   const refreshData = useCallback(() => {
     return fetch('wash-plan.json?' + Date.now())

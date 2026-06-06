@@ -40,6 +40,9 @@ export default function TabUpgrades({ data }) {
     setDoneState(next)
     saveUpgradeState(next)
     try { navigator.vibrate && navigator.vibrate(12) } catch (e) {}
+    if (!doneState[id]) {
+      try { const a = new Audio('startup_cut2.wav'); a.volume = 0.75; a.play().catch(()=>{}) } catch(e) {}
+    }
   }
 
   const addItem = () => {
