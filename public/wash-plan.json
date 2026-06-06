@@ -41,7 +41,7 @@
     {
       "category": "Foam / Pre-wash",
       "name": "IK E Foam Pro 2",
-      "qty": "1",
+      "qty": "2",
       "usedFor": "Koch Chemie MWC on wheels; engine bay APC. Total tank 1.5L usable."
     },
     {
@@ -235,6 +235,12 @@
       "name": "Bissell 3624 Spot Clean Professional",
       "qty": "1",
       "usedFor": "Carpet and fabric extraction \u2014 used with Adam's Polishes Carpet Cleaner for carpet deep cleaning and TuxMat cleaning"
+    },
+    {
+      "name": "Marolex Axel 3000 (manual pump foamer)",
+      "qty": "1",
+      "category": "Foam / Pre-wash",
+      "usedFor": "Manual pump foam sprayer \u2014 wheels, spot treatment, chemical application without pressure washer. 3 interchangeable tips for loose, medium, or thick foam density. 3L capacity."
     }
   ],
   "chemicals": [
