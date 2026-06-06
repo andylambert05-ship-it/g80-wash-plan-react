@@ -2023,6 +2023,15 @@
         "notes": "Install with midpipe to dial in sound on day one; avoids a second underbody visit."
       },
       {
+        "id": "u21",
+        "phase": "Phase 4 \u2014 Performance Prep",
+        "priority": 11.6,
+        "item": "canDO+ iDrive Macro Controller",
+        "source": "Self",
+        "done": false,
+        "notes": "OBD-based button macro controller for iDrive 8 G8x. Programs OEM buttons (touch, press, long press) to trigger multiple actions \u2014 drive mode, DSC, valve position, interior lights \u2014 applied automatically at startup. Configured over Wi-Fi. Fully reversible."
+      },
+      {
         "id": "u12",
         "phase": "Phase 5 \u2014 Interior Trim",
         "priority": 12,
