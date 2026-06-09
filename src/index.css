@@ -54,7 +54,7 @@ body { background: var(--bg); min-height: 100vh; padding-left: env(safe-area-ins
 .hdr-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 10px; }
 .hdr-left { display: flex; align-items: center; gap: 14px; }
 .m-stripe { display: flex; gap: 1px; height: 30px; align-items: stretch; transform: skewX(-26deg); }
-.ms { width: 10px; }
+.ms { width: 18px; }
 .ms1 { background: #1c2e6e; }
 .ms2 { background: #0066b1; }
 .ms3 { background: #cc1e1e; }
