@@ -1,8 +1,7 @@
 <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-  <rect width="32" height="32" fill="#0d0d0d"/>
-  <g transform="translate(6, 6) skewX(-14)">
-    <rect x="0"  y="0" width="6" height="20" fill="#1c2e6e"/>
-    <rect x="7"  y="0" width="6" height="20" fill="#0066b1"/>
-    <rect x="14" y="0" width="6" height="20" fill="#cc1e1e"/>
+  <g transform="translate(6, 6) skewX(-26)">
+    <rect x="0"  y="0" width="9" height="20" fill="#1c2e6e"/>
+    <rect x="10" y="0" width="9" height="20" fill="#0066b1"/>
+    <rect x="20" y="0" width="9" height="20" fill="#cc1e1e"/>
   </g>
 </svg>
