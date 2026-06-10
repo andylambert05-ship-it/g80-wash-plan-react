@@ -76,9 +76,10 @@ function StickyCalc({ selected }) {
 
   return (
     <div style={{
-      position: 'sticky', top: 8, background: 'var(--card)', border: '1px solid var(--bd2)',
-      padding: '16px', width: '100%', maxHeight: 'calc(100vh - 120px)', overflowY: 'auto',
-      alignSelf: 'start'
+      position: 'fixed', top: 8, right: 16, width: 300,
+      background: 'var(--card)', border: '1px solid var(--bd2)',
+      padding: '16px', maxHeight: 'calc(100vh - 24px)', overflowY: 'auto',
+      zIndex: 90, boxShadow: '0 2px 16px rgba(0,0,0,0.3)'
     }}>
       <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--t3)', marginBottom: 12 }}>
         Dilution Calculator
@@ -280,9 +281,9 @@ export default function TabChemicals({ data, mode }) {
   const modeLabel = mode === 'normal' ? 'Bi-weekly wash' : 'Deep Clean'
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 20, padding: '16px 16px 16px 16px', alignItems: 'start', width: '100%', boxSizing: 'border-box' }}>
-      {/* Left — chemical list */}
-      <div style={{ minWidth: 0 }}>
+    <div style={{ padding: '16px 336px 16px 16px', width: '100%', boxSizing: 'border-box' }}>
+      {/* Left — chemical list, right margin accounts for fixed calc panel */}
+      <div style={{ minWidth: 0, maxWidth: 900 }}>
         <div className="notice info" style={{ marginBottom: 14 }}>
           <i className="ti ti-info-circle" aria-hidden="true" />
           <span>Showing chemicals for: <strong>{modeLabel}</strong>. Click any dilution card to load it into the calculator. <span style={{ opacity: 0.7 }}>⌕ Calc</span> indicates calculable ratios.</span>
@@ -301,10 +302,7 @@ export default function TabChemicals({ data, mode }) {
         ))}
       </div>
 
-      {/* Right — sticky calculator */}
-      <div>
-        <StickyCalc selected={selectedDil} />
-      </div>
+      <StickyCalc selected={selectedDil} />
     </div>
   )
 }
