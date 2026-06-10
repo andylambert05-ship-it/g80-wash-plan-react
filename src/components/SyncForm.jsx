@@ -93,7 +93,7 @@ export function AddChemicalForm({ data, onClose }) {
     </div>
   )
 
-  const canSave = form.name.trim() && form.category.trim() && syncStatus?.type !== 'saving'
+  const canSave = form.name.trim() && form.category.trim() && form.modes.length > 0 && syncStatus?.type !== 'saving'
 
   return (
     <div style={{ background: 'var(--card)', border: '1px solid var(--bd2)', padding: 20, marginBottom: 16 }}>
@@ -113,17 +113,31 @@ export function AddChemicalForm({ data, onClose }) {
           style={{ width: '100%', marginTop: 6, background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
       </div>
       <div style={{ marginBottom: 10 }}>
-        <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 6 }}>Wash modes</label>
+        <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>Appears in wash modes</label>
+        <div style={{ fontSize: 10, color: 'var(--t3)', fontWeight: 300, marginBottom: 8 }}>Select which washes this chemical is used in. Defaults to both.</div>
         <div style={{ display: 'flex', gap: 8 }}>
-          {[['normal', 'Bi-weekly'], ['maint', 'Deep Clean']].map(([val, lbl]) => (
-            <button key={val} onClick={() => {
-              const has = form.modes.includes(val)
-              f('modes', has && form.modes.length > 1 ? form.modes.filter(m => m !== val) : [...new Set([...form.modes, val])])
-            }} style={{ padding: '5px 14px', border: '1px solid', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', cursor: 'pointer', background: form.modes.includes(val) ? '#0066b1' : 'transparent', color: form.modes.includes(val) ? '#fff' : 'var(--t3)', borderColor: form.modes.includes(val) ? '#0066b1' : 'var(--bd2)' }}>
-              {lbl}
-            </button>
-          ))}
+          {[['normal', 'Bi-weekly Wash'], ['maint', 'Deep Clean']].map(([val, lbl]) => {
+            const active = form.modes.includes(val)
+            return (
+              <button key={val} onClick={() => {
+                const has = form.modes.includes(val)
+                f('modes', has && form.modes.length > 1 ? form.modes.filter(m => m !== val) : [...new Set([...form.modes, val])])
+              }} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', border: '1px solid', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', cursor: 'pointer', background: active ? '#0066b1' : 'transparent', color: active ? '#fff' : 'var(--t3)', borderColor: active ? '#0066b1' : 'var(--bd2)' }}>
+                <i className={`ti ${active ? 'ti-checkbox' : 'ti-square'}`} style={{ fontSize: 12 }} aria-hidden="true" />
+                {lbl}
+              </button>
+            )
+          })}
         </div>
+        {form.modes.length === 0 && (
+          <div style={{ fontSize: 10, color: '#cc1e1e', marginTop: 6 }}>Select at least one wash mode.</div>
+        )}
+        {form.modes.length === 2 && (
+          <div style={{ fontSize: 10, color: 'var(--iom)', marginTop: 6 }}>✓ Will appear in both washes</div>
+        )}
+        {form.modes.length === 1 && (
+          <div style={{ fontSize: 10, color: '#c8860a', marginTop: 6 }}>Will only appear in {form.modes[0] === 'normal' ? 'Bi-weekly Wash' : 'Deep Clean'}</div>
+        )}
       </div>
       {inp('Used on / areas of use', 'usedOn', { placeholder: 'e.g. All painted panels after dry' })}
       {inp('Tool required', 'tool', { placeholder: 'e.g. IK E Foam Pro 2' })}
@@ -176,7 +190,7 @@ export function AddToolForm({ data, onClose }) {
     if (ok && onClose) setTimeout(onClose, 2000)
   }
 
-  const canSave = form.name.trim() && form.category.trim() && syncStatus?.type !== 'saving'
+  const canSave = form.name.trim() && form.category.trim() && form.modes.length > 0 && syncStatus?.type !== 'saving'
 
   return (
     <div style={{ background: 'var(--card)', border: '1px solid var(--bd2)', padding: 20, marginBottom: 16 }}>
