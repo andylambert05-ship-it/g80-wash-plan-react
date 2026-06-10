@@ -28,6 +28,8 @@ import {
 import TabUpgrades from './components/TabUpgrades'
 import TabHistory from './components/TabHistory'
 import TabReminders from './components/TabReminders'
+import TabSettings from './components/TabSettings'
+import { AddChemicalForm, AddToolForm, AddUpgradeForm } from './components/SyncForm'
 
 const TABS = [
   { id: 'steps', label: 'Steps' },
@@ -41,6 +43,7 @@ const TABS = [
   { id: 'upgrades', label: 'Upgrades' },
   { id: 'history', label: 'History' },
   { id: 'reminders', label: 'Reminders' },
+  { id: 'settings', label: 'Settings' },
 ]
 
 export default function App() {
@@ -49,7 +52,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('steps')
   const { mode, setMode, done, toggleStep, resetSteps, engDone, toggleEng, resetEng, intDone, toggleInt, resetInt } = useWashState()
   const [theme, setTheme] = useState(() => localStorage.getItem('gwp_theme') || 'dark')
-  const [historyKey, setHistoryKey] = useState(0) // increment to force TabHistory refresh
+  const [historyKey, setHistoryKey] = useState(0)
+  const [addForm, setAddForm] = useState(null) // 'chemical' | 'tool' | 'upgrade' // increment to force TabHistory refresh
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -148,6 +152,21 @@ export default function App() {
             <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'} aria-label="Toggle theme">
               <i className={`ti ${theme === 'dark' ? 'ti-sun' : 'ti-moon'}`} aria-hidden="true" />
             </button>
+            {activeTab === 'chems' && (
+              <button className="theme-toggle" onClick={() => setAddForm('chemical')} title="Add chemical" aria-label="Add chemical">
+                <i className="ti ti-plus" aria-hidden="true" />
+              </button>
+            )}
+            {activeTab === 'tools' && (
+              <button className="theme-toggle" onClick={() => setAddForm('tool')} title="Add tool" aria-label="Add tool">
+                <i className="ti ti-plus" aria-hidden="true" />
+              </button>
+            )}
+            {activeTab === 'upgrades' && (
+              <button className="theme-toggle" onClick={() => setAddForm('upgrade')} title="Add upgrade" aria-label="Add upgrade">
+                <i className="ti ti-plus" aria-hidden="true" />
+              </button>
+            )}
             <div className="ver">v{meta.version}</div>
           </div>
         </div>
@@ -213,6 +232,29 @@ export default function App() {
         {activeTab === 'upgrades' && <ErrorBoundary><TabUpgrades data={data} /></ErrorBoundary>}
       {activeTab === 'history' && <ErrorBoundary><TabHistory data={data} mode={mode} done={done} /></ErrorBoundary>}
       {activeTab === 'reminders' && <ErrorBoundary><TabReminders /></ErrorBoundary>}
+      {activeTab === 'settings' && <ErrorBoundary><TabSettings /></ErrorBoundary>}
+      {/* Floating add forms */}
+      {addForm === 'chemical' && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
+          <div style={{ maxWidth: 600, margin: '0 auto' }}>
+            <AddChemicalForm data={data} onClose={() => setAddForm(null)} />
+          </div>
+        </div>
+      )}
+      {addForm === 'tool' && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
+          <div style={{ maxWidth: 600, margin: '0 auto' }}>
+            <AddToolForm data={data} onClose={() => setAddForm(null)} />
+          </div>
+        </div>
+      )}
+      {addForm === 'upgrade' && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
+          <div style={{ maxWidth: 600, margin: '0 auto' }}>
+            <AddUpgradeForm data={data} onClose={() => setAddForm(null)} />
+          </div>
+        </div>
+      )}
       </div>
 
       {/* Floating timer */}
