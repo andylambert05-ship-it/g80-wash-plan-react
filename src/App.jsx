@@ -26,6 +26,7 @@ import {
   TabShortList, TabTools, TabInterior, TabEngine, TabBetweenWash, TabSeasonal
 } from './components/Tabs'
 import TabUpgrades from './components/TabUpgrades'
+import TabHistory from './components/TabHistory'
 
 const TABS = [
   { id: 'steps', label: 'Steps' },
@@ -37,6 +38,7 @@ const TABS = [
   { id: 'between', label: 'Between Washes' },
   { id: 'seasonal', label: 'Seasonal' },
   { id: 'upgrades', label: 'Upgrades' },
+  { id: 'history', label: 'History' },
 ]
 
 export default function App() {
@@ -45,6 +47,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('steps')
   const { mode, setMode, done, toggleStep, resetSteps, engDone, toggleEng, resetEng, intDone, toggleInt, resetInt } = useWashState()
   const [theme, setTheme] = useState(() => localStorage.getItem('gwp_theme') || 'dark')
+  const [historyKey, setHistoryKey] = useState(0) // increment to force TabHistory refresh
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -206,6 +209,7 @@ export default function App() {
         {activeTab === 'between' && <TabBetweenWash data={data} />}
         {activeTab === 'seasonal' && <TabSeasonal data={data} />}
         {activeTab === 'upgrades' && <ErrorBoundary><TabUpgrades data={data} /></ErrorBoundary>}
+      {activeTab === 'history' && <ErrorBoundary><TabHistory data={data} mode={mode} done={done} /></ErrorBoundary>}
       </div>
 
       {/* Floating timer */}
