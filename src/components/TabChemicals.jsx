@@ -77,7 +77,7 @@ function StickyCalc({ selected }) {
   const result = calcProduct(parsed, containerMl)
 
   return (
-    <div className="calc-panel-fixed">
+    <div className="calc-panel-wrap"><div className="calc-panel-inner">
       <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--t3)', marginBottom: 12 }}>
         Dilution Calculator
       </div>
@@ -165,7 +165,7 @@ function StickyCalc({ selected }) {
       {!containerMl && (parsed && parsed.type !== 'rtu') && (
         <div style={{ fontSize: 11, color: 'var(--t3)', marginTop: 10, fontWeight: 300, fontStyle: 'italic' }}>Enter a container size above to calculate.</div>
       )}
-    </div>
+    </div></div>
   )
 }
 
@@ -309,14 +309,10 @@ export default function TabChemicals({ data, mode }) {
 
   return (
     <div style={{ padding: 16, width: '100%', boxSizing: 'border-box' }}>
-      <div style={{ minWidth: 0, maxWidth: 900 }}>
+      <div className="chem-content" style={{ minWidth: 0, maxWidth: 900 }}>
         <div className="notice info" style={{ marginBottom: 14 }}>
           <i className="ti ti-info-circle" aria-hidden="true" />
           <span>Showing chemicals for: <strong>{modeLabel}</strong>. Click any dilution card to load it into the calculator. <span style={{ opacity: 0.7 }}>⌕ Calc</span> indicates calculable ratios.</span>
-        </div>
-        {/* Mobile inline calculator — shown on small screens only */}
-        <div className="calc-panel-inline">
-          <StickyCalc selected={selectedDil} />
         </div>
         <ChemChart chemicals={active} onSelectDil={setSelectedDil} />
         <div className="cc-legend">
