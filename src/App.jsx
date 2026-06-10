@@ -44,6 +44,14 @@ export default function App() {
   const [error, setError] = useState(null)
   const [activeTab, setActiveTab] = useState('steps')
   const { mode, setMode, done, toggleStep, resetSteps, engDone, toggleEng, resetEng, intDone, toggleInt, resetInt } = useWashState()
+  const [theme, setTheme] = useState(() => localStorage.getItem('gwp_theme') || 'dark')
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('gwp_theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark')
   const { timer, start: startTimer, stop: stopTimer } = useTimer()
 
   // Pull-to-refresh — re-fetches wash-plan.json
@@ -131,7 +139,12 @@ export default function App() {
               <div className="hdr-sub">{meta.car} &middot; Updated {meta.lastUpdated}</div>
             </div>
           </div>
-          <div className="ver">v{meta.version}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'} aria-label="Toggle theme">
+              <i className={`ti ${theme === 'dark' ? 'ti-sun' : 'ti-moon'}`} aria-hidden="true" />
+            </button>
+            <div className="ver">v{meta.version}</div>
+          </div>
         </div>
 
         <div className="mode-row">
