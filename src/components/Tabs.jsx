@@ -90,18 +90,38 @@ export function TabTools({ data }) {
   })
   return (
     <div className="panel">
+      {editingTool && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
+          <div style={{ maxWidth: 600, margin: '0 auto' }}>
+            <EditToolForm tool={editingTool} onClose={() => setEditingTool(null)} />
+          </div>
+        </div>
+      )}
       {Object.entries(cats).map(([cat, tools]) => (
         <div key={cat}>
           <div className="slbl">{cat}</div>
           <div className="tbl">
             <div className="tr tc3 th">
-              <div className="td">Tool</div><div className="td">Qty</div><div className="td">Used for</div>
+              <div className="td">Tool</div><div className="td">Qty</div><div className="td">Used for</div><div className="td" style={{ width: 60 }}></div>
             </div>
             {tools.map(t => (
-              <div key={t.name} className="tr tc3">
-                <div className="td">{t.name}</div>
-                <div className="td m">{t.qty}</div>
-                <div className="td m">{t.usedFor}</div>
+              <div key={t.name}>
+                <div className="tr tc3">
+                  <div className="td">{t.name}</div>
+                  <div className="td m">{t.qty}</div>
+                  <div className="td m">{t.usedFor}</div>
+                  <div className="td" style={{ width: 60, display: 'flex', gap: 4, justifyContent: 'flex-end', flexShrink: 0 }}>
+                    <button onClick={() => setEditingTool(t)} title="Edit"
+                      style={{ background: 'transparent', border: '1px solid var(--bd2)', color: 'var(--t3)', width: 26, height: 26, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11 }}>
+                      <i className="ti ti-pencil" aria-hidden="true" />
+                    </button>
+                    <button onClick={() => handleDeleteTool(t.name)} title={confirmDel === t.name ? 'Confirm' : 'Delete'}
+                      style={{ background: confirmDel === t.name ? '#cc1e1e' : 'transparent', border: `1px solid ${confirmDel === t.name ? '#cc1e1e' : 'var(--bd2)'}`, color: confirmDel === t.name ? '#fff' : 'var(--t3)', width: 26, height: 26, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11 }}>
+                      <i className={`ti ${confirmDel === t.name ? 'ti-check' : 'ti-trash'}`} aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
+                {delStatus[t.name] && <SyncStatus status={delStatus[t.name]} />}
               </div>
             ))}
           </div>
