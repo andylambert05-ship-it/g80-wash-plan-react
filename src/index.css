@@ -89,7 +89,7 @@
 [data-theme="light"] .bw-step { background: var(--card); }
 [data-theme="light"] .float-timer { background: var(--card); }
 [data-theme="light"] .prog-lbl { color: var(--t1); }
-[data-theme="light"] .phase-hdr { color: #ffffff !important; }
+[data-theme="light"] .phase-hdr { color: #ffffff !important; background: color-mix(in srgb, var(--phase-color, #0066b1) 60%, transparent) !important; }
 [data-theme="light"] .mini-progress { background: var(--bd2); }
 [data-theme="light"] .ptr-indicator { background: var(--bg); }
 
@@ -99,7 +99,7 @@
 [data-theme="light"] .step-t { color: #111a14; }
 [data-theme="light"] .step-d { color: #2a3a2e; }
 [data-theme="light"] .step-n { color: #3a4a3e; border-color: rgba(0,0,0,0.2); }
-[data-theme="light"] .phase-hdr { color: #ffffff !important; }
+[data-theme="light"] .phase-hdr { color: #ffffff !important; background: color-mix(in srgb, var(--phase-color, #0066b1) 60%, transparent) !important; }
 [data-theme="light"] .tag.tc { background: #fde8c0; color: #7a4200; border-color: #e8a020; }
 [data-theme="light"] .tag.tl { background: #ddeeff; color: #004a8f; border-color: #99ccff; }
 [data-theme="light"] .timer-btn { background: #ddeeff; color: #004a8f; border-color: #99ccff; }
@@ -194,7 +194,7 @@ body { background: var(--bg); min-height: 100vh; padding-left: env(safe-area-ins
 .rbtn { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--bd2); background: transparent; color: #ffffff; font-size: 9px; padding: 5px 12px; cursor: pointer; margin-bottom: 14px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; font-family: 'Inter', sans-serif; }
 
 /* ── Phase header ── */
-.phase-hdr { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; padding: 10px 0 6px; margin-top: 8px; display: flex; align-items: center; gap: 10px; border-left: 2px solid transparent; padding-left: 10px; color: #ffffff !important; }
+.phase-hdr { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; padding: 10px 0 6px; margin-top: 8px; display: flex; align-items: center; gap: 10px; border-left: 2px solid transparent; padding-left: 10px; color: #ffffff !important; background: color-mix(in srgb, var(--phase-color, #0066b1) 10%, transparent); }
 .phase-hdr:first-child { margin-top: 0; }
 .phase-hdr::after { content: ''; flex: 1; height: 1px; background: var(--bd); }
 

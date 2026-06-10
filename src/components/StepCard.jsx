@@ -5,7 +5,7 @@ export function PhaseHeader({ phase }) {
   return (
     <div
       className="phase-hdr"
-      style={{ background: color + '18', borderLeftColor: '#0066b1', borderLeftWidth: '1px' }}
+      style={{ '--phase-color': color, borderLeftColor: '#0066b1', borderLeftWidth: '1px' }}
     >
       <span style={{ display:'inline-block', width:10, height:10, borderRadius:'50%', background:'#ffffff', flexShrink:0 }} />
       {phase}
