@@ -76,8 +76,9 @@ function StickyCalc({ selected }) {
 
   return (
     <div style={{
-      position: 'sticky', top: 16, background: 'var(--card)', border: '1px solid var(--bd2)',
-      padding: '16px', width: '100%', maxHeight: 'calc(100vh - 32px)', overflowY: 'auto'
+      position: 'sticky', top: 8, background: 'var(--card)', border: '1px solid var(--bd2)',
+      padding: '16px', width: '100%', maxHeight: 'calc(100vh - 120px)', overflowY: 'auto',
+      alignSelf: 'start'
     }}>
       <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--t3)', marginBottom: 12 }}>
         Dilution Calculator
@@ -171,7 +172,7 @@ function StickyCalc({ selected }) {
 }
 
 // ── Chem chart ───────────────────────────────────────────────────────────────
-function ChemChart({ chemicals }) {
+function ChemChart({ chemicals, onSelectDil }) {
   const sorted = [...chemicals].sort((a, b) => {
     const ba = getBrand(a.name), bb = getBrand(b.name)
     return ba < bb ? -1 : ba > bb ? 1 : a.name < b.name ? -1 : 1
@@ -202,7 +203,12 @@ function ChemChart({ chemicals }) {
               {normalOnly && <span className="cc-pill cc-pn">N</span>}
             </div>
             <div className="cc-cell cc-use">{shortUse}</div>
-            <div className="cc-cell cc-ratio">{ratio}</div>
+            <div
+              className="cc-cell cc-ratio"
+              onClick={() => onSelectDil({ name: c.name, ctx: c.dilutions[0]?.context || '', ratio })}
+              style={{ cursor: parseRatio(ratio) && parseRatio(ratio).type !== 'rtu' ? 'pointer' : 'default', textDecoration: parseRatio(ratio) && parseRatio(ratio).type !== 'rtu' ? 'underline' : 'none', textDecorationStyle: 'dotted' }}
+              title={parseRatio(ratio) && parseRatio(ratio).type !== 'rtu' ? 'Click to load into calculator' : ''}
+            >{ratio}</div>
           </div>
         )
       })}
@@ -274,14 +280,14 @@ export default function TabChemicals({ data, mode }) {
   const modeLabel = mode === 'normal' ? 'Bi-weekly wash' : 'Deep Clean'
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 16, padding: 16, alignItems: 'start' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 20, padding: '16px 16px 16px 16px', alignItems: 'start', width: '100%', boxSizing: 'border-box' }}>
       {/* Left — chemical list */}
-      <div>
+      <div style={{ minWidth: 0 }}>
         <div className="notice info" style={{ marginBottom: 14 }}>
           <i className="ti ti-info-circle" aria-hidden="true" />
           <span>Showing chemicals for: <strong>{modeLabel}</strong>. Click any dilution card to load it into the calculator. <span style={{ opacity: 0.7 }}>⌕ Calc</span> indicates calculable ratios.</span>
         </div>
-        <ChemChart chemicals={active} />
+        <ChemChart chemicals={active} onSelectDil={setSelectedDil} />
         <div className="cc-legend">
           <span className="cc-pill cc-pm">M</span> maint. only &nbsp;&nbsp;
           <span className="cc-pill cc-pn">N</span> normal only

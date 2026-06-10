@@ -184,7 +184,11 @@ export default function App() {
             onToggle={toggleStep} onReset={resetSteps} onStartTimer={startTimer}
           />
         )}
-        {activeTab === 'chems' && <TabChemicals data={data} mode={mode} />}
+        {activeTab === 'chems' && (
+        <div className="panel-full">
+          <TabChemicals data={data} mode={mode} />
+        </div>
+      )}
         {activeTab === 'shortlist' && <TabShortList mode={mode} />}
         {activeTab === 'tools' && <TabTools data={data} />}
         {activeTab === 'interior' && (

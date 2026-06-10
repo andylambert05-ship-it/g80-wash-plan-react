@@ -176,6 +176,7 @@ body { background: var(--bg); min-height: 100vh; padding-left: env(safe-area-ins
 
 /* ── Panel ── */
 .panel { padding: 20px; max-width: 900px; }
+.panel-full { padding: 0; max-width: 100%; overflow: visible; }
 
 /* ── Notice ── */
 .notice { padding: 10px 14px; font-size: 11px; line-height: 1.6; margin-bottom: 16px; display: flex; gap: 10px; align-items: flex-start; border-left: 2px solid; }
