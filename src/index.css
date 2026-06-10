@@ -382,25 +382,4 @@ body { background: var(--bg); min-height: 100vh; padding-left: env(safe-area-ins
   letter-spacing: 0.1em; color: var(--t3);
 }
 
-/* ── Dilution calculator responsive layout ── */
-/* On desktop: calc sits fixed on right; content padded to avoid overlap */
-.calc-panel-wrap {
-  position: fixed; top: 140px; right: 16px; width: 300px;
-  z-index: 90;
-}
-.calc-panel-inner {
-  background: var(--card); border: 1px solid var(--bd2);
-  padding: 16px; max-height: calc(100vh - 160px); overflow-y: auto;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.3);
-}
-.chem-content { padding-right: 332px; }
-
-/* On mobile: calc sits inline at top; no right padding */
-@media (max-width: 700px) {
-  .calc-panel-wrap {
-    position: static; width: 100%;
-    margin-bottom: 16px;
-  }
-  .calc-panel-inner { box-shadow: none; }
-  .chem-content { padding-right: 0; }
-}
+/* Dilution calculator — now uses modal popup, no fixed panel needed */
