@@ -76,7 +76,7 @@ function StickyCalc({ selected }) {
 
   return (
     <div style={{
-      position: 'fixed', top: 8, right: 16, width: 300,
+      position: 'fixed', top: 140, right: 16, width: 300,
       background: 'var(--card)', border: '1px solid var(--bd2)',
       padding: '16px', maxHeight: 'calc(100vh - 24px)', overflowY: 'auto',
       zIndex: 90, boxShadow: '0 2px 16px rgba(0,0,0,0.3)'
