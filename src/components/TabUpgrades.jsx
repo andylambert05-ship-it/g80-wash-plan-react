@@ -257,6 +257,31 @@ export default function TabUpgrades({ data }) {
                         )}
                       </div>
                       {item.notes && <div style={{ fontSize: 12, color: 'var(--t2)', lineHeight: 1.6, fontWeight: 300 }}>{item.notes}</div>}
+                      {/* Photo thumbnails */}
+                      {photos[item.id] && photos[item.id].length > 0 && (
+                        <div onClick={e => e.stopPropagation()} style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
+                          {photos[item.id].map((p, idx) => (
+                            <div key={idx} style={{ position: 'relative' }}>
+                              <img src={p.src} alt={p.label} onClick={() => setLightbox(p)}
+                                style={{ width: 56, height: 56, objectFit: 'cover', cursor: 'pointer', border: '1px solid var(--bd2)' }} />
+                              <button onClick={e => { e.stopPropagation(); removePhoto(item.id, idx) }}
+                                style={{ position: 'absolute', top: -6, right: -6, width: 16, height: 16, borderRadius: '50%', background: '#cc1e1e', border: 'none', color: '#fff', fontSize: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
+                            </div>
+                          ))}
+                          <button onClick={e => { e.stopPropagation(); addPhoto(item.id, item.item) }}
+                            style={{ width: 56, height: 56, border: '1px dashed var(--bd2)', background: 'transparent', color: 'var(--t3)', cursor: 'pointer', fontSize: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            title="Add photo">+</button>
+                        </div>
+                      )}
+                      {/* Add first photo button — only on undone items with no photos */}
+                      {(!photos[item.id] || photos[item.id].length === 0) && (
+                        <div onClick={e => e.stopPropagation()} style={{ marginTop: 6 }}>
+                          <button onClick={() => addPhoto(item.id, item.item)}
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', background: 'transparent', border: '1px solid var(--bd2)', padding: '3px 8px', cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
+                            <i className="ti ti-camera" style={{ fontSize: 11 }} aria-hidden="true" /> Add photo
+                          </button>
+                        </div>
+                      )}
                     </div>
                     {item.custom && (
                       <button onClick={e => { e.stopPropagation(); removeCustom(item.id) }}
