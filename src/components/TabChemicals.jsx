@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import { getBrand, getShortName, CAT_ORDER } from '../constants'
 
 function ChemChart({ chemicals }) {
@@ -39,6 +40,159 @@ function ChemChart({ chemicals }) {
   )
 }
 
+
+// ── Ratio parser ────────────────────────────────────────────────────────────
+function parseRatio(ratio) {
+  if (!ratio) return null
+  const r = ratio.trim()
+
+  // Non-calculable
+  if (['RTU', 'Direct', 'Neat to 100%'].includes(r)) return { type: 'rtu' }
+
+  // Fixed amount : volume  e.g. "30ml : 10L", "60–90ml : 950ml water"
+  const fixedMatch = r.match(/^([\d.–]+)ml\s*:\s*([\d.]+)\s*(L|ml)/i)
+  if (fixedMatch) {
+    const productMl = fixedMatch[1].includes('–')
+      ? fixedMatch[1].split('–').map(Number)
+      : [parseFloat(fixedMatch[1]), parseFloat(fixedMatch[1])]
+    const waterMl = fixedMatch[3].toLowerCase() === 'l'
+      ? parseFloat(fixedMatch[2]) * 1000
+      : parseFloat(fixedMatch[2])
+    return { type: 'fixed', productMl, waterMl }
+  }
+
+  // PIR  e.g. "1% PIR", "2% PIR", "1%–2%", "1% PIR or 2% PIR"
+  const pirMatch = r.match(/([\d.]+)%(?:–([\d.]+)%)?/)
+  if (pirMatch && (r.includes('PIR') || r.includes('%'))) {
+    const lo = parseFloat(pirMatch[1])
+    const hi = pirMatch[2] ? parseFloat(pirMatch[2]) : lo
+    return { type: 'pir', lo, hi }
+  }
+
+  // X:1 (concentrate heavy)  e.g. "400–500:1", "3:1", "3:1–5:1", "5:1–10:1"
+  const xto1 = r.match(/^([\d.]+):1(?:–([\d.]+):1)?$/)
+  if (xto1) {
+    const lo = parseFloat(xto1[1])
+    const hi = xto1[2] ? parseFloat(xto1[2]) : lo
+    return { type: 'xto1', lo, hi }
+  }
+
+  // 1:X (dilute light)  e.g. "1:100", "1:20", "1:10"
+  const oto1 = r.match(/^1:([\d.]+)$/)
+  if (oto1) {
+    const x = parseFloat(oto1[1])
+    return { type: '1tox', x }
+  }
+
+  // Percentage  e.g. "10%", "5%–10%", "2%–3%"
+  const pctMatch = r.match(/^([\d.]+)%(?:–([\d.]+)%)?$/)
+  if (pctMatch) {
+    const lo = parseFloat(pctMatch[1])
+    const hi = pctMatch[2] ? parseFloat(pctMatch[2]) : lo
+    return { type: 'pct', lo, hi }
+  }
+
+  return null
+}
+
+function calcProduct(parsed, containerMl) {
+  if (!parsed || !containerMl || containerMl <= 0) return null
+  switch (parsed.type) {
+    case 'rtu': return { type: 'rtu' }
+    case 'pir': {
+      const lo = (parsed.lo / 100) * containerMl
+      const hi = (parsed.hi / 100) * containerMl
+      return { lo, hi, same: lo === hi }
+    }
+    case 'pct': {
+      const lo = (parsed.lo / 100) * containerMl
+      const hi = (parsed.hi / 100) * containerMl
+      return { lo, hi, same: lo === hi }
+    }
+    case 'xto1': {
+      // ratio:1 means ratio parts water : 1 part product
+      const lo = containerMl / (parsed.lo + 1)
+      const hi = containerMl / (parsed.hi + 1)
+      return { lo: Math.min(lo, hi), hi: Math.max(lo, hi), same: lo === hi }
+    }
+    case '1tox': {
+      // 1:X means 1 part product : X parts water
+      const product = containerMl / (parsed.x + 1)
+      return { lo: product, hi: product, same: true }
+    }
+    case 'fixed': {
+      // Scale from reference volume
+      const scale = containerMl / parsed.waterMl
+      return {
+        lo: parsed.productMl[0] * scale,
+        hi: parsed.productMl[parsed.productMl.length - 1] * scale,
+        same: parsed.productMl[0] === parsed.productMl[parsed.productMl.length - 1]
+      }
+    }
+    default: return null
+  }
+}
+
+function fmtMl(n) {
+  if (n >= 1000) return (n / 1000).toFixed(2).replace(/\.?0+$/, '') + 'L'
+  return n < 10 ? n.toFixed(1) : Math.round(n) + 'ml'
+}
+
+// ── Dilution Calculator Widget ───────────────────────────────────────────────
+function DilutionCalc({ ratio }) {
+  const [containerMl, setContainerMl] = useState('')
+  const [unit, setUnit] = useState('ml')
+
+  const parsed = parseRatio(ratio)
+  if (!parsed || parsed.type === 'rtu') return null
+
+  const inputMl = containerMl
+    ? (unit === 'L' ? parseFloat(containerMl) * 1000 : parseFloat(containerMl))
+    : 0
+  const result = calcProduct(parsed, inputMl)
+
+  return (
+    <div style={{ marginTop: 10, background: 'var(--card)', border: '1px solid var(--bd2)', padding: '10px 12px' }}>
+      <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t3)', marginBottom: 8 }}>
+        Dilution Calculator
+      </div>
+      <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+        <input
+          type="number"
+          min="0"
+          placeholder="Container size"
+          value={containerMl}
+          onChange={e => setContainerMl(e.target.value)}
+          style={{ width: 120, background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '5px 8px', fontSize: 13, fontFamily: 'Inter, sans-serif', outline: 'none' }}
+        />
+        <div style={{ display: 'flex', gap: 0 }}>
+          {['ml', 'L'].map(u => (
+            <button
+              key={u}
+              onClick={() => setUnit(u)}
+              style={{ padding: '5px 10px', border: '1px solid var(--bd2)', background: unit === u ? '#0066b1' : 'transparent', color: unit === u ? '#fff' : 'var(--t3)', fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}
+            >
+              {u}
+            </button>
+          ))}
+        </div>
+        {result && inputMl > 0 && (
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#1a9e62', paddingLeft: 4 }}>
+            {result.same
+              ? `→ ${fmtMl(result.lo)} product`
+              : `→ ${fmtMl(result.lo)}–${fmtMl(result.hi)} product`}
+          </div>
+        )}
+      </div>
+      {result && inputMl > 0 && (
+        <div style={{ fontSize: 11, color: 'var(--t3)', marginTop: 5, fontWeight: 300 }}>
+          Add {result.same ? fmtMl(result.lo) : `${fmtMl(result.lo)}–${fmtMl(result.hi)}`} of product to {containerMl}{unit} of water
+        </div>
+      )}
+    </div>
+  )
+}
+
 function ChemCard({ chem }) {
   const normalOnly = chem.modes.length === 1 && chem.modes[0] === 'normal'
   const maintOnly = chem.modes.length === 1 && chem.modes[0] === 'maint'
@@ -60,6 +214,7 @@ function ChemCard({ chem }) {
             <div className="dil-ratio">{d.ratio}</div>
             {d.amount && d.amount !== 'No dilution' && <div className="dil-amt">{d.amount}</div>}
             {d.note && <div className="dil-note">{d.note}</div>}
+            <DilutionCalc ratio={d.ratio} />
           </div>
         ))}
         {chem.tool && (
