@@ -90,6 +90,7 @@
 [data-theme="light"] .float-timer { background: var(--card); }
 [data-theme="light"] .prog-lbl { color: var(--t1); }
 [data-theme="light"] .phase-hdr { color: #ffffff !important; background: color-mix(in srgb, var(--phase-color, #0066b1) 60%, transparent) !important; }
+[data-theme="light"] .phase-hdr::after { display: none; }
 [data-theme="light"] .mini-progress { background: var(--bd2); }
 [data-theme="light"] .ptr-indicator { background: var(--bg); }
 
@@ -100,6 +101,7 @@
 [data-theme="light"] .step-d { color: #2a3a2e; }
 [data-theme="light"] .step-n { color: #3a4a3e; border-color: rgba(0,0,0,0.2); }
 [data-theme="light"] .phase-hdr { color: #ffffff !important; background: color-mix(in srgb, var(--phase-color, #0066b1) 60%, transparent) !important; }
+[data-theme="light"] .phase-hdr::after { display: none; }
 [data-theme="light"] .tag.tc { background: #fde8c0; color: #7a4200; border-color: #e8a020; }
 [data-theme="light"] .tag.tl { background: #ddeeff; color: #004a8f; border-color: #99ccff; }
 [data-theme="light"] .timer-btn { background: #ddeeff; color: #004a8f; border-color: #99ccff; }
