@@ -381,3 +381,20 @@ body { background: var(--bg); min-height: 100vh; padding-left: env(safe-area-ins
   font-size: 9px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.1em; color: var(--t3);
 }
+
+/* ── Dilution calculator responsive layout ── */
+/* Desktop: fixed panel on right, content has right padding */
+.calc-panel-fixed {
+  position: fixed; top: 140px; right: 16px; width: 300px;
+  background: var(--card); border: 1px solid var(--bd2);
+  padding: 16px; max-height: calc(100vh - 160px); overflow-y: auto;
+  z-index: 90; box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+}
+.calc-panel-fixed ~ div { padding-right: 336px; }
+.calc-panel-inline { display: none; }
+
+/* Mobile: hide fixed panel, show inline calculator */
+@media (max-width: 700px) {
+  .calc-panel-fixed { display: none; }
+  .calc-panel-inline { display: block; margin-bottom: 16px; }
+}
