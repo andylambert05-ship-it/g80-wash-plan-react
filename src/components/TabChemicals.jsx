@@ -310,6 +310,7 @@ export default function TabChemicals({ data, mode }) {
   return (
     <div style={{ padding: 16, width: '100%', boxSizing: 'border-box' }}>
       <div className="chem-content" style={{ minWidth: 0, maxWidth: 900 }}>
+        <StickyCalc selected={selectedDil} />
         <div className="notice info" style={{ marginBottom: 14 }}>
           <i className="ti ti-info-circle" aria-hidden="true" />
           <span>Showing chemicals for: <strong>{modeLabel}</strong>. Click any dilution card to load it into the calculator. <span style={{ opacity: 0.7 }}>⌕ Calc</span> indicates calculable ratios.</span>
@@ -327,7 +328,6 @@ export default function TabChemicals({ data, mode }) {
         ))}
       </div>
 
-      <StickyCalc selected={selectedDil} />
     </div>
   )
 }
