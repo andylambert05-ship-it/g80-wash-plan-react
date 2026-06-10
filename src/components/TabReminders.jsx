@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { EditReminderForm, SyncStatus } from './SyncForm'
+import { getConfig, deleteReminder } from '../utils/GitHubSync'
 
 const STORAGE_KEY = 'gwp_reminders'
 
@@ -87,8 +89,22 @@ function generateICS(reminder) {
 
 const STATUS_ORDER = { overdue: 0, never: 1, soon: 2, ok: 3 }
 
-export default function TabReminders() {
-  const [reminders, setReminders] = useState(loadReminders)
+export default function TabReminders({ data }) {
+  // Merge JSON reminders (source of truth for definitions) with localStorage (last done dates)
+  const initReminders = () => {
+    const jsonReminders = data?.reminders || []
+    const stored = loadReminders()
+    const storedMap = Object.fromEntries(stored.map(r => [r.id, r]))
+    // JSON reminders take precedence for name/interval/notes; localStorage provides lastDone
+    const merged = jsonReminders.map(jr => ({ ...jr, lastDone: storedMap[jr.id]?.lastDone || jr.lastDone || null }))
+    // Keep any localStorage-only custom reminders not in JSON
+    const jsonIds = new Set(jsonReminders.map(r => r.id))
+    const localOnly = stored.filter(r => !jsonIds.has(r.id))
+    return [...merged, ...localOnly]
+  }
+  const [reminders, setReminders] = useState(initReminders)
+  const [editingReminder, setEditingReminder] = useState(null)
+  const [delStatus, setDelStatus] = useState({})
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ name: '', interval: '', intervalLabel: '', notes: '' })
   const [confirmDelete, setConfirmDelete] = useState(null)
@@ -99,8 +115,19 @@ export default function TabReminders() {
     update(reminders.map(r => r.id === id ? { ...r, lastDone: new Date().toISOString() } : r))
   }
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (confirmDelete === id) {
+      const config = getConfig()
+      if (config.pat) {
+        setDelStatus(s => ({ ...s, [id]: { type: 'saving' } }))
+        try {
+          await deleteReminder(config, id)
+          setDelStatus(s => ({ ...s, [id]: { type: 'success' } }))
+        } catch (e) {
+          setDelStatus(s => ({ ...s, [id]: { type: 'error', message: e.message } }))
+          return
+        }
+      }
       update(reminders.filter(r => r.id !== id))
       setConfirmDelete(null)
     } else {
@@ -140,6 +167,13 @@ export default function TabReminders() {
 
   return (
     <div className="panel">
+      {editingReminder && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
+          <div style={{ maxWidth: 600, margin: '0 auto' }}>
+            <EditReminderForm reminder={editingReminder} onClose={() => setEditingReminder(null)} />
+          </div>
+        </div>
+      )}
 
       {/* Summary notice */}
       {(overdueCount > 0 || soonCount > 0) && (
@@ -244,13 +278,18 @@ export default function TabReminders() {
                   </div>
                 </div>
                 {/* Delete */}
-                <button
-                  onClick={() => handleDelete(reminder.id)}
-                  style={{ background: confirmDelete === reminder.id ? '#cc1e1e' : 'transparent', border: `1px solid ${confirmDelete === reminder.id ? '#cc1e1e' : 'var(--bd2)'}`, color: confirmDelete === reminder.id ? '#fff' : 'var(--t3)', width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 12, flexShrink: 0 }}
-                  title={confirmDelete === reminder.id ? 'Tap again to delete' : 'Delete reminder'}
-                >
-                  {confirmDelete === reminder.id ? '✓' : '×'}
-                </button>
+                <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
+                  <button onClick={() => setEditingReminder(reminder)} title="Edit"
+                    style={{ background: 'transparent', border: '1px solid var(--bd2)', color: 'var(--t3)', width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 12 }}>
+                    <i className="ti ti-pencil" aria-hidden="true" />
+                  </button>
+                  <button onClick={() => handleDelete(reminder.id)}
+                    style={{ background: confirmDelete === reminder.id ? '#cc1e1e' : 'transparent', border: `1px solid ${confirmDelete === reminder.id ? '#cc1e1e' : 'var(--bd2)'}`, color: confirmDelete === reminder.id ? '#fff' : 'var(--t3)', width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 12 }}
+                    title={confirmDelete === reminder.id ? 'Tap again to delete' : 'Delete reminder'}>
+                    <i className={`ti ${confirmDelete === reminder.id ? 'ti-check' : 'ti-trash'}`} aria-hidden="true" />
+                  </button>
+                </div>
+                {delStatus[reminder.id] && <SyncStatus status={delStatus[reminder.id]} />}
               </div>
             </div>
           </div>

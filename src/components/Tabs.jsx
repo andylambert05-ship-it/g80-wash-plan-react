@@ -1,6 +1,9 @@
 import { SEASON_COLORS } from '../constants'
 import StepCard from './StepCard'
 import ResetButton from './ResetButton'
+import { useState } from 'react'
+import { EditToolForm, SyncStatus } from './SyncForm'
+import { getConfig, deleteTool } from '../utils/GitHubSync'
 
 // ── ShortList ────────────────────────────────────────────────────────────────
 const SL_NORMAL = [
@@ -63,6 +66,23 @@ export function TabShortList({ mode }) {
 
 // ── Tools ────────────────────────────────────────────────────────────────────
 export function TabTools({ data }) {
+  const [editingTool, setEditingTool] = useState(null)
+  const [confirmDel, setConfirmDel] = useState(null)
+  const [delStatus, setDelStatus] = useState({})
+
+  const handleDeleteTool = async (name) => {
+    if (confirmDel !== name) { setConfirmDel(name); setTimeout(() => setConfirmDel(null), 3000); return }
+    const config = getConfig()
+    if (!config.pat) { setDelStatus(s => ({ ...s, [name]: { type: 'nopat' } })); return }
+    setDelStatus(s => ({ ...s, [name]: { type: 'saving' } }))
+    try {
+      await deleteTool(config, name)
+      setDelStatus(s => ({ ...s, [name]: { type: 'success' } }))
+    } catch (e) {
+      setDelStatus(s => ({ ...s, [name]: { type: 'error', message: e.message } }))
+    }
+  }
+
   const cats = {}
   data.tools.forEach(t => {
     if (!cats[t.category]) cats[t.category] = []

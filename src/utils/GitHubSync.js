@@ -104,3 +104,60 @@ export async function addUpgrade(config, upgrade) {
   content.upgrades.items = items
   await writeFile(config, content, sha, `Add upgrade: ${upgrade.item}`)
 }
+
+// ── Edit functions ────────────────────────────────────────────────────────────
+
+export async function editChemical(config, updatedChem) {
+  const { content, sha } = await fetchFile(config)
+  content.chemicals = content.chemicals.map(c => c.name === updatedChem.name ? updatedChem : c)
+  await writeFile(config, content, sha, `Edit chemical: ${updatedChem.name}`)
+}
+
+export async function deleteChemical(config, name) {
+  const { content, sha } = await fetchFile(config)
+  content.chemicals = content.chemicals.filter(c => c.name !== name)
+  await writeFile(config, content, sha, `Remove chemical: ${name}`)
+}
+
+export async function editTool(config, updatedTool, originalName) {
+  const { content, sha } = await fetchFile(config)
+  content.tools = content.tools.map(t => t.name === originalName ? updatedTool : t)
+  await writeFile(config, content, sha, `Edit tool: ${updatedTool.name}`)
+}
+
+export async function deleteTool(config, name) {
+  const { content, sha } = await fetchFile(config)
+  content.tools = content.tools.filter(t => t.name !== name)
+  await writeFile(config, content, sha, `Remove tool: ${name}`)
+}
+
+export async function editUpgrade(config, updatedUpgrade) {
+  const { content, sha } = await fetchFile(config)
+  content.upgrades.items = content.upgrades.items.map(u => u.id === updatedUpgrade.id ? updatedUpgrade : u)
+  await writeFile(config, content, sha, `Edit upgrade: ${updatedUpgrade.item}`)
+}
+
+export async function deleteUpgrade(config, id) {
+  const { content, sha } = await fetchFile(config)
+  content.upgrades.items = content.upgrades.items.filter(u => u.id !== id)
+  await writeFile(config, content, sha, `Remove upgrade: ${id}`)
+}
+
+export async function addReminder(config, reminder) {
+  const { content, sha } = await fetchFile(config)
+  content.reminders = content.reminders || []
+  content.reminders.push(reminder)
+  await writeFile(config, content, sha, `Add reminder: ${reminder.name}`)
+}
+
+export async function editReminder(config, updatedReminder) {
+  const { content, sha } = await fetchFile(config)
+  content.reminders = content.reminders.map(r => r.id === updatedReminder.id ? updatedReminder : r)
+  await writeFile(config, content, sha, `Edit reminder: ${updatedReminder.name}`)
+}
+
+export async function deleteReminder(config, id) {
+  const { content, sha } = await fetchFile(config)
+  content.reminders = content.reminders.filter(r => r.id !== id)
+  await writeFile(config, content, sha, `Remove reminder: ${id}`)
+}

@@ -2119,5 +2119,49 @@
         "notes": "Pair with exhaust controller install in same underbody session."
       }
     ]
-  }
+  },
+  "reminders": [
+    {
+      "id": "reload",
+      "name": "CarPro Reload 2.0",
+      "interval": 21,
+      "intervalLabel": "2\u20133 weeks",
+      "notes": "Apply to clean dry paint. Do not apply below 50\u00b0F."
+    },
+    {
+      "id": "p303",
+      "name": "303 Aerospace Protectant",
+      "interval": 21,
+      "intervalLabel": "3 weeks (Colorado altitude UV)",
+      "notes": "Exterior trim and rubber seals. Wipe completely dry \u2014 does not air dry."
+    },
+    {
+      "id": "coating",
+      "name": "Ceramic Coating Inspection",
+      "interval": 30,
+      "intervalLabel": "Monthly",
+      "notes": "Water bead test on hood and roof. If beading degrades, consider Reload 2.0 layer or Angelwax consult."
+    },
+    {
+      "id": "decon",
+      "name": "Full Decontamination Wash",
+      "interval": 90,
+      "intervalLabel": "Every 3 months",
+      "notes": "BH Touchless \u2192 Iron X \u2192 CarPro Descale. Run before winter and after spring."
+    },
+    {
+      "id": "ikbatt",
+      "name": "IK E Foam Pro 12 Battery Check",
+      "interval": 90,
+      "intervalLabel": "Seasonal",
+      "notes": "Check charge before winter storage. Battery loses capacity in sub-freezing temps \u2014 store indoors."
+    },
+    {
+      "id": "darkside",
+      "name": "CarPro Darkside Reapplication",
+      "interval": 60,
+      "intervalLabel": "Every 6\u20138 weeks",
+      "notes": "Apply to clean dry sidewalls only. Min 1\u20132 hrs dry before driving."
+    }
+  ]
 }

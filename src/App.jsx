@@ -231,7 +231,7 @@ export default function App() {
         {activeTab === 'seasonal' && <TabSeasonal data={data} />}
         {activeTab === 'upgrades' && <ErrorBoundary><TabUpgrades data={data} /></ErrorBoundary>}
       {activeTab === 'history' && <ErrorBoundary><TabHistory data={data} mode={mode} done={done} /></ErrorBoundary>}
-      {activeTab === 'reminders' && <ErrorBoundary><TabReminders /></ErrorBoundary>}
+      {activeTab === 'reminders' && <ErrorBoundary><TabReminders data={data} /></ErrorBoundary>}
       {activeTab === 'settings' && <ErrorBoundary><TabSettings /></ErrorBoundary>}
       {/* Floating add forms */}
       {addForm === 'chemical' && (

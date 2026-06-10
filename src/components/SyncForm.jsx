@@ -1,6 +1,6 @@
 // Reusable sync status indicator for GitHub write-back forms
 import { useState } from 'react'
-import { getConfig, addChemical, addTool, addUpgrade } from '../utils/GitHubSync'
+import { getConfig, addChemical, addTool, addUpgrade, editChemical, editTool, editReminder, deleteChemical, deleteTool, deleteUpgrade, deleteReminder } from '../utils/GitHubSync'
 
 export function SyncStatus({ status }) {
   if (!status) return null
@@ -301,6 +301,179 @@ export function AddUpgradeForm({ data, onClose }) {
         <button onClick={handleSave} disabled={!canSave}
           style={{ padding: '8px 20px', background: '#0066b1', color: '#fff', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: canSave ? 'pointer' : 'default', fontFamily: 'Inter, sans-serif', opacity: canSave ? 1 : 0.4 }}>
           Save to GitHub
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ── Edit Chemical Form ────────────────────────────────────────────────────────
+export function EditChemicalForm({ chem, onClose }) {
+  const { syncStatus, sync } = useGitHubSync()
+  const [form, setForm] = useState({
+    name: chem.name,
+    category: chem.category,
+    modes: chem.modes || ['normal', 'maint'],
+    usedOn: chem.usedOn || '',
+    shelfLife: chem.shelfLife || '',
+    storageNote: chem.storageNote || '',
+    tool: chem.tool || '',
+    dilutions: chem.dilutions?.length ? chem.dilutions : [{ context: '', ratio: '', amount: '', note: '' }],
+  })
+  const f = (key, val) => setForm(p => ({ ...p, [key]: val }))
+  const updateDil = (i, key, val) => f('dilutions', form.dilutions.map((d, idx) => idx === i ? { ...d, [key]: val } : d))
+  const addDil = () => f('dilutions', [...form.dilutions, { context: '', ratio: '', amount: '', note: '' }])
+  const removeDil = (i) => f('dilutions', form.dilutions.filter((_, idx) => idx !== i))
+
+  const handleSave = async () => {
+    if (!form.name.trim() || !form.category.trim() || form.modes.length === 0) return
+    const updated = { ...chem, ...form, dilutions: form.dilutions.filter(d => d.ratio.trim()) }
+    const ok = await sync(editChemical, updated)
+    if (ok && onClose) setTimeout(onClose, 2000)
+  }
+  const canSave = form.name.trim() && form.category.trim() && form.modes.length > 0 && syncStatus?.type !== 'saving'
+
+  const inp = (label, key, opts = {}) => (
+    <div style={{ marginBottom: 10 }}>
+      <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>{label}</label>
+      <input type={opts.type || 'text'} value={form[key]} onChange={e => f(key, e.target.value)} placeholder={opts.placeholder}
+        style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
+    </div>
+  )
+
+  return (
+    <div style={{ background: 'var(--card)', border: '1px solid var(--bd2)', padding: 20, marginBottom: 16 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t1)', marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
+        Edit — {chem.name}
+        {onClose && <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 16 }}>×</button>}
+      </div>
+      {inp('Product name', 'name')}
+      {inp('Category', 'category')}
+      <div style={{ marginBottom: 10 }}>
+        <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 6 }}>Wash modes</label>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {[['normal', 'Bi-weekly'], ['maint', 'Deep Clean']].map(([val, lbl]) => {
+            const active = form.modes.includes(val)
+            return (
+              <button key={val} onClick={() => f('modes', active && form.modes.length > 1 ? form.modes.filter(m => m !== val) : [...new Set([...form.modes, val])])}
+                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', border: '1px solid', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', cursor: 'pointer', background: active ? '#0066b1' : 'transparent', color: active ? '#fff' : 'var(--t3)', borderColor: active ? '#0066b1' : 'var(--bd2)' }}>
+                <i className={`ti ${active ? 'ti-checkbox' : 'ti-square'}`} style={{ fontSize: 12 }} aria-hidden="true" />{lbl}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+      {inp('Used on', 'usedOn')}
+      {inp('Tool', 'tool')}
+      {inp('Shelf life', 'shelfLife')}
+      {inp('Storage note', 'storageNote')}
+      <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t3)', marginBottom: 10, marginTop: 14, paddingTop: 12, borderTop: '1px solid var(--bd)' }}>Dilutions</div>
+      {form.dilutions.map((d, i) => (
+        <div key={i} style={{ background: 'var(--card2)', border: '1px solid var(--bd)', padding: 12, marginBottom: 8 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase' }}>Dilution {i + 1}</div>
+            {form.dilutions.length > 1 && <button onClick={() => removeDil(i)} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 14 }}>×</button>}
+          </div>
+          {[['Context', 'context', ''], ['Ratio', 'ratio', ''], ['Amount', 'amount', ''], ['Note', 'note', '']].map(([lbl, key]) => (
+            <div key={key} style={{ marginBottom: 8 }}>
+              <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--t3)', display: 'block', marginBottom: 3 }}>{lbl}</label>
+              <input value={d[key] || ''} onChange={e => updateDil(i, key, e.target.value)}
+                style={{ width: '100%', background: 'var(--card)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '6px 8px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
+            </div>
+          ))}
+        </div>
+      ))}
+      <button onClick={addDil} style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', background: 'transparent', border: '1px solid var(--bd2)', padding: '5px 12px', cursor: 'pointer', fontFamily: 'Inter, sans-serif', marginBottom: 14 }}>+ Add dilution</button>
+      <SyncStatus status={syncStatus} />
+      <div style={{ marginTop: 12 }}>
+        <button onClick={handleSave} disabled={!canSave}
+          style={{ padding: '8px 20px', background: '#0066b1', color: '#fff', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: canSave ? 'pointer' : 'default', fontFamily: 'Inter, sans-serif', opacity: canSave ? 1 : 0.4 }}>
+          Save changes
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ── Edit Tool Form ────────────────────────────────────────────────────────────
+export function EditToolForm({ tool, onClose }) {
+  const { syncStatus, sync } = useGitHubSync()
+  const [form, setForm] = useState({ name: tool.name, category: tool.category, qty: tool.qty || '1', usedFor: tool.usedFor || '' })
+  const f = (key, val) => setForm(p => ({ ...p, [key]: val }))
+  const canSave = form.name.trim() && form.category.trim() && syncStatus?.type !== 'saving'
+
+  const handleSave = async () => {
+    if (!canSave) return
+    const ok = await sync(editTool, { ...form }, tool.name)
+    if (ok && onClose) setTimeout(onClose, 2000)
+  }
+
+  return (
+    <div style={{ background: 'var(--card)', border: '1px solid var(--bd2)', padding: 20, marginBottom: 16 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t1)', marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
+        Edit — {tool.name}
+        {onClose && <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 16 }}>×</button>}
+      </div>
+      {[['Tool name', 'name'], ['Category', 'category'], ['Qty', 'qty']].map(([lbl, key]) => (
+        <div key={key} style={{ marginBottom: 10 }}>
+          <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>{lbl}</label>
+          <input value={form[key]} onChange={e => f(key, e.target.value)}
+            style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
+        </div>
+      ))}
+      <div style={{ marginBottom: 10 }}>
+        <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>Used for</label>
+        <textarea value={form.usedFor} onChange={e => f('usedFor', e.target.value)} rows={2}
+          style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif', resize: 'vertical', outline: 'none' }} />
+      </div>
+      <SyncStatus status={syncStatus} />
+      <div style={{ marginTop: 12 }}>
+        <button onClick={handleSave} disabled={!canSave}
+          style={{ padding: '8px 20px', background: '#0066b1', color: '#fff', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: canSave ? 'pointer' : 'default', fontFamily: 'Inter, sans-serif', opacity: canSave ? 1 : 0.4 }}>
+          Save changes
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ── Edit Reminder Form ────────────────────────────────────────────────────────
+export function EditReminderForm({ reminder, onClose }) {
+  const { syncStatus, sync } = useGitHubSync()
+  const [form, setForm] = useState({ name: reminder.name, interval: reminder.interval, intervalLabel: reminder.intervalLabel || '', notes: reminder.notes || '' })
+  const f = (key, val) => setForm(p => ({ ...p, [key]: val }))
+  const canSave = form.name.trim() && form.interval && syncStatus?.type !== 'saving'
+
+  const handleSave = async () => {
+    if (!canSave) return
+    const updated = { ...reminder, ...form, interval: parseInt(form.interval) }
+    const ok = await sync(editReminder, updated)
+    if (ok && onClose) setTimeout(onClose, 2000)
+  }
+
+  return (
+    <div style={{ background: 'var(--card)', border: '1px solid var(--bd2)', padding: 20, marginBottom: 16 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t1)', marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
+        Edit — {reminder.name}
+        {onClose && <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 16 }}>×</button>}
+      </div>
+      {[['Name', 'name', 'text', ''], ['Interval (days)', 'interval', 'number', ''], ['Interval label', 'intervalLabel', 'text', 'e.g. Every 3 weeks']].map(([lbl, key, type, ph]) => (
+        <div key={key} style={{ marginBottom: 10 }}>
+          <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>{lbl}</label>
+          <input type={type} value={form[key]} onChange={e => f(key, e.target.value)} placeholder={ph}
+            style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
+        </div>
+      ))}
+      <div style={{ marginBottom: 10 }}>
+        <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>Notes</label>
+        <textarea value={form.notes} onChange={e => f('notes', e.target.value)} rows={2}
+          style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif', resize: 'vertical', outline: 'none' }} />
+      </div>
+      <SyncStatus status={syncStatus} />
+      <div style={{ marginTop: 12 }}>
+        <button onClick={handleSave} disabled={!canSave}
+          style={{ padding: '8px 20px', background: '#0066b1', color: '#fff', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: canSave ? 'pointer' : 'default', fontFamily: 'Inter, sans-serif', opacity: canSave ? 1 : 0.4 }}>
+          Save changes
         </button>
       </div>
     </div>

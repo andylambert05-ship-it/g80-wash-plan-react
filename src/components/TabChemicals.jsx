@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { getBrand, getShortName, CAT_ORDER } from '../constants'
+import { EditChemicalForm, SyncStatus } from './SyncForm'
+import { getConfig, deleteChemical } from '../utils/GitHubSync'
 
 // ── Ratio parser ─────────────────────────────────────────────────────────────
 function parseRatio(ratio) {
@@ -219,6 +221,25 @@ function ChemChart({ chemicals, onSelectDil }) {
 
 // ── Chem card ─────────────────────────────────────────────────────────────────
 function ChemCard({ chem, onSelectDil }) {
+  const [editing, setEditing] = useState(false)
+  const [confirmDel, setConfirmDel] = useState(false)
+  const [delStatus, setDelStatus] = useState(null)
+
+  const handleDelete = async () => {
+    if (!confirmDel) { setConfirmDel(true); setTimeout(() => setConfirmDel(false), 3000); return }
+    const config = getConfig()
+    if (!config.pat) { setDelStatus({ type: 'nopat' }); return }
+    setDelStatus({ type: 'saving' })
+    try {
+      await deleteChemical(config, chem.name)
+      setDelStatus({ type: 'success' })
+    } catch (e) {
+      setDelStatus({ type: 'error', message: e.message })
+    }
+  }
+
+  if (editing) return <EditChemicalForm chem={chem} onClose={() => setEditing(false)} />
+
   const normalOnly = chem.modes.length === 1 && chem.modes[0] === 'normal'
   const maintOnly = chem.modes.length === 1 && chem.modes[0] === 'maint'
   return (
@@ -228,9 +249,20 @@ function ChemCard({ chem, onSelectDil }) {
           <div className="chem-nm">{chem.name}</div>
           <div className="chem-cat">{chem.category}</div>
         </div>
-        {maintOnly && <span className="pill pm">maint. only</span>}
-        {normalOnly && <span className="pill po">normal only</span>}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {maintOnly && <span className="pill pm">maint. only</span>}
+          {normalOnly && <span className="pill po">normal only</span>}
+          <button onClick={() => setEditing(true)} title="Edit"
+            style={{ background: 'transparent', border: '1px solid var(--bd2)', color: 'var(--t3)', width: 26, height: 26, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0 }}>
+            <i className="ti ti-pencil" aria-hidden="true" />
+          </button>
+          <button onClick={handleDelete} title={confirmDel ? 'Confirm delete' : 'Delete'}
+            style={{ background: confirmDel ? '#cc1e1e' : 'transparent', border: `1px solid ${confirmDel ? '#cc1e1e' : 'var(--bd2)'}`, color: confirmDel ? '#fff' : 'var(--t3)', width: 26, height: 26, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0 }}>
+            <i className={`ti ${confirmDel ? 'ti-check' : 'ti-trash'}`} aria-hidden="true" />
+          </button>
+        </div>
       </div>
+      {delStatus && <SyncStatus status={delStatus} />}
       <div className="chem-bd">
         <div className="chem-used">{chem.usedOn}</div>
         {chem.dilutions.map((d, i) => {
