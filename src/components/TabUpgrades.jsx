@@ -1,5 +1,14 @@
 import { useState } from 'react'
 
+const PHOTO_KEY = 'gwp_upgrade_photos'
+
+function loadPhotos() {
+  try { return JSON.parse(localStorage.getItem(PHOTO_KEY) || '{}') } catch { return {} }
+}
+function savePhotos(photos) {
+  try { localStorage.setItem(PHOTO_KEY, JSON.stringify(photos)) } catch {}
+}
+
 function loadUpgradeState() {
   try { return JSON.parse(localStorage.getItem('gwp_upgrades') || '{}') } catch { return {} }
 }
@@ -19,6 +28,8 @@ const SOURCE_BD = { Self: '#0d2040', Shop: '#2a0000' }
 
 export default function TabUpgrades({ data }) {
   const [doneState, setDoneState] = useState(loadUpgradeState)
+  const [photos, setPhotos] = useState(loadPhotos)
+  const [lightbox, setLightbox] = useState(null) // { src, label }
   const [custom, setCustom] = useState(loadCustomUpgrades)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ phase: '', customPhase: '', item: '', source: 'Self', notes: '' })
@@ -67,6 +78,44 @@ export default function TabUpgrades({ data }) {
     saveCustomUpgrades(next)
   }
 
+  const addPhoto = (id, label) => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/*'
+    input.capture = 'environment' // prefer rear camera on mobile
+    input.onchange = (e) => {
+      const file = e.target.files[0]
+      if (!file) return
+      // Resize + compress to keep localStorage usage reasonable (~150KB per photo)
+      const reader = new FileReader()
+      reader.onload = (ev) => {
+        const img = new Image()
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          const MAX = 800
+          const ratio = Math.min(MAX / img.width, MAX / img.height, 1)
+          canvas.width = Math.round(img.width * ratio)
+          canvas.height = Math.round(img.height * ratio)
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.75)
+          const next = { ...photos, [id]: [...(photos[id] || []), { src: dataUrl, label, date: new Date().toISOString() }] }
+          setPhotos(next)
+          savePhotos(next)
+        }
+        img.src = ev.target.result
+      }
+      reader.readAsDataURL(file)
+    }
+    input.click()
+  }
+
+  const removePhoto = (id, idx) => {
+    const next = { ...photos, [id]: photos[id].filter((_, i) => i !== idx) }
+    if (next[id].length === 0) delete next[id]
+    setPhotos(next)
+    savePhotos(next)
+  }
+
   // Group by phase preserving order
   const phaseOrder = []
   const phases = {}
@@ -83,6 +132,16 @@ export default function TabUpgrades({ data }) {
 
   return (
     <div className="panel">
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          onClick={() => setLightbox(null)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.92)', zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 20 }}
+        >
+          <img src={lightbox.src} alt={lightbox.label} style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', border: '1px solid var(--bd2)' }} />
+          <div style={{ marginTop: 12, fontSize: 11, color: '#aaa', fontWeight: 300 }}>{lightbox.label} &nbsp;·&nbsp; Tap to close</div>
+        </div>
+      )}
       <div className="notice info" style={{ borderLeftColor: '#0066b1' }}>
         <i className="ti ti-car" aria-hidden="true" />
         <span>{data.upgrades.note}</span>
