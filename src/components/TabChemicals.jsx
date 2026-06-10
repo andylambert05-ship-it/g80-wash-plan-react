@@ -325,7 +325,6 @@ export default function TabChemicals({ data, mode }) {
           <span className="cc-pill cc-pm">M</span> maint. only &nbsp;&nbsp;
           <span className="cc-pill cc-pn">N</span> normal only
         </div>
-        <div className="slbl">Full dilution details</div>
         {Object.entries(cats).map(([cat, chems]) => (
           <div key={cat}>
             <div className="slbl" style={{ marginTop: 12 }}>{cat}</div>
