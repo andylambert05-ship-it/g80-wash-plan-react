@@ -198,7 +198,7 @@ body { background: var(--bg); min-height: 100vh; padding-left: env(safe-area-ins
 /* ── Phase header ── */
 .phase-hdr { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; padding: 10px 0 6px; margin-top: 8px; display: flex; align-items: center; gap: 10px; border-left: 2px solid transparent; padding-left: 10px; color: #ffffff !important; background: color-mix(in srgb, var(--phase-color, #0066b1) 10%, transparent); }
 .phase-hdr:first-child { margin-top: 0; }
-.phase-hdr::after { content: ''; flex: 1; height: 1px; background: var(--bd); }
+.phase-hdr::after { display: none; }
 
 /* ── Step card ── */
 .steps-list { display: flex; flex-direction: column; gap: 3px; }
