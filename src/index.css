@@ -93,6 +93,49 @@
 [data-theme="light"] .mini-progress { background: var(--bd2); }
 [data-theme="light"] .ptr-indicator { background: var(--bg); }
 
+/* Light theme — step card fixes */
+[data-theme="light"] .step-dwell { color: #7a4200; background: #fde8c0; border-color: #e8a020; }
+[data-theme="light"] .step-meta { color: #3a4a3e; background: #e8ece9; }
+[data-theme="light"] .step-t { color: #111a14; }
+[data-theme="light"] .step-d { color: #2a3a2e; }
+[data-theme="light"] .step-n { color: #3a4a3e; border-color: rgba(0,0,0,0.2); }
+[data-theme="light"] .phase-hdr { color: #ffffff !important; }
+[data-theme="light"] .tag.tc { background: #fde8c0; color: #7a4200; border-color: #e8a020; }
+[data-theme="light"] .tag.tl { background: #ddeeff; color: #004a8f; border-color: #99ccff; }
+[data-theme="light"] .timer-btn { background: #ddeeff; color: #004a8f; border-color: #99ccff; }
+[data-theme="light"] .pill.pm { background: #d4f0e4; color: #0a5c30; border-color: #80c8a0; }
+[data-theme="light"] .pill.po { background: #e8ece9; color: #4a5a4e; border-color: rgba(0,0,0,0.15); }
+[data-theme="light"] .rbtn { color: #3a4a3e; border-color: rgba(0,0,0,0.2); }
+[data-theme="light"] .rbtn.confirming { color: #7a4200; background: #fde8c0; border-color: #e8a020; }
+[data-theme="light"] .notice.info { background: #f0f4f1; border-color: rgba(0,0,0,0.12); color: #2a3a2e; }
+[data-theme="light"] .notice.warn { background: #fef3e2; border-color: #e8a020; color: #7a4200; }
+[data-theme="light"] .notice.opt { background: #d4f0e4; border-color: #1a9e62; color: #0a5c30; }
+[data-theme="light"] .dil { background: #f0f4f1; border-color: rgba(0,0,0,0.1); }
+[data-theme="light"] .dil-ctx { color: #4a5a4e; }
+[data-theme="light"] .dil-ratio { color: #004a8f; }
+[data-theme="light"] .dil-amt { color: #111a14; }
+[data-theme="light"] .dil-note { color: #4a5a4e; }
+[data-theme="light"] .chem-hd { background: #f0f4f1; }
+[data-theme="light"] .chem-nm { color: #111a14; }
+[data-theme="light"] .chem-cat { color: #4a5a4e; }
+[data-theme="light"] .tr.th { background: #e8ece9; }
+[data-theme="light"] .tr.th .td { color: #3a4a3e; }
+[data-theme="light"] .td { color: #111a14; }
+[data-theme="light"] .td.m { color: #3a4a3e; }
+[data-theme="light"] .cc-brand { background: #f0f4f1; color: #3a4a3e; }
+[data-theme="light"] .cc-ratio { color: #004a8f; }
+[data-theme="light"] .cc-use { color: #3a4a3e; }
+[data-theme="light"] .slbl { color: #4a5a4e; }
+[data-theme="light"] .slbl::after { background: rgba(0,0,0,0.12); }
+[data-theme="light"] .sl-num { color: #4a5a4e; }
+[data-theme="light"] .sl-text { color: #111a14; }
+[data-theme="light"] .sl-note { color: #3a4a3e; }
+[data-theme="light"] .season-hdr { } /* inherits color from inline style */
+[data-theme="light"] .season-list li { color: #2a3a2e; }
+[data-theme="light"] .bw-step-t { color: #111a14; }
+[data-theme="light"] .bw-step-d { color: #2a3a2e; }
+[data-theme="light"] .prog-ct { color: #111a14; }
+
 /* Theme toggle button */
 .theme-toggle { background: transparent; border: 1px solid var(--bd2); color: var(--t3); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; flex-shrink: 0; transition: color 0.15s, border-color 0.15s; }
 .theme-toggle:hover { color: var(--t1); border-color: var(--t2); }
