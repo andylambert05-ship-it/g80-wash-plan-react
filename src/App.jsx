@@ -27,6 +27,7 @@ import {
 } from './components/Tabs'
 import TabUpgrades from './components/TabUpgrades'
 import TabHistory from './components/TabHistory'
+import TabReminders from './components/TabReminders'
 
 const TABS = [
   { id: 'steps', label: 'Steps' },
@@ -39,6 +40,7 @@ const TABS = [
   { id: 'seasonal', label: 'Seasonal' },
   { id: 'upgrades', label: 'Upgrades' },
   { id: 'history', label: 'History' },
+  { id: 'reminders', label: 'Reminders' },
 ]
 
 export default function App() {
@@ -210,6 +212,7 @@ export default function App() {
         {activeTab === 'seasonal' && <TabSeasonal data={data} />}
         {activeTab === 'upgrades' && <ErrorBoundary><TabUpgrades data={data} /></ErrorBoundary>}
       {activeTab === 'history' && <ErrorBoundary><TabHistory data={data} mode={mode} done={done} /></ErrorBoundary>}
+      {activeTab === 'reminders' && <ErrorBoundary><TabReminders /></ErrorBoundary>}
       </div>
 
       {/* Floating timer */}
