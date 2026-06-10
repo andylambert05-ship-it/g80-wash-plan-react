@@ -1,14 +1,14 @@
 {
   "meta": {
     "title": "BMW M3 Competition xDrive Care Plan",
-    "car": "Isle of Man Green BMW M3 G80 · S58",
+    "car": "Isle of Man Green BMW M3 G80 Â· S58",
     "coating": "Ceramic coated",
     "lastUpdated": "2026-05-30",
     "version": "2.3",
     "changelog": [
-      "v2.1 (2026-05-17) — Phase grouping on steps, dwell/time estimates, between-wash maintenance section, seasonal notes (Colorado Front Range), product shelf life tracking, 303 Aerospace Protectant, Gaps tab removed, ShortList dwell times, version history in UI.",
-      "v2.0 (2026-05-16) — Full redesign: BMW automotive theme, light mode, 5 tabs, interior detail tab, engine bay tab. All CarPro specs verified from carpro-us.com. All BH specs from bilthamber.com. Koch Chemie + Colourlock from kcxusa.com. Koch Chemie Glass Cleaner from autofinesse.com. 23 chemicals, 34 tools, mode-aware chemicals tab with wash sequence sort order. HydrO2 Lite replaced with Reload 2.0. All IK sprayer names corrected. nextzett Cockpit Premium brand fixed. Koch Chemie Allround Surface Cleaner confirmed as iDrive screen cleaner.",
-      "v1.0 (initial) — Basic wash plan with steps, chemicals, tools, gaps checklist."
+      "v2.1 (2026-05-17) â Phase grouping on steps, dwell/time estimates, between-wash maintenance section, seasonal notes (Colorado Front Range), product shelf life tracking, 303 Aerospace Protectant, Gaps tab removed, ShortList dwell times, version history in UI.",
+      "v2.0 (2026-05-16) â Full redesign: BMW automotive theme, light mode, 5 tabs, interior detail tab, engine bay tab. All CarPro specs verified from carpro-us.com. All BH specs from bilthamber.com. Koch Chemie + Colourlock from kcxusa.com. Koch Chemie Glass Cleaner from autofinesse.com. 23 chemicals, 34 tools, mode-aware chemicals tab with wash sequence sort order. HydrO2 Lite replaced with Reload 2.0. All IK sprayer names corrected. nextzett Cockpit Premium brand fixed. Koch Chemie Allround Surface Cleaner confirmed as iDrive screen cleaner.",
+      "v1.0 (initial) â Basic wash plan with steps, chemicals, tools, gaps checklist."
     ]
   },
   "sprayers": {
@@ -20,13 +20,13 @@
     },
     "ikFoamPro2": {
       "name": "IK E Foam Pro 2",
-      "type": "Electric battery-powered foam sprayer (dual mode — manual or electric)",
+      "type": "Electric battery-powered foam sprayer (dual mode â manual or electric)",
       "usableVolume": "1.5L",
       "note": "Battery-powered with built-in compressor. Also operable manually. Used for Koch Chemie MWC on wheels and engine bay APC."
     },
     "ikFoam2Plus": {
       "name": "IK Foam 2+",
-      "type": "Manual pump sprayer — optional Xiaomi Mi Portable Electric Air Compressor 2",
+      "type": "Manual pump sprayer â optional Xiaomi Mi Portable Electric Air Compressor 2",
       "usableVolume": "1.5L",
       "note": "Primarily manual pump. Can be powered via Xiaomi Mi Portable Electric Air Compressor 2 for hands-free operation."
     }
@@ -36,7 +36,7 @@
       "category": "Foam / Pre-wash",
       "name": "IK E Foam Pro 12",
       "qty": "1",
-      "usedFor": "Snow foam pre-soak — Reset (normal wash); BH Touchless (Deep Clean). Total tank 8L — 6L usable (leave headspace for air pressure)."
+      "usedFor": "Snow foam pre-soak â Reset (normal wash); BH Touchless (Deep Clean). Total tank 8L â 6L usable (leave headspace for air pressure)."
     },
     {
       "category": "Foam / Pre-wash",
@@ -48,49 +48,49 @@
       "category": "Foam / Pre-wash",
       "name": "IK Foam 2+",
       "qty": "1",
-      "usedFor": "Manual pump sprayer with optional Xiaomi Mi Portable Electric Air Compressor 2 — secondary foam tasks, spot treatment. Total tank 1.5L usable."
+      "usedFor": "Manual pump sprayer with optional Xiaomi Mi Portable Electric Air Compressor 2 â secondary foam tasks, spot treatment. Total tank 1.5L usable."
     },
     {
       "category": "Foam / Pre-wash",
       "name": "Xiaomi Mi Portable Electric Air Compressor 2",
       "qty": "1",
-      "usedFor": "Powers the IK Foam 2+ for hands-free operation — alternative to manual pump. AUTO MODE SETUP: Hold left button while simultaneously touching right button to enter auto mode — circle with a half line through it confirms auto mode is active. Set max PSI to 45. Unit will automatically turn on if pressure drops 5 PSI below max."
+      "usedFor": "Powers the IK Foam 2+ for hands-free operation â alternative to manual pump. AUTO MODE SETUP: Hold left button while simultaneously touching right button to enter auto mode â circle with a half line through it confirms auto mode is active. Set max PSI to 45. Unit will automatically turn on if pressure drops 5 PSI below max."
     },
     {
       "category": "Buckets",
-      "name": "Bucket 1 — WHEELS",
+      "name": "Bucket 1 â WHEELS",
       "qty": "1",
-      "usedFor": "Dedicated wheel wash — never crosses to paint"
+      "usedFor": "Dedicated wheel wash â never crosses to paint"
     },
     {
       "category": "Buckets",
-      "name": "Bucket 2 — WASH",
+      "name": "Bucket 2 â WASH",
       "qty": "1",
-      "usedFor": "CarPro Reset 1.35oz/5gal — paint mitt only"
+      "usedFor": "CarPro Reset 1.35oz/5gal â paint mitt only"
     },
     {
       "category": "Buckets",
-      "name": "Bucket 3 — RINSE",
+      "name": "Bucket 3 â RINSE",
       "qty": "1",
-      "usedFor": "Clean water — rinse mitt after each panel"
+      "usedFor": "Clean water â rinse mitt after each panel"
     },
     {
       "category": "Buckets",
       "name": "Grit guards",
       "qty": "3",
-      "usedFor": "One per bucket — mandatory on ceramic coat"
+      "usedFor": "One per bucket â mandatory on ceramic coat"
     },
     {
       "category": "Buckets",
       "name": "Microfiber wash mitt (long-pile)",
       "qty": "2+",
-      "usedFor": "Body panels only — never on wheels"
+      "usedFor": "Body panels only â never on wheels"
     },
     {
       "category": "Buckets",
       "name": "Dedicated wheel mitt / sponge",
       "qty": "1",
-      "usedFor": "Wheel bucket only — separate from paint mitts"
+      "usedFor": "Wheel bucket only â separate from paint mitts"
     },
     {
       "category": "Wheels",
@@ -126,13 +126,13 @@
       "category": "Tires",
       "name": "Foam tire applicator pad (Darkside)",
       "qty": "2",
-      "usedFor": "CarPro Darkside — dedicated pads, never mixed"
+      "usedFor": "CarPro Darkside â dedicated pads, never mixed"
     },
     {
       "category": "Wheel Wells",
       "name": "Detail Factory Fender Well Brush",
       "qty": "1",
-      "usedFor": "Wheel well agitation — AllClean or MultiX"
+      "usedFor": "Wheel well agitation â AllClean or MultiX"
     },
     {
       "category": "Rinsing & Drying",
@@ -144,19 +144,19 @@
       "category": "Rinsing & Drying",
       "name": "Leaf blower",
       "qty": "1",
-      "usedFor": "100% touchless drying — paint, gaps, badges, exhausts; engine bay drying"
+      "usedFor": "100% touchless drying â paint, gaps, badges, exhausts; engine bay drying"
     },
     {
       "category": "Glass",
-      "name": "MF glass towels (exterior — dedicated)",
+      "name": "MF glass towels (exterior â dedicated)",
       "qty": "3-4",
-      "usedFor": "Exterior glass — Bilt Hamber Trace-Less / Crystal only"
+      "usedFor": "Exterior glass â Bilt Hamber Trace-Less / Crystal only"
     },
     {
       "category": "Glass",
-      "name": "MF glass towels (interior — dedicated)",
+      "name": "MF glass towels (interior â dedicated)",
       "qty": "2-3",
-      "usedFor": "Interior glass — never mixed with exterior towels"
+      "usedFor": "Interior glass â never mixed with exterior towels"
     },
     {
       "category": "Glass",
@@ -166,7 +166,7 @@
     },
     {
       "category": "Glass",
-      "name": "Reach & Clean Tool — extra heads",
+      "name": "Reach & Clean Tool â extra heads",
       "qty": "2-4 total",
       "usedFor": "Two-pass technique needs at least 2 heads per session"
     },
@@ -186,7 +186,7 @@
       "category": "Finishing",
       "name": "P21S applicator / soft MF cloth",
       "qty": "2",
-      "usedFor": "Exhaust tips — P21S Polishing Soap"
+      "usedFor": "Exhaust tips â P21S Polishing Soap"
     },
     {
       "category": "Finishing",
@@ -204,7 +204,7 @@
       "category": "Maint. Wash",
       "name": "Foam or MF applicator pads (Descale)",
       "qty": "2-3",
-      "usedFor": "Applying Descale 1:100 by hand — panel by panel"
+      "usedFor": "Applying Descale 1:100 by hand â panel by panel"
     },
     {
       "category": "Engine Bay",
@@ -222,25 +222,25 @@
       "category": "Safety / PPE",
       "name": "Nitrile gloves",
       "qty": "several pairs",
-      "usedFor": "Hand protection during all chemical stages — Iron X, Tar X, Bug Out, APC, ReTyre, Descale, and engine bay work. Change between stages when switching between strong chemicals."
+      "usedFor": "Hand protection during all chemical stages â Iron X, Tar X, Bug Out, APC, ReTyre, Descale, and engine bay work. Change between stages when switching between strong chemicals."
     },
     {
       "category": "Safety / PPE",
       "name": "Safety glasses / eye protection",
       "qty": "1 pair",
-      "usedFor": "Eye protection during all spray chemical stages — Iron X, Tar X, Bug Out, ReTyre, APC, Descale, and engine bay work. Essential when using IK foam sprayers overhead."
+      "usedFor": "Eye protection during all spray chemical stages â Iron X, Tar X, Bug Out, ReTyre, APC, Descale, and engine bay work. Essential when using IK foam sprayers overhead."
     },
     {
       "category": "Interior detail",
       "name": "Bissell 3624 Spot Clean Professional",
       "qty": "1",
-      "usedFor": "Carpet and fabric extraction — used with Adam's Polishes Carpet Cleaner for carpet deep cleaning and TuxMat cleaning"
+      "usedFor": "Carpet and fabric extraction â used with Adam's Polishes Carpet Cleaner for carpet deep cleaning and TuxMat cleaning"
     },
     {
       "name": "Marolex Axel 3000 (manual pump foamer)",
       "qty": "1",
       "category": "Foam / Pre-wash",
-      "usedFor": "Manual pump foam sprayer — wheels, spot treatment, chemical application without pressure washer. 3 interchangeable tips for loose, medium, or thick foam density. 3L capacity."
+      "usedFor": "Manual pump foam sprayer â wheels, spot treatment, chemical application without pressure washer. 3 interchangeable tips for loose, medium, or thick foam density. 3L capacity."
     }
   ],
   "chemicals": [
@@ -250,19 +250,19 @@
       "modes": [
         "normal"
       ],
-      "usedOn": "All painted panels — pH neutral, ceramic-safe",
+      "usedOn": "All painted panels â pH neutral, ceramic-safe",
       "dilutions": [
         {
-          "context": "IK E Foam Pro 12 (6L usable fill) — per carpro-us.com",
-          "ratio": "400–500:1",
-          "amount": "12–15ml per 6L usable fill",
-          "note": "Per carpro-us.com 400–500:1 ratio. At 400:1: 15ml per 6L. At 500:1: 12ml per 6L. Add Reset first, then fill to 6L usable mark. Do not allow to dry on surface. CarPro's published 1:9 is foam cannon only — does not apply to IK foam sprayers."
+          "context": "IK E Foam Pro 12 (6L usable fill) â per carpro-us.com",
+          "ratio": "400â500:1",
+          "amount": "12â15ml per 6L usable fill",
+          "note": "Per carpro-us.com 400â500:1 ratio. At 400:1: 15ml per 6L. At 500:1: 12ml per 6L. Add Reset first, then fill to 6L usable mark. Do not allow to dry on surface. CarPro's published 1:9 is foam cannon only â does not apply to IK foam sprayers."
         },
         {
-          "context": "Wash bucket — recommended 4 gallon working fill — per carpro-us.com",
-          "ratio": "400–500:1",
+          "context": "Wash bucket â recommended 4 gallon working fill â per carpro-us.com",
+          "ratio": "400â500:1",
           "amount": "30ml Reset into 4 gallons (15L) of water",
-          "note": "Per carpro-us.com: ~1oz per 3–4 gallons. 4 gallon fill recommended — leaves headspace, avoids splashing. Reference: 3 gal = 22ml, 4 gal = 30ml, 5 gal = 38ml. Fill bucket as water runs in to activate foam. Do not allow to dry on surface."
+          "note": "Per carpro-us.com: ~1oz per 3â4 gallons. 4 gallon fill recommended â leaves headspace, avoids splashing. Reference: 3 gal = 22ml, 4 gal = 30ml, 5 gal = 38ml. Fill bucket as water runs in to activate foam. Do not allow to dry on surface."
         }
       ],
       "tool": "IK E Foam Pro 12 pre-foam + 2-bucket wash (Buckets 2 & 3)",
@@ -280,15 +280,15 @@
       "usedOn": "All painted panels",
       "dilutions": [
         {
-          "context": "All use — per carpro-us.com",
+          "context": "All use â per carpro-us.com",
           "ratio": "RTU",
           "amount": "No dilution",
-          "note": "Acid free, pH neutral (6–7). Sprays on transparent, turns purple/red as it bonds to iron particles. Do not let dry in direct sun. Rinse thoroughly. Safe on clear coat paint."
+          "note": "Acid free, pH neutral (6â7). Sprays on transparent, turns purple/red as it bonds to iron particles. Do not let dry in direct sun. Rinse thoroughly. Safe on clear coat paint."
         }
       ],
       "tool": "Labeled spray bottle",
-      "shelfLife": "2 years unopened, 6–12 months opened",
-      "storageNote": "Do not freeze. Keep sealed — oxidises when exposed to air. Discard if purple/red before use.",
+      "shelfLife": "2 years unopened, 6â12 months opened",
+      "storageNote": "Do not freeze. Keep sealed â oxidises when exposed to air. Discard if purple/red before use.",
       "openedDate": ""
     },
     {
@@ -298,13 +298,13 @@
         "normal",
         "maint"
       ],
-      "usedOn": "Front bumper, hood edge, lower windshield, mirrors — dry surface",
+      "usedOn": "Front bumper, hood edge, lower windshield, mirrors â dry surface",
       "dilutions": [
         {
-          "context": "All use — per carpro-us.com",
+          "context": "All use â per carpro-us.com",
           "ratio": "RTU",
-          "amount": "No dilution — shake before use",
-          "note": "Spray on insect remains. Wait 30 sec–2 min depending on environment (5–30 sec on sensitive surfaces). Agitate as needed with MF towel. Remove and neutralise residue with CarPro ECH2O or Reset. Do not leave on surface more than 5 min. Avoid direct sun. Do not apply to hot surfaces."
+          "amount": "No dilution â shake before use",
+          "note": "Spray on insect remains. Wait 30 secâ2 min depending on environment (5â30 sec on sensitive surfaces). Agitate as needed with MF towel. Remove and neutralise residue with CarPro ECH2O or Reset. Do not leave on surface more than 5 min. Avoid direct sun. Do not apply to hot surfaces."
         }
       ],
       "tool": "Labeled spray bottle + dedicated bug MF towel",
@@ -319,7 +319,7 @@
         "normal",
         "maint"
       ],
-      "usedOn": "Lower rockers, rear bumper, door bottoms — DRY surface only",
+      "usedOn": "Lower rockers, rear bumper, door bottoms â DRY surface only",
       "dilutions": [
         {
           "context": "All use",
@@ -340,13 +340,13 @@
         "normal",
         "maint"
       ],
-      "usedOn": "All wheel surfaces — iron-reactive, acid-free, viscous cling",
+      "usedOn": "All wheel surfaces â iron-reactive, acid-free, viscous cling",
       "dilutions": [
         {
-          "context": "All wheel surfaces — per kcxusa.com",
+          "context": "All wheel surfaces â per kcxusa.com",
           "ratio": "RTU",
-          "amount": "No dilution — shake briefly before use",
-          "note": "Do not use on hot paint or surfaces or in direct sunlight. Check suitability and compatibility before use. Shake briefly. Spray rim surface and rim well thoroughly. Depending on dirt level, allow 2–5 minutes for MWC to take effect. Rinse thoroughly with high-pressure spray."
+          "amount": "No dilution â shake briefly before use",
+          "note": "Do not use on hot paint or surfaces or in direct sunlight. Check suitability and compatibility before use. Shake briefly. Spray rim surface and rim well thoroughly. Depending on dirt level, allow 2â5 minutes for MWC to take effect. Rinse thoroughly with high-pressure spray."
         }
       ],
       "tool": "IK E Foam Pro 2 or spray direct; EZ Detail brushes + Barrel Blade; high-pressure rinse",
@@ -361,7 +361,7 @@
         "normal",
         "maint"
       ],
-      "usedOn": "Heavily contaminated wheels — alternative to MWC",
+      "usedOn": "Heavily contaminated wheels â alternative to MWC",
       "dilutions": [
         {
           "context": "All use",
@@ -383,24 +383,24 @@
       "dilutions": [
         {
           "context": "Wheel wells / general",
-          "ratio": "5:1–10:1",
+          "ratio": "5:1â10:1",
           "amount": "100-200ml per 1L water",
           "note": ""
         },
         {
           "context": "Door jambs",
-          "ratio": "3:1–5:1",
+          "ratio": "3:1â5:1",
           "amount": "200-333ml per 1L water",
           "note": "Stronger dilution for jamb grime accumulation"
         },
         {
-          "context": "Engine bay — general",
-          "ratio": "5:1–10:1",
+          "context": "Engine bay â general",
+          "ratio": "5:1â10:1",
           "amount": "100-200ml per 1L water",
           "note": ""
         },
         {
-          "context": "Engine bay — heavy grease/oil",
+          "context": "Engine bay â heavy grease/oil",
           "ratio": "3:1",
           "amount": "333ml per 1L water",
           "note": ""
@@ -415,16 +415,16 @@
         "normal",
         "maint"
       ],
-      "usedOn": "Wheel wells, door jambs, engine bay — alt. to AllClean",
+      "usedOn": "Wheel wells, door jambs, engine bay â alt. to AllClean",
       "dilutions": [
         {
-          "context": "General cleaning — per carpro-us.com",
+          "context": "General cleaning â per carpro-us.com",
           "ratio": "1:20",
           "amount": "1 part MultiX to 20 parts water",
           "note": "Spray, foam, or saturate surface. Agitate as needed. Rinse thoroughly. Test on inconspicuous area before each use. Do not use on hot surfaces or in direct sun. Do not use on anodized aluminum."
         },
         {
-          "context": "High pressure cleaning — per carpro-us.com",
+          "context": "High pressure cleaning â per carpro-us.com",
           "ratio": "1:100",
           "amount": "1 part MultiX to 100 parts water",
           "note": "For use in pressure washing applications. Test on inconspicuous area first."
@@ -434,32 +434,32 @@
     },
     {
       "name": "Bilt Hamber Touchless",
-      "category": "Deep Clean pre-wash — step 1",
+      "category": "Deep Clean pre-wash â step 1",
       "modes": [
         "maint"
       ],
-      "usedOn": "Full exterior — touchless alkaline pre-soak before Descale",
+      "usedOn": "Full exterior â touchless alkaline pre-soak before Descale",
       "dilutions": [
         {
-          "context": "IK E Foam Pro 12 (6L usable fill) — 1% PIR light clean — per bilthamber.com",
+          "context": "IK E Foam Pro 12 (6L usable fill) â 1% PIR light clean â per bilthamber.com",
           "ratio": "1% PIR",
           "amount": "60ml Touchless into 6L fill",
-          "note": "Use for lightly soiled vehicles or maintenance washes. Apply to cool panels in shade, dwell 1–5 min, do not allow to dry, rinse completely."
+          "note": "Use for lightly soiled vehicles or maintenance washes. Apply to cool panels in shade, dwell 1â5 min, do not allow to dry, rinse completely."
         },
         {
-          "context": "IK E Foam Pro 12 (6L usable fill) — 2% PIR heavy clean — per bilthamber.com",
+          "context": "IK E Foam Pro 12 (6L usable fill) â 2% PIR heavy clean â per bilthamber.com",
           "ratio": "2% PIR",
           "amount": "120ml Touchless into 6L fill",
-          "note": "Maximum recommended PIR per bilthamber.com. Use for heavily contaminated vehicles. Apply to cool panels in shade, dwell 1–5 min, do not allow to dry, rinse completely."
+          "note": "Maximum recommended PIR per bilthamber.com. Use for heavily contaminated vehicles. Apply to cool panels in shade, dwell 1â5 min, do not allow to dry, rinse completely."
         },
         {
-          "context": "IK E Foam Pro 2 (~1.2L usable fill) — 1% PIR — per bilthamber.com",
+          "context": "IK E Foam Pro 2 (~1.2L usable fill) â 1% PIR â per bilthamber.com",
           "ratio": "1% PIR",
           "amount": "12ml Touchless into ~1.2L fill",
           "note": "Use for spot treatment or lightly soiled areas."
         },
         {
-          "context": "IK E Foam Pro 2 (~1.2L usable fill) — 2% PIR — per bilthamber.com",
+          "context": "IK E Foam Pro 2 (~1.2L usable fill) â 2% PIR â per bilthamber.com",
           "ratio": "2% PIR",
           "amount": "25ml Touchless into ~1.2L fill",
           "note": "Maximum recommended PIR per bilthamber.com."
@@ -472,28 +472,28 @@
     },
     {
       "name": "CarPro Descale",
-      "category": "Deep Clean pre-wash — step 2",
+      "category": "Deep Clean pre-wash â step 2",
       "modes": [
         "maint"
       ],
-      "usedOn": "Full exterior — mineral deposits & water spot etching in coating — panel by panel",
+      "usedOn": "Full exterior â mineral deposits & water spot etching in coating â panel by panel",
       "dilutions": [
         {
-          "context": "IK E Foam Pro 12 or spray bottle — per carpro-us.com",
+          "context": "IK E Foam Pro 12 or spray bottle â per carpro-us.com",
           "ratio": "1:10",
           "amount": "1 part Descale to 10 parts water",
-          "note": "For light contamination: apply as snow foam, allow maximum dwell without drying, rinse, then hand wash. Do not allow to dry on surface. Test on inconspicuous area before use. Not for regular weekly washing — use Reset for that."
+          "note": "For light contamination: apply as snow foam, allow maximum dwell without drying, rinse, then hand wash. Do not allow to dry on surface. Test on inconspicuous area before use. Not for regular weekly washing â use Reset for that."
         },
         {
-          "context": "5 gallon bucket — recommended 4 gallon working fill — per carpro-us.com",
+          "context": "5 gallon bucket â recommended 4 gallon working fill â per carpro-us.com",
           "ratio": "1:100",
           "amount": "150ml Descale into 4 gallons (15L) of water",
-          "note": "4 gallon fill recommended — leaves headspace, avoids splashing when dunking mitt. Reference: 3 gal = 113ml, 4 gal = 150ml, 5 gal = 189ml. Use 2-bucket method: Bucket 2 with Descale solution, Bucket 3 as rinse. Work one panel at a time top to bottom. Dwell as long as possible without drying. Rinse each panel before moving on. ION Green makes mineral hazing very visible — inspect as you go. Replaces Reset in maintenance wash."
+          "note": "4 gallon fill recommended â leaves headspace, avoids splashing when dunking mitt. Reference: 3 gal = 113ml, 4 gal = 150ml, 5 gal = 189ml. Use 2-bucket method: Bucket 2 with Descale solution, Bucket 3 as rinse. Work one panel at a time top to bottom. Dwell as long as possible without drying. Rinse each panel before moving on. ION Green makes mineral hazing very visible â inspect as you go. Replaces Reset in maintenance wash."
         }
       ],
-      "tool": "2-bucket method — dedicated Descale wash bucket + rinse bucket",
+      "tool": "2-bucket method â dedicated Descale wash bucket + rinse bucket",
       "shelfLife": "2 years unopened, 1 year opened",
-      "storageNote": "Acidic — keep sealed, store away from metals.",
+      "storageNote": "Acidic â keep sealed, store away from metals.",
       "openedDate": ""
     },
     {
@@ -503,18 +503,18 @@
         "normal",
         "maint"
       ],
-      "usedOn": "Tire sidewall — pre-wash stage only. Not repeated before dressing.",
+      "usedOn": "Tire sidewall â pre-wash stage only. Not repeated before dressing.",
       "dilutions": [
         {
-          "context": "All use — per carpro-us.com",
+          "context": "All use â per carpro-us.com",
           "ratio": "RTU",
-          "amount": "No dilution — high pH foaming formula",
-          "note": "Use PPE — lung, eye, and skin protection required. High pH chemistry strips dressings and browning from rubber pores. Foaming design keeps product where applied. If ReTyre drips onto wheel surfaces, dilute with water and rinse immediately. Do not use on anodized wheels, matte/satin finishes, or in direct sun/on hot surfaces. Surface must be fully rinsed and 100% dry before applying DarkSide."
+          "amount": "No dilution â high pH foaming formula",
+          "note": "Use PPE â lung, eye, and skin protection required. High pH chemistry strips dressings and browning from rubber pores. Foaming design keeps product where applied. If ReTyre drips onto wheel surfaces, dilute with water and rinse immediately. Do not use on anodized wheels, matte/satin finishes, or in direct sun/on hot surfaces. Surface must be fully rinsed and 100% dry before applying DarkSide."
         }
       ],
       "tool": "Labeled spray bottle with foaming nozzle + stiff tire brush",
       "shelfLife": "2 years unopened, 1 year opened",
-      "storageNote": "High pH — keep sealed. PPE for handling.",
+      "storageNote": "High pH â keep sealed. PPE for handling.",
       "openedDate": ""
     },
     {
@@ -524,13 +524,13 @@
         "normal",
         "maint"
       ],
-      "usedOn": "Tire sidewall only — standalone durable sealant, no base layer required",
+      "usedOn": "Tire sidewall only â standalone durable sealant, no base layer required",
       "dilutions": [
         {
-          "context": "Tire sidewalls — per carpro-us.com",
+          "context": "Tire sidewalls â per carpro-us.com",
           "ratio": "RTU",
-          "amount": "No dilution — shake well before use",
-          "note": "Surface must be 100% dry and clean (use ReTyre or MultiX first). Squirt onto foam or MF applicator — or Darkside Applicator Brush. Spread evenly across sidewall. Wipe off any excess. Allow surface to dry before vehicle is used — MINIMUM 1–2 hours dry time. Contains citral — may cause allergic reaction. Use in ventilated area. Avoid skin and eye contact. Does not sling when applied as directed."
+          "amount": "No dilution â shake well before use",
+          "note": "Surface must be 100% dry and clean (use ReTyre or MultiX first). Squirt onto foam or MF applicator â or Darkside Applicator Brush. Spread evenly across sidewall. Wipe off any excess. Allow surface to dry before vehicle is used â MINIMUM 1â2 hours dry time. Contains citral â may cause allergic reaction. Use in ventilated area. Avoid skin and eye contact. Does not sling when applied as directed."
         }
       ],
       "tool": "Dedicated foam tire applicator pads (Darkside-only, never mixed)",
@@ -540,21 +540,21 @@
     },
     {
       "name": "CarPro Reload 2.0",
-      "category": "Paint sealant / coating topper — both modes",
+      "category": "Paint sealant / coating topper â both modes",
       "modes": [
         "normal",
         "maint"
       ],
-      "usedOn": "All painted panels after blower drying — silica-based spray sealant, up to 3 months protection. Safe on wet or dry paint, rubber, and plastic trim. Do not apply to glass.",
+      "usedOn": "All painted panels after blower drying â silica-based spray sealant, up to 3 months protection. Safe on wet or dry paint, rubber, and plastic trim. Do not apply to glass.",
       "dilutions": [
         {
-          "context": "All painted surfaces — per carpro-us.com",
+          "context": "All painted surfaces â per carpro-us.com",
           "ratio": "RTU",
-          "amount": "3–4 sprays onto MF towel OR 1–2 sprays directly on panel — shake well first",
-          "note": "Apply wet or dry. IMMEDIATELY spread evenly over a 2–2.5 sq ft section. Work into surface until almost flashed. Flip towel and buff in further. Switch to a fresh clean MF towel and buff off completely. Check each panel before moving to next. Do NOT apply in direct sunlight. Excellent on rubber and plastic trim — does not stain. If uneven or hazy after buffing, wipe off with IPA immediately and re-apply. Up to 3 months protection on daily drivers."
+          "amount": "3â4 sprays onto MF towel OR 1â2 sprays directly on panel â shake well first",
+          "note": "Apply wet or dry. IMMEDIATELY spread evenly over a 2â2.5 sq ft section. Work into surface until almost flashed. Flip towel and buff in further. Switch to a fresh clean MF towel and buff off completely. Check each panel before moving to next. Do NOT apply in direct sunlight. Excellent on rubber and plastic trim â does not stain. If uneven or hazy after buffing, wipe off with IPA immediately and re-apply. Up to 3 months protection on daily drivers."
         }
       ],
-      "tool": "2 dedicated MF towels per session — one to spread, one to buff off. Never use on glass.",
+      "tool": "2 dedicated MF towels per session â one to spread, one to buff off. Never use on glass.",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Keep sealed. Store at room temperature.",
       "openedDate": ""
@@ -566,7 +566,7 @@
         "normal",
         "maint"
       ],
-      "usedOn": "Exhaust tips & tailpipes — carbon soot and oxidation removal",
+      "usedOn": "Exhaust tips & tailpipes â carbon soot and oxidation removal",
       "dilutions": [
         {
           "context": "All use",
@@ -596,7 +596,7 @@
           "context": "Interior glass",
           "ratio": "RTU",
           "amount": "No dilution",
-          "note": "Spray onto MF head of Invisible Glass Reach & Clean Tool — NOT directly onto glass. First pass damp to clean; swap to fresh head for dry buff pass."
+          "note": "Spray onto MF head of Invisible Glass Reach & Clean Tool â NOT directly onto glass. First pass damp to clean; swap to fresh head for dry buff pass."
         }
       ],
       "tool": "Dedicated exterior MF glass towels; Invisible Glass Reach & Clean Tool (interior)",
@@ -611,16 +611,16 @@
         "normal",
         "maint"
       ],
-      "usedOn": "Exterior black trim, door seals, weatherstripping, rubber, vinyl, plastics — interior and exterior. Also safe on finished leather, carbon fibre, synthetic rubber, PVC, gel coat. NOT for use on clear plastics, unfinished leather (suede), headlights, gauge panels, or glass.",
+      "usedOn": "Exterior black trim, door seals, weatherstripping, rubber, vinyl, plastics â interior and exterior. Also safe on finished leather, carbon fibre, synthetic rubber, PVC, gel coat. NOT for use on clear plastics, unfinished leather (suede), headlights, gauge panels, or glass.",
       "dilutions": [
         {
-          "context": "All use — exterior trim, rubber seals, interior plastics — per 303products.com",
+          "context": "All use â exterior trim, rubber seals, interior plastics â per 303products.com",
           "ratio": "RTU",
           "amount": "Spray directly onto surface or onto clean MF towel",
-          "note": "Use only on clean, dry surfaces — clean first before applying. Apply out of direct sunlight. Spray onto surface or MF towel and WIPE COMPLETELY DRY — this is critical for performance. Product does NOT air dry. If streaking occurs, too much product was used — remove excess with damp towel and immediately wipe completely dry. Extra buffing increases bonding, repellency, and durability. Dries to a clear matte finish — no greasy residue. Reapply every 3–5 weeks for maximum UV protection. Do NOT use on clear plastics, unfinished leather (suede), canvas, flooring, gauge panels, or headlights. Do NOT allow overspray on glass."
+          "note": "Use only on clean, dry surfaces â clean first before applying. Apply out of direct sunlight. Spray onto surface or MF towel and WIPE COMPLETELY DRY â this is critical for performance. Product does NOT air dry. If streaking occurs, too much product was used â remove excess with damp towel and immediately wipe completely dry. Extra buffing increases bonding, repellency, and durability. Dries to a clear matte finish â no greasy residue. Reapply every 3â5 weeks for maximum UV protection. Do NOT use on clear plastics, unfinished leather (suede), canvas, flooring, gauge panels, or headlights. Do NOT allow overspray on glass."
         }
       ],
-      "tool": "Spray direct or onto soft MF towel / foam applicator — dedicated trim applicator recommended to avoid glass overspray",
+      "tool": "Spray direct or onto soft MF towel / foam applicator â dedicated trim applicator recommended to avoid glass overspray",
       "shelfLife": "3 years unopened, 2 years opened",
       "storageNote": "Water-based. Keep from freezing. Store cool and dry.",
       "openedDate": ""
@@ -632,22 +632,22 @@
         "normal",
         "maint"
       ],
-      "usedOn": "All painted surfaces — quick detailer for final inspection pass, between-wash maintenance, spot correction. Also usable as rinseless wash, waterless wash, and clay lubricant. Safe on ceramic coatings, clear coat, matte/satin finishes, PPF. Does not leave film or alter coating characteristics.",
+      "usedOn": "All painted surfaces â quick detailer for final inspection pass, between-wash maintenance, spot correction. Also usable as rinseless wash, waterless wash, and clay lubricant. Safe on ceramic coatings, clear coat, matte/satin finishes, PPF. Does not leave film or alter coating characteristics.",
       "dilutions": [
         {
-          "context": "Quick detailer — labeled spray bottle",
-          "ratio": "60–90ml : 950ml water",
-          "amount": "60–90ml N-914 into 950ml water in spray bottle",
+          "context": "Quick detailer â labeled spray bottle",
+          "ratio": "60â90ml : 950ml water",
+          "amount": "60â90ml N-914 into 950ml water in spray bottle",
           "note": "Mist onto paint surface and wipe with clean soft MF towel. Shake bottle before use. Remaining mixture can be saved for later use. Use for final inspection pass, between-wash dust and fingerprint removal, and spot correction."
         },
         {
-          "context": "Rinseless wash — bucket",
+          "context": "Rinseless wash â bucket",
           "ratio": "30ml : 7.5L water",
           "amount": "30ml N-914 into 7.5L of water",
           "note": "No rinsing required. Wash one panel at a time, immediately dry with MF drying towel. Move to next panel. Can complete full wash in 15 minutes or less. Ideal for garage/winter washes or water-restricted areas."
         },
         {
-          "context": "Waterless wash — spray bottle",
+          "context": "Waterless wash â spray bottle",
           "ratio": "30ml : 3.8L water",
           "amount": "30ml N-914 into 3.8L water",
           "note": "Spray liberally onto one panel at a time. Wipe clean with soft MF towel. Switch towels frequently as you work around the vehicle."
@@ -671,28 +671,28 @@
         "normal",
         "maint"
       ],
-      "usedOn": "Full exterior painted surfaces, glass, plastics, metals — durable hydrophobic ceramic protection treatment. Also acts as a low-foaming shampoo for the bucket wash stage. Designed to be used after BH Touch-Less pre-wash.",
+      "usedOn": "Full exterior painted surfaces, glass, plastics, metals â durable hydrophobic ceramic protection treatment. Also acts as a low-foaming shampoo for the bucket wash stage. Designed to be used after BH Touch-Less pre-wash.",
       "dilutions": [
         {
-          "context": "Pressure washer / lance reservoir — per bilthamber.com",
+          "context": "Pressure washer / lance reservoir â per bilthamber.com",
           "ratio": "30ml : 300ml",
           "amount": "Add 30ml into washer or lance reservoir, top up to 300ml with clean cool water. Shake well.",
           "note": "Apply under pressure to entire vehicle. Immediately rinse using pressure washer. Dry with MF cloth or air blower. Vehicle must be cool and out of direct sunlight. Pre-wash with Touch-Less first."
         },
         {
-          "context": "Bucket — per bilthamber.com",
+          "context": "Bucket â per bilthamber.com",
           "ratio": "30ml : 10L",
-          "amount": "Pour 30–60ml into bucket, fill with 10L warm water from fast running tap. Mix well.",
+          "amount": "Pour 30â60ml into bucket, fill with 10L warm water from fast running tap. Mix well.",
           "note": "Apply using noodle wash mitt, sponge or similar. Rinse with clean water. Dry with MF cloth. Not a high foaming bucket wash."
         },
         {
-          "context": "Trigger spray — per bilthamber.com",
+          "context": "Trigger spray â per bilthamber.com",
           "ratio": "30ml : 1L",
           "amount": "Add 30ml to trigger bottle, top up to 1L with demineralised/deionised water. Shake well.",
-          "note": "Trigger apply liberally panel by panel, then thoroughly rinse with pressure washer or hose. Dry with MF towel or air blower. Car must NOT be allowed to air dry — water spotting may occur."
+          "note": "Trigger apply liberally panel by panel, then thoroughly rinse with pressure washer or hose. Dry with MF towel or air blower. Car must NOT be allowed to air dry â water spotting may occur."
         }
       ],
-      "tool": "Pressure washer lance / trigger spray / bucket + wash mitt — one 30ml sachet per session"
+      "tool": "Pressure washer lance / trigger spray / bucket + wash mitt â one 30ml sachet per session"
     },
     {
       "name": "Bilt Hamber Korrosol",
@@ -701,16 +701,16 @@
         "normal",
         "maint"
       ],
-      "usedOn": "All painted panels — removes embedded airborne metallic particles and brake dust from paintwork and lacquer. Non-acid, non-alkaline. Alternative/complement to CarPro Iron X.",
+      "usedOn": "All painted panels â removes embedded airborne metallic particles and brake dust from paintwork and lacquer. Non-acid, non-alkaline. Alternative/complement to CarPro Iron X.",
       "dilutions": [
         {
-          "context": "All painted panels — per bilthamber.com",
+          "context": "All painted panels â per bilthamber.com",
           "ratio": "RTU",
-          "amount": "No dilution — supplied with trigger spray",
-          "note": "Non-acid, non-alkaline colour-changing fallout remover for paintwork. Spray onto panel — formula turns purple/red as it reacts with embedded metallic particles. Rinse off with hose or jetwash. Use every 6–12 months or when contamination is felt with fingertips. Designed specifically for paintwork (not wheels — use Auto-Wheel for wheels). No agitation required in most cases."
+          "amount": "No dilution â supplied with trigger spray",
+          "note": "Non-acid, non-alkaline colour-changing fallout remover for paintwork. Spray onto panel â formula turns purple/red as it reacts with embedded metallic particles. Rinse off with hose or jetwash. Use every 6â12 months or when contamination is felt with fingertips. Designed specifically for paintwork (not wheels â use Auto-Wheel for wheels). No agitation required in most cases."
         }
       ],
-      "tool": "Trigger spray direct — no agitation required in most cases",
+      "tool": "Trigger spray direct â no agitation required in most cases",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Keep sealed. Do not freeze.",
       "openedDate": ""
@@ -722,40 +722,40 @@
         "normal",
         "maint"
       ],
-      "usedOn": "Wheel wells, door jambs, engine bay, tyres, brake calipers, interior plastics — versatile APC covering exterior and interior surfaces. Alternative/complement to AllClean and MultiX.",
+      "usedOn": "Wheel wells, door jambs, engine bay, tyres, brake calipers, interior plastics â versatile APC covering exterior and interior surfaces. Alternative/complement to AllClean and MultiX.",
       "dilutions": [
         {
-          "context": "Interior upholstery — per bilthamber.com",
-          "ratio": "1%–2%",
-          "amount": "10–20ml per 1L water",
+          "context": "Interior upholstery â per bilthamber.com",
+          "ratio": "1%â2%",
+          "amount": "10â20ml per 1L water",
           "note": "Apply with sponge, saturate area, extract with wet vac while wet. Repeat with made-up solution to remove dirt."
         },
         {
-          "context": "Interior headlining / sun visors — per bilthamber.com",
-          "ratio": "1%–2%",
-          "amount": "10–20ml per 1L water",
+          "context": "Interior headlining / sun visors â per bilthamber.com",
+          "ratio": "1%â2%",
+          "amount": "10â20ml per 1L water",
           "note": "Best product for light coloured headlining and sun visors per BH."
         },
         {
-          "context": "Interior plastic — lower door cards / plastics — per bilthamber.com",
-          "ratio": "2%–3%",
-          "amount": "20–30ml per 1L water",
+          "context": "Interior plastic â lower door cards / plastics â per bilthamber.com",
+          "ratio": "2%â3%",
+          "amount": "20â30ml per 1L water",
           "note": "Per BH FAQ: best cleaner for lower door cards and interior plastics."
         },
         {
-          "context": "Wheel arches / wheel wells / tyres — per bilthamber.com",
-          "ratio": "5%–10%",
-          "amount": "50–100ml per 1L water",
-          "note": "Saturate cool surface, dwell 1–5 min, agitate heavy soil with stiff bristled brush, rinse with clean cold water."
+          "context": "Wheel arches / wheel wells / tyres â per bilthamber.com",
+          "ratio": "5%â10%",
+          "amount": "50â100ml per 1L water",
+          "note": "Saturate cool surface, dwell 1â5 min, agitate heavy soil with stiff bristled brush, rinse with clean cold water."
         },
         {
-          "context": "Brake calipers — per bilthamber.com",
+          "context": "Brake calipers â per bilthamber.com",
           "ratio": "10%",
           "amount": "100ml per 1L water",
           "note": "Per BH: safe on rubber seals at this dilution."
         },
         {
-          "context": "Engine bay / heavy grease and oil — per bilthamber.com",
+          "context": "Engine bay / heavy grease and oil â per bilthamber.com",
           "ratio": "Neat to 100%",
           "amount": "Use concentrated for maximum grease/oil removal",
           "note": "Can be used from 1% (light) up to 100% neat for heavy industrial degreasing. Always spot test before use."
@@ -763,7 +763,7 @@
       ],
       "tool": "Labeled spray bottle + appropriate brush (stiff for exterior/engine, soft for interior); IK E Foam Pro 2 for larger areas",
       "shelfLife": "3 years unopened, 2 years opened",
-      "storageNote": "Concentrated — keep sealed, store cool.",
+      "storageNote": "Concentrated â keep sealed, store cool.",
       "openedDate": ""
     },
     {
@@ -773,13 +773,13 @@
         "normal",
         "maint"
       ],
-      "usedOn": "Alloy and steel wheel faces — non-acid, non-alkaline iron-reactive wheel cleaner. Alternative/complement to Koch Chemie MWC and Brake Buster.",
+      "usedOn": "Alloy and steel wheel faces â non-acid, non-alkaline iron-reactive wheel cleaner. Alternative/complement to Koch Chemie MWC and Brake Buster.",
       "dilutions": [
         {
-          "context": "All wheel surfaces — per bilthamber.com",
+          "context": "All wheel surfaces â per bilthamber.com",
           "ratio": "RTU",
-          "amount": "No dilution — spray liberally",
-          "note": "Spray Auto-Wheel liberally onto wheels. TIP: Avoid directly spraying centre caps — spray radially outward from centre. Wait for colour-changing reaction, normally 1–5 minutes depending on contamination level. Wash wheel thoroughly with hose or jetwash. In severe cases use included/dedicated wheel brush to assist. Not required every wash — use when brake dust contamination is observed, typically every 4 months. Non-acid, non-alkaline."
+          "amount": "No dilution â spray liberally",
+          "note": "Spray Auto-Wheel liberally onto wheels. TIP: Avoid directly spraying centre caps â spray radially outward from centre. Wait for colour-changing reaction, normally 1â5 minutes depending on contamination level. Wash wheel thoroughly with hose or jetwash. In severe cases use included/dedicated wheel brush to assist. Not required every wash â use when brake dust contamination is observed, typically every 4 months. Non-acid, non-alkaline."
         }
       ],
       "tool": "Trigger spray direct; EZ Detail brushes + Barrel Blade for agitation if needed; hose/jetwash to rinse",
@@ -794,13 +794,13 @@
         "normal",
         "maint"
       ],
-      "usedOn": "All smooth interior surfaces — plastic trim, dash, door cards, stainless steel, leather, textiles. Also suitable for exterior smooth surfaces. Ready-to-use, streak-free, residue-free finish. Pleasant scent.",
+      "usedOn": "All smooth interior surfaces â plastic trim, dash, door cards, stainless steel, leather, textiles. Also suitable for exterior smooth surfaces. Ready-to-use, streak-free, residue-free finish. Pleasant scent.",
       "dilutions": [
         {
-          "context": "All use — per kcxusa.com",
+          "context": "All use â per kcxusa.com",
           "ratio": "RTU",
-          "amount": "No dilution — spray undiluted onto surface",
-          "note": "Spray undiluted onto stained area. Allow to absorb briefly. Wipe with clean MF cloth. Leaves streak-free, residue-free finish on all smooth surfaces including non-polar plastics. Can also be used with cleaning gun (e.g. Cyclone) for ventilation slots and textiles — switch off chemical spray and dry with compressed air."
+          "amount": "No dilution â spray undiluted onto surface",
+          "note": "Spray undiluted onto stained area. Allow to absorb briefly. Wipe with clean MF cloth. Leaves streak-free, residue-free finish on all smooth surfaces including non-polar plastics. Can also be used with cleaning gun (e.g. Cyclone) for ventilation slots and textiles â switch off chemical spray and dry with compressed air."
         }
       ],
       "tool": "Spray direct onto surface or MF cloth; cleaning gun for vents and textiles"
@@ -815,45 +815,25 @@
       "usedOn": "All exterior and interior glass, mirrors, smooth surfaces on vehicles. Safe on tinted glass and chrome. Interior and exterior use.",
       "dilutions": [
         {
-          "context": "All use — exterior and interior glass — per kcxusa.com",
+          "context": "All use â exterior and interior glass â per kcxusa.com",
           "ratio": "RTU",
-          "amount": "No dilution — spray on undiluted and wipe off",
-          "note": "Ready-to-use. Effortlessly removes road film, oil, grease, insects. Runs off quickly without streaks. Gloss and smoothness additive improves wiping effect of cloth. Safe for tinted glass and chrome. Use with dedicated MF glass towel — waffle-weave for first pass, suede or clean side for buff pass. Do NOT spray directly on iDrive screen — spray onto cloth only."
+          "amount": "No dilution â spray on undiluted and wipe off",
+          "note": "Ready-to-use. Effortlessly removes road film, oil, grease, insects. Runs off quickly without streaks. Gloss and smoothness additive improves wiping effect of cloth. Safe for tinted glass and chrome. Use with dedicated MF glass towel â waffle-weave for first pass, suede or clean side for buff pass. Do NOT spray directly on iDrive screen â spray onto cloth only."
         }
       ],
-      "tool": "Dedicated MF glass towels — waffle-weave first pass, suede or clean MF buff pass. Interior: Invisible Glass Reach & Clean Tool."
-    },
-    {
-      "name": "Test Product",
-      "category": "Main wash shampoo",
-      "modes": [
-        "maint"
-      ],
-      "usedOn": "Entire car",
-      "shelfLife": "2 years",
-      "storageNote": "Word",
-      "tool": "Wash mitt",
-      "openedDate": null,
-      "dilutions": [
-        {
-          "context": "",
-          "ratio": "100:1",
-          "amount": null,
-          "note": null
-        }
-      ]
+      "tool": "Dedicated MF glass towels â waffle-weave first pass, suede or clean MF buff pass. Interior: Invisible Glass Reach & Clean Tool."
     }
   ],
   "washSteps": {
     "normal": [
       {
         "id": "n01",
-        "title": "Park in shade — cool panels",
+        "title": "Park in shade â cool panels",
         "desc": "Never wash a hot car or in direct sunlight. Ceramic coating accelerates flash-drying on ION Green metallic. All chemical applications require cool surfaces.",
         "tools": [],
         "chems": [],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 2
       },
       {
@@ -865,13 +845,13 @@
         ],
         "chems": [],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 3
       },
       {
         "id": "n05",
         "title": "Apply Koch Chemie MWC to wheels",
-        "desc": "Load MWC RTU into IK E Foam Pro 2 (1.25L) undiluted or spray direct. Dwell 2–5 min until red iron-bleed visible. Agitate face/spokes with EZ Detail Big Brush, inner barrel with Autofiber Barrel Blade, tight gaps with Little Brush and detail brushes. Rinse thoroughly. Use Brake Buster if heavily contaminated.",
+        "desc": "Load MWC RTU into IK E Foam Pro 2 (1.25L) undiluted or spray direct. Dwell 2â5 min until red iron-bleed visible. Agitate face/spokes with EZ Detail Big Brush, inner barrel with Autofiber Barrel Blade, tight gaps with Little Brush and detail brushes. Rinse thoroughly. Use Brake Buster if heavily contaminated.",
         "tools": [
           "IK E Foam Pro 2",
           "EZ Detail Big Brush",
@@ -880,29 +860,29 @@
           "Detail brushes"
         ],
         "chems": [
-          "Koch Chemie MWC — RTU",
-          "Brake Buster — RTU (option)"
+          "Koch Chemie MWC â RTU",
+          "Brake Buster â RTU (option)"
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 8,
-        "dwellMins": "2–5",
+        "dwellMins": "2â5",
         "dwellMin": 120,
         "dwellMax": 300
       },
       {
         "id": "n06",
-        "title": "Clean tire sidewalls — CarPro ReTyre",
-        "desc": "Rinse tire first. Spray ReTyre RTU with foaming nozzle ONLY. Dwell 30 sec. Agitate with stiff tire brush. Rinse completely. If ReTyre contacts wheel face, dilute and rinse immediately. This is the ONLY ReTyre step — not repeated before dressing.",
+        "title": "Clean tire sidewalls â CarPro ReTyre",
+        "desc": "Rinse tire first. Spray ReTyre RTU with foaming nozzle ONLY. Dwell 30 sec. Agitate with stiff tire brush. Rinse completely. If ReTyre contacts wheel face, dilute and rinse immediately. This is the ONLY ReTyre step â not repeated before dressing.",
         "tools": [
           "Labeled spray bottle (foaming nozzle)",
           "Tire scrub brush"
         ],
         "chems": [
-          "CarPro ReTyre — RTU"
+          "CarPro ReTyre â RTU"
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 4,
         "dwellMins": "0.5",
         "dwellMin": 30,
@@ -910,23 +890,23 @@
       },
       {
         "id": "n07",
-        "title": "Agitate wheel wells — APC",
-        "desc": "Spray AllClean (5:1–10:1) or MultiX (10:1) into wheel wells. Agitate with Detail Factory Fender Well Brush. Rinse.",
+        "title": "Agitate wheel wells â APC",
+        "desc": "Spray AllClean (5:1â10:1) or MultiX (10:1) into wheel wells. Agitate with Detail Factory Fender Well Brush. Rinse.",
         "tools": [
           "Detail Factory Fender Well Brush",
           "Labeled spray bottle"
         ],
         "chems": [
-          "AllClean 5:1–10:1 or CarPro MultiX 1:20"
+          "AllClean 5:1â10:1 or CarPro MultiX 1:20"
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 4
       },
       {
         "id": "n076",
-        "title": "Clean door jambs — APC (optional)",
-        "desc": "Optional — every 3–4 washes or when visibly dirty. Work one door at a time, door fully open. Pre-rinse with low-pressure hose top to bottom, flushing drain holes. Spray AllClean (3:1–5:1) or MultiX (10:1) into jamb, dwell 1–2 min. Agitate flat surfaces with a soft detail brush, hinge hardware and striker plate with a stiff brush, and rubber seals thoroughly. Rinse completely top to bottom — ensure all APC is flushed from drain holes or it will streak down paint when door opens. Blow dry with leaf blower into hinge recesses and drain holes, follow with MF towel on flat surfaces. Dress rubber seals with trim dressing after drying.",
+        "title": "Clean door jambs â APC (optional)",
+        "desc": "Optional â every 3â4 washes or when visibly dirty. Work one door at a time, door fully open. Pre-rinse with low-pressure hose top to bottom, flushing drain holes. Spray AllClean (3:1â5:1) or MultiX (10:1) into jamb, dwell 1â2 min. Agitate flat surfaces with a soft detail brush, hinge hardware and striker plate with a stiff brush, and rubber seals thoroughly. Rinse completely top to bottom â ensure all APC is flushed from drain holes or it will streak down paint when door opens. Blow dry with leaf blower into hinge recesses and drain holes, follow with MF towel on flat surfaces. Dress rubber seals with trim dressing after drying.",
         "tools": [
           "Detail brushes (soft + stiff)",
           "Hose (low pressure)",
@@ -935,48 +915,48 @@
           "Soft trim brush"
         ],
         "chems": [
-          "AllClean 3:1–5:1 or MultiX 1:10",
-          "303 Aerospace Protectant — RTU (seals)"
+          "AllClean 3:1â5:1 or MultiX 1:10",
+          "303 Aerospace Protectant â RTU (seals)"
         ],
         "optional": true,
         "normalOnly": true,
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 10
       },
       {
         "id": "n02",
-        "title": "Spot-treat bugs — CarPro Bug Out",
-        "desc": "Spray Bug Out on front bumper, hood edge, lower windshield, and mirrors on DRY surface. Dwell 5–30 sec (up to 2 min max for baked-on). Agitate gently with soft MF. Neutralise residue with Reset or ECH2O. Do not leave more than 5 min. Proceed to Tar X before any rinsing.",
+        "title": "Spot-treat bugs â CarPro Bug Out",
+        "desc": "Spray Bug Out on front bumper, hood edge, lower windshield, and mirrors on DRY surface. Dwell 5â30 sec (up to 2 min max for baked-on). Agitate gently with soft MF. Neutralise residue with Reset or ECH2O. Do not leave more than 5 min. Proceed to Tar X before any rinsing.",
         "tools": [
           "Labeled spray bottle",
           "Dedicated MF towel (bugs)"
         ],
         "chems": [
-          "CarPro Bug Out — RTU"
+          "CarPro Bug Out â RTU"
         ],
         "phase": "Pre-treatment",
-        "phaseIcon": "🔴",
+        "phaseIcon": "ð´",
         "estMins": 3,
-        "dwellMins": "0.5–2",
+        "dwellMins": "0.5â2",
         "dwellMin": 30,
         "dwellMax": 120
       },
       {
         "id": "n03",
-        "title": "Spot-treat tar — CarPro Tar X",
-        "desc": "Spray Tar X on lower rockers, rear bumper, door bottoms on DRY cool surface. Dwell 2–3 min (max 7–10 min). Wipe residue with dedicated tar MF. Wash treated area with shampoo after.",
+        "title": "Spot-treat tar â CarPro Tar X",
+        "desc": "Spray Tar X on lower rockers, rear bumper, door bottoms on DRY cool surface. Dwell 2â3 min (max 7â10 min). Wipe residue with dedicated tar MF. Wash treated area with shampoo after.",
         "tools": [
           "Labeled spray bottle",
           "Dedicated MF towel (tar only)"
         ],
         "chems": [
-          "CarPro Tar X — RTU"
+          "CarPro Tar X â RTU"
         ],
         "phase": "Pre-treatment",
-        "phaseIcon": "🔴",
+        "phaseIcon": "ð´",
         "estMins": 3,
-        "dwellMins": "2–3",
+        "dwellMins": "2â3",
         "dwellMin": 120,
         "dwellMax": 180
       },
@@ -989,22 +969,22 @@
         ],
         "chems": [],
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 3
       },
       {
         "id": "n09",
-        "title": "Snow foam pre-soak — CarPro Reset",
-        "desc": "Add 12–15ml (approx. 0.4–0.5oz) of Reset to the IK E Foam Pro 12, then fill to the 6L usable mark with water — this is the correct 400–500:1 dilution per carpro-us.com. Apply thick foam top to bottom, dwell 5 min. Do not let dry. Rinse off completely before contact wash. Note: CarPro's published 1:9 ratio is for pressure washer foam cannons only — not applicable to IK foam sprayers.",
+        "title": "Snow foam pre-soak â CarPro Reset",
+        "desc": "Add 12â15ml (approx. 0.4â0.5oz) of Reset to the IK E Foam Pro 12, then fill to the 6L usable mark with water â this is the correct 400â500:1 dilution per carpro-us.com. Apply thick foam top to bottom, dwell 5 min. Do not let dry. Rinse off completely before contact wash. Note: CarPro's published 1:9 ratio is for pressure washer foam cannons only â not applicable to IK foam sprayers.",
         "tools": [
           "IK E Foam Pro 12"
         ],
         "chems": [
-          "CarPro Reset — 12–15ml per 6L fill in IK E Foam Pro 12 (400–500:1)"
+          "CarPro Reset â 12â15ml per 6L fill in IK E Foam Pro 12 (400â500:1)"
         ],
         "normalOnly": true,
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 6,
         "dwellMins": "5",
         "dwellMin": 300,
@@ -1013,34 +993,34 @@
       {
         "id": "n08",
         "title": "Apply CarPro Iron X to paint",
-        "desc": "Spray Iron X RTU across all painted panels. Dwell 3–5 min — purple bleed indicates iron in coating. Do NOT let dry on ceramic. Rinse completely.",
+        "desc": "Spray Iron X RTU across all painted panels. Dwell 3â5 min â purple bleed indicates iron in coating. Do NOT let dry on ceramic. Rinse completely.",
         "tools": [
           "Labeled spray bottle"
         ],
         "chems": [
-          "CarPro Iron X — RTU"
+          "CarPro Iron X â RTU"
         ],
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 7,
-        "dwellMins": "3–5",
+        "dwellMins": "3â5",
         "dwellMin": 180,
         "dwellMax": 300
       },
       {
         "id": "n10",
-        "title": "Two-bucket contact wash — top to bottom",
-        "desc": "Fill Bucket 2 (WASH) with 4 gallons (15L) of water and add 30ml of Reset (400–500:1). Work one panel at a time, top to bottom. Rinse mitt in Bucket 3 (RINSE) after each panel, drag across grit guard before reloading. Light pressure only. Never use paint mitts on wheels.",
+        "title": "Two-bucket contact wash â top to bottom",
+        "desc": "Fill Bucket 2 (WASH) with 4 gallons (15L) of water and add 30ml of Reset (400â500:1). Work one panel at a time, top to bottom. Rinse mitt in Bucket 3 (RINSE) after each panel, drag across grit guard before reloading. Light pressure only. Never use paint mitts on wheels.",
         "tools": [
           "Wash mitt",
           "Bucket 2 (WASH) + Bucket 3 (RINSE) with grit guards"
         ],
         "chems": [
-          "CarPro Reset — 30ml per 4 gallons (15L) in Bucket 2"
+          "CarPro Reset â 30ml per 4 gallons (15L) in Bucket 2"
         ],
         "normalOnly": true,
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "🟡",
+        "phaseIcon": "ð¡",
         "estMins": 15
       },
       {
@@ -1052,164 +1032,164 @@
         ],
         "chems": [],
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "🟡",
+        "phaseIcon": "ð¡",
         "estMins": 3
       },
       {
         "id": "n12",
-        "title": "Touchless leaf blower drying — paint",
-        "desc": "Blow all paint surfaces dry: roof → hood → trunk → sides → lower panels. Chase water from mirror housings, door jambs, badges, trim gaps, exhaust outlets. ZERO towel contact on paint.",
+        "title": "Touchless leaf blower drying â paint",
+        "desc": "Blow all paint surfaces dry: roof â hood â trunk â sides â lower panels. Chase water from mirror housings, door jambs, badges, trim gaps, exhaust outlets. ZERO towel contact on paint.",
         "tools": [
           "Leaf blower"
         ],
         "chems": [],
         "phase": "Dry & Protect",
-        "phaseIcon": "🟢",
+        "phaseIcon": "ð¢",
         "estMins": 8
       },
       {
         "id": "n115",
-        "title": "Apply CarPro Reload 2.0 — paint sealant",
-        "desc": "Apply after paint is fully blower-dried. Work one panel at a time. Shake well. Spray 3–4 sprays onto a dedicated MF towel (or 1–2 sprays directly on panel). Spread evenly immediately. Wait 30–60 sec until almost flashed. Flip towel and buff in. Switch to a second clean dry MF towel and buff off completely. Do NOT apply in direct sunlight. Do NOT apply to glass. If uneven or hazy after buffing, wipe off with IPA and re-apply.",
+        "title": "Apply CarPro Reload 2.0 â paint sealant",
+        "desc": "Apply after paint is fully blower-dried. Work one panel at a time. Shake well. Spray 3â4 sprays onto a dedicated MF towel (or 1â2 sprays directly on panel). Spread evenly immediately. Wait 30â60 sec until almost flashed. Flip towel and buff in. Switch to a second clean dry MF towel and buff off completely. Do NOT apply in direct sunlight. Do NOT apply to glass. If uneven or hazy after buffing, wipe off with IPA and re-apply.",
         "tools": [
-          "2× dedicated MF towels (spread + buff off)"
+          "2Ã dedicated MF towels (spread + buff off)"
         ],
         "chems": [
-          "CarPro Reload 2.0 — RTU, 3–4 sprays per section onto towel"
+          "CarPro Reload 2.0 â RTU, 3â4 sprays per section onto towel"
         ],
         "phase": "Dry & Protect",
-        "phaseIcon": "🟢",
+        "phaseIcon": "ð¢",
         "estMins": 10
       },
       {
         "id": "n13",
-        "title": "Clean exhaust tips — P21S Polishing Soap",
+        "title": "Clean exhaust tips â P21S Polishing Soap",
         "desc": "Apply small amount of P21S direct to soft MF cloth or applicator. Circular motions on each exhaust tip to cut carbon soot and oxidation. Wipe clean. Keep soap off surrounding painted bumper.",
         "tools": [
           "P21S applicator / soft MF cloth"
         ],
         "chems": [
-          "P21S Polishing Soap — small amount direct"
+          "P21S Polishing Soap â small amount direct"
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 4
       },
       {
         "id": "n14",
-        "title": "Exterior glass — BH Trace-Less or Koch Chemie Glass Cleaner",
-        "desc": "Use either BH Trace-Less or Koch Chemie Glass Cleaner — both RTU, both safe on ceramic-coated glass. Spray onto waffle-weave MF towel. Wipe in straight lines. Buff with dry side of towel. Do not apply in direct sunlight. Use dedicated exterior MF glass towels only.",
+        "title": "Exterior glass â BH Trace-Less or Koch Chemie Glass Cleaner",
+        "desc": "Use either BH Trace-Less or Koch Chemie Glass Cleaner â both RTU, both safe on ceramic-coated glass. Spray onto waffle-weave MF towel. Wipe in straight lines. Buff with dry side of towel. Do not apply in direct sunlight. Use dedicated exterior MF glass towels only.",
         "tools": [
-          "MF glass towels (exterior — dedicated)"
+          "MF glass towels (exterior â dedicated)"
         ],
         "chems": [
-          "BH Trace-Less — RTU (shake well)",
-          "OR Koch Chemie Glass Cleaner — RTU"
+          "BH Trace-Less â RTU (shake well)",
+          "OR Koch Chemie Glass Cleaner â RTU"
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 4
       },
       {
         "id": "n15",
-        "title": "Interior glass — BH Trace-Less or Koch Chemie Glass Cleaner + Reach & Clean Tool",
-        "desc": "Use either BH Trace-Less or Koch Chemie Glass Cleaner. Spray onto MF head of Invisible Glass Reach & Clean Tool — NOT directly onto glass. First pass damp to clean; swap to fresh head for dry buff pass. Only use lint-free cloths free of detergents and fabric conditioners.",
+        "title": "Interior glass â BH Trace-Less or Koch Chemie Glass Cleaner + Reach & Clean Tool",
+        "desc": "Use either BH Trace-Less or Koch Chemie Glass Cleaner. Spray onto MF head of Invisible Glass Reach & Clean Tool â NOT directly onto glass. First pass damp to clean; swap to fresh head for dry buff pass. Only use lint-free cloths free of detergents and fabric conditioners.",
         "tools": [
           "Invisible Glass Reach & Clean Tool (95160)",
-          "MF glass towels (interior — dedicated)"
+          "MF glass towels (interior â dedicated)"
         ],
         "chems": [
-          "BH Trace-Less — RTU (onto tool head)",
-          "OR Koch Chemie Glass Cleaner — RTU (onto tool head)"
+          "BH Trace-Less â RTU (onto tool head)",
+          "OR Koch Chemie Glass Cleaner â RTU (onto tool head)"
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 5
       },
       {
         "id": "n16",
         "title": "Apply CarPro Darkside to tire sidewalls",
-        "desc": "Apply DarkSide RTU to clean, 100% DRY sidewall using dedicated foam applicator pad or Darkside Applicator Brush — squirt onto applicator, not directly on tire. Spread evenly. Wipe off any excess. IMPORTANT: Allow minimum 1–2 hours dry time before driving the vehicle. Use in a ventilated area — contains citral, PPE recommended. Wipe any overspray off painted wheel faces immediately.",
+        "desc": "Apply DarkSide RTU to clean, 100% DRY sidewall using dedicated foam applicator pad or Darkside Applicator Brush â squirt onto applicator, not directly on tire. Spread evenly. Wipe off any excess. IMPORTANT: Allow minimum 1â2 hours dry time before driving the vehicle. Use in a ventilated area â contains citral, PPE recommended. Wipe any overspray off painted wheel faces immediately.",
         "tools": [
-          "Foam tire applicator pad (Darkside — dedicated)"
+          "Foam tire applicator pad (Darkside â dedicated)"
         ],
         "chems": [
-          "CarPro Darkside — RTU, squirt onto applicator. MIN 1–2 hrs dry before driving."
+          "CarPro Darkside â RTU, squirt onto applicator. MIN 1â2 hrs dry before driving."
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 5
       },
       {
         "id": "n17",
-        "title": "Dress exterior trim & rubber seals — 303 Aerospace Protectant",
-        "desc": "Apply 303 Aerospace Protectant to all exterior black trim, door seals, and weatherstripping. Use on clean dry surfaces only. Apply out of direct sunlight — spray onto foam applicator or MF towel (never spray directly near glass). Wipe completely dry — product does NOT air dry. Extra buffing increases durability. Do not apply to glass, headlights, or clear plastics.",
+        "title": "Dress exterior trim & rubber seals â 303 Aerospace Protectant",
+        "desc": "Apply 303 Aerospace Protectant to all exterior black trim, door seals, and weatherstripping. Use on clean dry surfaces only. Apply out of direct sunlight â spray onto foam applicator or MF towel (never spray directly near glass). Wipe completely dry â product does NOT air dry. Extra buffing increases durability. Do not apply to glass, headlights, or clear plastics.",
         "tools": [
           "Soft trim brush"
         ],
         "chems": [
-          "303 Aerospace Protectant — RTU, wipe completely dry. Reapply every 3–5 weeks."
+          "303 Aerospace Protectant â RTU, wipe completely dry. Reapply every 3â5 weeks."
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 4
       },
       {
         "id": "n18",
-        "title": "Final inspection — McKee's 37 N-914 spot correction",
-        "desc": "Walk car in direct sunlight at raking angle. ION Green metallic reveals water spots, missed panels, and glass haze easily. Spot-correct with McKee's 37 N-914 quick detailer (60–90ml per 950ml water in spray bottle). Mist onto panel and wipe with clean soft MF towel. Shake bottle before use.",
+        "title": "Final inspection â McKee's 37 N-914 spot correction",
+        "desc": "Walk car in direct sunlight at raking angle. ION Green metallic reveals water spots, missed panels, and glass haze easily. Spot-correct with McKee's 37 N-914 quick detailer (60â90ml per 950ml water in spray bottle). Mist onto panel and wipe with clean soft MF towel. Shake bottle before use.",
         "tools": [
           "Labeled spray bottle",
           "Clean MF towel"
         ],
         "chems": [
-          "McKee's 37 N-914 — 60–90ml per 950ml water in spray bottle"
+          "McKee's 37 N-914 â 60â90ml per 950ml water in spray bottle"
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 5
       }
     ],
     "maintOnly": [
       {
         "id": "m01",
-        "title": "Bilt Hamber Touchless pre-soak — maint. step 1",
-        "desc": "Add 60ml Touchless for a light clean (1% PIR) or up to 120ml for heavy contamination (2% PIR) into the IK E Foam Pro 12, then fill to the 6L usable mark with water. Apply thick coat top to bottom. Dwell 1–5 min — do not let dry. Rinse completely before next step.",
+        "title": "Bilt Hamber Touchless pre-soak â maint. step 1",
+        "desc": "Add 60ml Touchless for a light clean (1% PIR) or up to 120ml for heavy contamination (2% PIR) into the IK E Foam Pro 12, then fill to the 6L usable mark with water. Apply thick coat top to bottom. Dwell 1â5 min â do not let dry. Rinse completely before next step.",
         "tools": [
           "IK E Foam Pro 12"
         ],
         "chems": [
-          "Bilt Hamber Touchless — 60ml (1% PIR) to 120ml (2% PIR) per 6L fill in IK E Foam Pro 12"
+          "Bilt Hamber Touchless â 60ml (1% PIR) to 120ml (2% PIR) per 6L fill in IK E Foam Pro 12"
         ],
         "insertAfter": "n075",
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 8,
-        "dwellMins": "1–5",
+        "dwellMins": "1â5",
         "dwellMin": 60,
         "dwellMax": 300
       },
       {
         "id": "m02",
-        "title": "CarPro Descale — 2-bucket contact wash",
-        "desc": "Fill Bucket 2 (WASH) with 4 gallons (15L) of water and add 150ml of Descale (1:100). Use Bucket 3 (RINSE) as the rinse bucket. Reset is not used in the maintenance wash — Descale replaces it for the contact wash stage. Work one panel at a time, top to bottom. Dwell as long as possible without letting it dry. Rinse each panel completely before moving to the next. ION Green makes mineral hazing very visible — inspect carefully as you go.",
+        "title": "CarPro Descale â 2-bucket contact wash",
+        "desc": "Fill Bucket 2 (WASH) with 4 gallons (15L) of water and add 150ml of Descale (1:100). Use Bucket 3 (RINSE) as the rinse bucket. Reset is not used in the maintenance wash â Descale replaces it for the contact wash stage. Work one panel at a time, top to bottom. Dwell as long as possible without letting it dry. Rinse each panel completely before moving to the next. ION Green makes mineral hazing very visible â inspect carefully as you go.",
         "tools": [
           "Bucket 2 (WASH) + Bucket 3 (RINSE) with grit guards",
           "Wash mitt"
         ],
         "chems": [
-          "CarPro Descale — 150ml per 4 gallons (15L) in Bucket 2 (1:100)"
+          "CarPro Descale â 150ml per 4 gallons (15L) in Bucket 2 (1:100)"
         ],
         "insertAfter": "n08",
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "🟡",
+        "phaseIcon": "ð¡",
         "estMins": 20,
         "dwellMins": "max per panel"
       },
       {
         "id": "m00",
-        "title": "Clean door jambs — APC",
-        "desc": "Standard step on every maintenance wash. Work one door at a time, door fully open. Pre-rinse with low-pressure hose top to bottom, flushing drain holes. Spray AllClean (3:1–5:1) or MultiX (10:1) into jamb, dwell 1–2 min. Agitate flat surfaces with a soft detail brush, hinge hardware and striker plate with a stiff brush, rubber seals thoroughly. The G80 B-pillar has exposed wiring — rinse around connectors, not directly at them. Rinse completely top to bottom, flush drain holes fully. Blow dry with leaf blower into hinges, drain holes, and seal channel. MF towel on flat surfaces. Dress rubber seals and inner seal lip with trim dressing after drying.",
+        "title": "Clean door jambs â APC",
+        "desc": "Standard step on every maintenance wash. Work one door at a time, door fully open. Pre-rinse with low-pressure hose top to bottom, flushing drain holes. Spray AllClean (3:1â5:1) or MultiX (10:1) into jamb, dwell 1â2 min. Agitate flat surfaces with a soft detail brush, hinge hardware and striker plate with a stiff brush, rubber seals thoroughly. The G80 B-pillar has exposed wiring â rinse around connectors, not directly at them. Rinse completely top to bottom, flush drain holes fully. Blow dry with leaf blower into hinges, drain holes, and seal channel. MF towel on flat surfaces. Dress rubber seals and inner seal lip with trim dressing after drying.",
         "tools": [
           "Detail brushes (soft + stiff)",
           "Hose (low pressure)",
@@ -1218,18 +1198,18 @@
           "Soft trim brush"
         ],
         "chems": [
-          "AllClean 3:1–5:1 or MultiX 1:10",
-          "303 Aerospace Protectant — RTU (seals)"
+          "AllClean 3:1â5:1 or MultiX 1:10",
+          "303 Aerospace Protectant â RTU (seals)"
         ],
         "insertAfter": "n07",
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 10
       }
     ]
   },
   "engineBay": {
-    "note": "Optional — standalone session only. Engine must be FULLY COOL (2-3 hours minimum after driving). Do not combine with an active wash day — bay needs time to dry fully before driving. Shade preferred, ambient temp below 80°F ideally.",
+    "note": "Optional â standalone session only. Engine must be FULLY COOL (2-3 hours minimum after driving). Do not combine with an active wash day â bay needs time to dry fully before driving. Shade preferred, ambient temp below 80Â°F ideally.",
     "coverBeforeWater": {
       "bagAndTape": [
         "Alternator",
@@ -1250,7 +1230,7 @@
       {
         "id": "e01",
         "title": "Confirm engine is fully cool",
-        "desc": "Engine off for at least 2–3 hours. Touch the valve cover and intake manifold — both must be at ambient temperature. A cool engine is non-negotiable on the S58.",
+        "desc": "Engine off for at least 2â3 hours. Touch the valve cover and intake manifold â both must be at ambient temperature. A cool engine is non-negotiable on the S58.",
         "tools": [],
         "chems": [],
         "warn": false
@@ -1258,7 +1238,7 @@
       {
         "id": "e02",
         "title": "Cover sensitive components",
-        "desc": "Bag and tape: alternator, fuse box/PDU, air intake snorkel and filter housing, throttle body area, all exposed wiring harness connectors you can reach. Do not skip — water intrusion into the PDU or alternator is an expensive repair on the G80.",
+        "desc": "Bag and tape: alternator, fuse box/PDU, air intake snorkel and filter housing, throttle body area, all exposed wiring harness connectors you can reach. Do not skip â water intrusion into the PDU or alternator is an expensive repair on the G80.",
         "tools": [
           "Plastic bags",
           "Painter's tape"
@@ -1269,7 +1249,7 @@
       {
         "id": "e03",
         "title": "Pre-rinse with low-pressure hose",
-        "desc": "Hose only — NEVER a pressure washer directly in the engine bay. Rinse from back of bay toward front, keeping water away from the firewall wiring looms. Wet all surfaces to prevent APC from drying.",
+        "desc": "Hose only â NEVER a pressure washer directly in the engine bay. Rinse from back of bay toward front, keeping water away from the firewall wiring looms. Wet all surfaces to prevent APC from drying.",
         "tools": [
           "Hose (low pressure, no jet nozzle)"
         ],
@@ -1278,21 +1258,21 @@
       },
       {
         "id": "e04",
-        "title": "Apply APC — AllClean or MultiX",
-        "desc": "Load AllClean (5:1–10:1) or MultiX (10:1) into IK E Foam Pro 2 or labeled spray bottle. Apply top to bottom across all plastic covers, hoses, bay walls, chassis surfaces. Strengthen to 3:1 for heavy grease or oil deposits. Dwell 1–2 min. Keep APC off coil packs and any uncovered sensor connectors.",
+        "title": "Apply APC â AllClean or MultiX",
+        "desc": "Load AllClean (5:1â10:1) or MultiX (10:1) into IK E Foam Pro 2 or labeled spray bottle. Apply top to bottom across all plastic covers, hoses, bay walls, chassis surfaces. Strengthen to 3:1 for heavy grease or oil deposits. Dwell 1â2 min. Keep APC off coil packs and any uncovered sensor connectors.",
         "tools": [
           "IK E Foam Pro 2 or labeled spray bottle",
           "Detail brushes (assorted)"
         ],
         "chems": [
-          "AllClean 5:1–10:1 or MultiX 10:1 (3:1 for heavy deposits)"
+          "AllClean 5:1â10:1 or MultiX 10:1 (3:1 for heavy deposits)"
         ],
         "warn": false
       },
       {
         "id": "e05",
         "title": "Agitate with detail brushes",
-        "desc": "Work through all surfaces with assorted detail brushes — engine covers, hose clamps, brackets, strut brace, bay walls. Softer brush on plastic covers, stiffer on chassis and metal brackets. Stay clear of any areas you couldn't bag.",
+        "desc": "Work through all surfaces with assorted detail brushes â engine covers, hose clamps, brackets, strut brace, bay walls. Softer brush on plastic covers, stiffer on chassis and metal brackets. Stay clear of any areas you couldn't bag.",
         "tools": [
           "Detail brushes (assorted)"
         ],
@@ -1301,8 +1281,8 @@
       },
       {
         "id": "e06",
-        "title": "Rinse thoroughly — low-pressure hose",
-        "desc": "Rinse from back to front again, flushing all APC residue out of the bay. Keep water flow controlled — do not direct stream at covered components. Work section by section.",
+        "title": "Rinse thoroughly â low-pressure hose",
+        "desc": "Rinse from back to front again, flushing all APC residue out of the bay. Keep water flow controlled â do not direct stream at covered components. Work section by section.",
         "tools": [
           "Hose (low pressure)"
         ],
@@ -1311,8 +1291,8 @@
       },
       {
         "id": "e07",
-        "title": "Remove covers — dry with leaf blower",
-        "desc": "Remove all plastic bags and tape. Immediately blow the entire bay dry — work into every gap, around connectors, under hoses and brackets, along the firewall. Allow bay to air for 10–15 min after blowing before considering the job done.",
+        "title": "Remove covers â dry with leaf blower",
+        "desc": "Remove all plastic bags and tape. Immediately blow the entire bay dry â work into every gap, around connectors, under hoses and brackets, along the firewall. Allow bay to air for 10â15 min after blowing before considering the job done.",
         "tools": [
           "Leaf blower"
         ],
@@ -1322,13 +1302,13 @@
       {
         "id": "e08",
         "title": "Dress plastics, hoses & rubber",
-        "desc": "Apply trim dressing RTU to all plastic covers, hoses, and rubber seals in the bay with a soft trim brush or foam applicator. Apply thin — do not over-saturate near hot surfaces or connectors. Buff off any excess with a clean MF towel.",
+        "desc": "Apply trim dressing RTU to all plastic covers, hoses, and rubber seals in the bay with a soft trim brush or foam applicator. Apply thin â do not over-saturate near hot surfaces or connectors. Buff off any excess with a clean MF towel.",
         "tools": [
           "Soft trim brush or foam applicator",
           "MF buffing towel"
         ],
         "chems": [
-          "Trim dressing — RTU"
+          "Trim dressing â RTU"
         ],
         "warn": false
       }
@@ -1350,7 +1330,7 @@
         "id": "g02",
         "priority": "essential",
         "name": "Dedicated wheel wash mitt or sponge",
-        "why": "Bucket 1 (WHEELS) needs its own applicator — completely separate from paint mitts.",
+        "why": "Bucket 1 (WHEELS) needs its own applicator â completely separate from paint mitts.",
         "washTypes": [
           "normal",
           "maint"
@@ -1359,7 +1339,7 @@
       {
         "id": "g03",
         "priority": "essential",
-        "name": "Dedicated MF towels — bug pre-treatment (labeled)",
+        "name": "Dedicated MF towels â bug pre-treatment (labeled)",
         "why": "Bug Out wipe towels must stay separate from all paint and wash towels. 2 minimum, labeled.",
         "washTypes": [
           "normal",
@@ -1369,7 +1349,7 @@
       {
         "id": "g04",
         "priority": "essential",
-        "name": "Dedicated MF towels — tar pre-treatment (labeled)",
+        "name": "Dedicated MF towels â tar pre-treatment (labeled)",
         "why": "Tar X towels carry solvent-dissolved tar and must never contact paint mitts or drying towels.",
         "washTypes": [
           "normal",
@@ -1388,8 +1368,8 @@
       {
         "id": "g06",
         "priority": "recommended",
-        "name": "Foam or MF applicator pads — Descale hand application",
-        "why": "2–3 pads needed to apply Descale 1:100 by hand panel by panel on Deep Clean.",
+        "name": "Foam or MF applicator pads â Descale hand application",
+        "why": "2â3 pads needed to apply Descale 1:100 by hand panel by panel on Deep Clean.",
         "washTypes": [
           "maint"
         ]
@@ -1407,7 +1387,7 @@
       {
         "id": "g08",
         "priority": "recommended",
-        "name": "Invisible Glass Reach & Clean Tool — extra pad heads (2-4 total)",
+        "name": "Invisible Glass Reach & Clean Tool â extra pad heads (2-4 total)",
         "why": "Two-pass technique (wet clean + dry buff) needs at least 2 heads per session.",
         "washTypes": [
           "normal",
@@ -1448,7 +1428,7 @@
         "id": "g12",
         "priority": "essential",
         "name": "Dedicated screen MF cloth (ultra-soft, screen-only)",
-        "why": "Required for iDrive screen cleaning. Must be ultra-soft, lint-free, and used exclusively on screens — never on paint, glass, or any other surface.",
+        "why": "Required for iDrive screen cleaning. Must be ultra-soft, lint-free, and used exclusively on screens â never on paint, glass, or any other surface.",
         "washTypes": [
           "interior"
         ]
@@ -1457,7 +1437,7 @@
         "id": "g13",
         "priority": "essential",
         "name": "Soft leather brush",
-        "why": "For Colourlock Leather Mild Cleaner application — gentler than a MF applicator on perforated or textured leather. Not confirmed in inventory.",
+        "why": "For Colourlock Leather Mild Cleaner application â gentler than a MF applicator on perforated or textured leather. Not confirmed in inventory.",
         "washTypes": [
           "interior"
         ]
@@ -1466,7 +1446,7 @@
         "id": "g14",
         "priority": "essential",
         "name": "Stiff carpet brush",
-        "why": "Needed for carpet and TuxMat agitation. A dedicated stiff-bristle brush for carpet/fabric — not a wheel brush.",
+        "why": "Needed for carpet and TuxMat agitation. A dedicated stiff-bristle brush for carpet/fabric â not a wheel brush.",
         "washTypes": [
           "interior"
         ]
@@ -1486,7 +1466,7 @@
         "id": "c01",
         "priority": "essential",
         "name": "McKee's 37 N-914 Rinseless Wash V2",
-        "why": "Confirmed quick detailer for final inspection pass. Also usable as rinseless wash, waterless wash, and clay lubricant — 4-in-1 product.",
+        "why": "Confirmed quick detailer for final inspection pass. Also usable as rinseless wash, waterless wash, and clay lubricant â 4-in-1 product.",
         "washTypes": [
           "normal",
           "maint"
@@ -1506,7 +1486,7 @@
         "id": "c03",
         "priority": "recommended",
         "name": "Between-wash Deep Clean spray",
-        "why": "For ION Green between bi-weekly washes — bird drops, tree sap, light road film. Gyeon Q²M Cure or CarPro ELIXIR.",
+        "why": "For ION Green between bi-weekly washes â bird drops, tree sap, light road film. Gyeon QÂ²M Cure or CarPro ELIXIR.",
         "washTypes": [
           "normal",
           "maint"
@@ -1525,7 +1505,7 @@
         "id": "c05",
         "priority": "recommended",
         "name": "APC for door jambs (separate labeled bottle)",
-        "why": "AllClean and MultiX confirmed for wheel wells and engine bay. Door jambs benefit from their own dedicated bottle at 3:1–5:1.",
+        "why": "AllClean and MultiX confirmed for wheel wells and engine bay. Door jambs benefit from their own dedicated bottle at 3:1â5:1.",
         "washTypes": [
           "normal",
           "maint"
@@ -1544,7 +1524,7 @@
         "id": "c07",
         "priority": "essential",
         "name": "Koch Chemie Allround Surface Cleaner (ASC)",
-        "why": "Real Koch Chemie product — non-alcohol based, confirmed safe on iDrive screens, piano black, and glossy surfaces. Use for iDrive display cleaning.",
+        "why": "Real Koch Chemie product â non-alcohol based, confirmed safe on iDrive screens, piano black, and glossy surfaces. Use for iDrive display cleaning.",
         "washTypes": [
           "interior"
         ]
@@ -1570,12 +1550,12 @@
     ]
   },
   "interiorDetail": {
-    "note": "Optional — as needed. Complete interior detail. Work with all doors and windows open in shade. Car off, screens blanked (hold volume roller button with car off).",
+    "note": "Optional â as needed. Complete interior detail. Work with all doors and windows open in shade. Car off, screens blanked (hold volume roller button with car off).",
     "chemicals": [
       {
         "name": "nextzett Cockpit Premium",
         "category": "Interior quick detailer / maintenance spray",
-        "usedOn": "Dash, door cards, plastic trim, centre console — light maintenance between full details",
+        "usedOn": "Dash, door cards, plastic trim, centre console â light maintenance between full details",
         "dilutions": [
           {
             "context": "All use",
@@ -1589,13 +1569,13 @@
       {
         "name": "Colourlock Leather Mild Cleaner",
         "category": "Leather cleaner",
-        "usedOn": "All leather surfaces — seats, bolsters, steering wheel, door cards, gear selector",
+        "usedOn": "All leather surfaces â seats, bolsters, steering wheel, door cards, gear selector",
         "dilutions": [
           {
-            "context": "All leather surfaces — per kcxusa.com",
+            "context": "All leather surfaces â per kcxusa.com",
             "ratio": "RTU (foam dispenser)",
             "amount": "Dispense foam onto sponge or leather cleaning brush. Do NOT apply directly to leather.",
-            "note": "Apply cleaning foam to sponge or brush — never directly to leather. Clean from seam to seam using circular motions. For ingrained dirt use leather cleaning brush with circular motions seam to seam. Remove dirty foam residue with slightly moist clean cloth. Let leather dry completely before conditioning. Always test on hidden area first."
+            "note": "Apply cleaning foam to sponge or brush â never directly to leather. Clean from seam to seam using circular motions. For ingrained dirt use leather cleaning brush with circular motions seam to seam. Remove dirty foam residue with slightly moist clean cloth. Let leather dry completely before conditioning. Always test on hidden area first."
           }
         ],
         "tool": "Foam dispenser bottle onto soft sponge or Colourlock Leather Cleaning Brush; clean damp cloth to remove residue"
@@ -1603,38 +1583,38 @@
       {
         "name": "Colourlock Leather Conditioner",
         "category": "Leather conditioner",
-        "usedOn": "All leather surfaces after cleaning — restores suppleness and UV protection",
+        "usedOn": "All leather surfaces after cleaning â restores suppleness and UV protection",
         "dilutions": [
           {
-            "context": "All leather surfaces after cleaning — per kcxusa.com",
+            "context": "All leather surfaces after cleaning â per kcxusa.com",
             "ratio": "RTU",
             "amount": "Thin even layer with soft cloth or sponge",
-            "note": "Apply as soon as leather has dried after cleaning, ideally the following day. Shake bottle well. Apply thin even layer. Leave to react — repolish where necessary. One application sufficient. Strained/sunlit areas: treat every 3 months. Contains antioxidants to stop leather decay and UV filters. Do not over-apply."
+            "note": "Apply as soon as leather has dried after cleaning, ideally the following day. Shake bottle well. Apply thin even layer. Leave to react â repolish where necessary. One application sufficient. Strained/sunlit areas: treat every 3 months. Contains antioxidants to stop leather decay and UV filters. Do not over-apply."
           }
         ],
-        "tool": "Soft cloth or sponge — thin coat only, buff if needed"
+        "tool": "Soft cloth or sponge â thin coat only, buff if needed"
       },
       {
         "name": "Bilt Hamber Surfex HD (APC)",
-        "category": "Interior APC — plastics, carpet, trim",
+        "category": "Interior APC â plastics, carpet, trim",
         "usedOn": "Door jambs, floor mats, carpet, plastic door cards, boot/trunk lining",
         "dilutions": [
           {
             "context": "Carpet / floor mats",
-            "ratio": "2%–5%",
-            "amount": "20–50ml per 1L water",
+            "ratio": "2%â5%",
+            "amount": "20â50ml per 1L water",
             "note": "Spray on, agitate with stiff carpet brush, extract or blot with clean MF towel. Air dry fully."
           },
           {
             "context": "Interior plastic trim / door cards",
-            "ratio": "2%–3%",
-            "amount": "20–30ml per 1L water",
+            "ratio": "2%â3%",
+            "amount": "20â30ml per 1L water",
             "note": "Spray onto brush or towel, wipe surfaces, follow with a dry MF wipe."
           },
           {
             "context": "TuxMat wipe-down",
-            "ratio": "2%–3%",
-            "amount": "20–30ml per 1L water",
+            "ratio": "2%â3%",
+            "amount": "20â30ml per 1L water",
             "note": "Spray on, wipe with stiff brush or MF, rinse if possible or wipe with damp MF."
           }
         ],
@@ -1642,22 +1622,22 @@
       },
       {
         "name": "Koch Chemie Allround Surface Cleaner (ASC)",
-        "category": "Screen cleaner — iDrive curved display",
-        "usedOn": "iDrive curved display, instrument cluster screen, head-up display housing — alcohol-free, anti-static",
+        "category": "Screen cleaner â iDrive curved display",
+        "usedOn": "iDrive curved display, instrument cluster screen, head-up display housing â alcohol-free, anti-static",
         "dilutions": [
           {
             "context": "All use",
             "ratio": "RTU",
             "amount": "No dilution",
-            "note": "BLANK SCREENS FIRST: with car off, press and hold the volume roller button until both iDrive screens go completely dark — prevents accidental inputs during cleaning. Spray 1–2 pumps onto a dedicated ultra-soft screen MF cloth — NEVER spray directly onto screen. Wipe gently in straight lines with minimal pressure. Buff with dry side of cloth. Koch Chemie confirms Allround Surface Cleaner/GC is safe on screens, piano black, and glossy surfaces. Non-alcohol based — safe on iDrive oleophobic coating. Do NOT use BH Trace-Less or Bilt Hamber Trace-Less on the iDrive display."
+            "note": "BLANK SCREENS FIRST: with car off, press and hold the volume roller button until both iDrive screens go completely dark â prevents accidental inputs during cleaning. Spray 1â2 pumps onto a dedicated ultra-soft screen MF cloth â NEVER spray directly onto screen. Wipe gently in straight lines with minimal pressure. Buff with dry side of cloth. Koch Chemie confirms Allround Surface Cleaner/GC is safe on screens, piano black, and glossy surfaces. Non-alcohol based â safe on iDrive oleophobic coating. Do NOT use BH Trace-Less or Bilt Hamber Trace-Less on the iDrive display."
           }
         ],
-        "tool": "Dedicated screen MF cloth (ultra-soft, lint-free) — never used on any other surface"
+        "tool": "Dedicated screen MF cloth (ultra-soft, lint-free) â never used on any other surface"
       },
       {
         "name": "Gtechniq C6 Carbon Fibre or CarPro Carbon C2",
         "category": "Carbon fibre interior cleaner / protectant",
-        "usedOn": "All exposed interior carbon fibre trim panels — dash, centre console, door cards (gloss or open-pore matte)",
+        "usedOn": "All exposed interior carbon fibre trim panels â dash, centre console, door cards (gloss or open-pore matte)",
         "dilutions": [
           {
             "context": "All use",
@@ -1671,13 +1651,13 @@
       {
         "name": "Adam's Polishes Carpet Cleaner",
         "category": "Carpet & fabric cleaner",
-        "usedOn": "Carpet, boot/trunk lining, fabric headliner (if needed) — used with Bissell 3624 Spot Clean Professional for extraction",
+        "usedOn": "Carpet, boot/trunk lining, fabric headliner (if needed) â used with Bissell 3624 Spot Clean Professional for extraction",
         "dilutions": [
           {
             "context": "Bissell 3624 Spot Clean Professional",
             "ratio": "Per label",
-            "amount": "Follow Adam's dilution instructions for the Bissell tank — typically diluted per product directions",
-            "note": "Spray Adam's Carpet Cleaner onto carpet section, agitate with stiff carpet brush in straight lines, then extract with Bissell 3624. Repeat passes until water runs clear. Allow to dry fully with doors open — 1–2 hours minimum. Do not close car until fully dry."
+            "amount": "Follow Adam's dilution instructions for the Bissell tank â typically diluted per product directions",
+            "note": "Spray Adam's Carpet Cleaner onto carpet section, agitate with stiff carpet brush in straight lines, then extract with Bissell 3624. Repeat passes until water runs clear. Allow to dry fully with doors open â 1â2 hours minimum. Do not close car until fully dry."
           }
         ],
         "tool": "Bissell 3624 Spot Clean Professional + stiff carpet brush"
@@ -1686,8 +1666,8 @@
     "steps": [
       {
         "id": "int01",
-        "title": "Prepare — open all doors and windows, blank screens",
-        "desc": "Park in shade. Open all four doors and all windows for ventilation. Turn car off. BLANK THE SCREENS: press and hold the volume roller button until both iDrive screens go completely dark — do this before any cleaning. Have all products, towels and brushes ready before starting.",
+        "title": "Prepare â open all doors and windows, blank screens",
+        "desc": "Park in shade. Open all four doors and all windows for ventilation. Turn car off. BLANK THE SCREENS: press and hold the volume roller button until both iDrive screens go completely dark â do this before any cleaning. Have all products, towels and brushes ready before starting.",
         "tools": [
           "All interior MF towels",
           "All interior brushes"
@@ -1696,7 +1676,7 @@
       },
       {
         "id": "int02",
-        "title": "Vacuum — full interior including TuxMats",
+        "title": "Vacuum â full interior including TuxMats",
         "desc": "Remove TuxMats first. Vacuum all carpet, seats, door card pockets, boot floor, and under seats. Use crevice tool for seat rails, console gaps, and door pockets. Use a soft brush attachment on seats and door cards to avoid scratching. Vacuum TuxMats separately.",
         "tools": [
           "Vacuum + attachments (crevice, soft brush)",
@@ -1707,67 +1687,67 @@
       {
         "id": "int03",
         "title": "TuxMat wipe-down",
-        "desc": "Spray Surfex HD at 2–3% onto TuxMats. Agitate with a stiff brush. Wipe clean with MF towel or rinse if outside. Allow to dry before reinstalling.",
+        "desc": "Spray Surfex HD at 2â3% onto TuxMats. Agitate with a stiff brush. Wipe clean with MF towel or rinse if outside. Allow to dry before reinstalling.",
         "tools": [
           "Stiff brush",
           "MF towels",
           "Labeled spray bottle"
         ],
         "chems": [
-          "Surfex HD 2–3% or AllClean 5:1"
+          "Surfex HD 2â3% or AllClean 5:1"
         ]
       },
       {
         "id": "int04",
-        "title": "Carpet — clean as needed",
-        "desc": "Spray Adam's Polishes Carpet Cleaner onto carpet sections. Agitate with stiff carpet brush in straight lines — do not scrub in circles. Extract with Bissell 3624 Spot Clean Professional. Run repeated passes until the extracted water runs clear. Allow to dry fully with doors open — minimum 1–2 hours before closing the car.",
+        "title": "Carpet â clean as needed",
+        "desc": "Spray Adam's Polishes Carpet Cleaner onto carpet sections. Agitate with stiff carpet brush in straight lines â do not scrub in circles. Extract with Bissell 3624 Spot Clean Professional. Run repeated passes until the extracted water runs clear. Allow to dry fully with doors open â minimum 1â2 hours before closing the car.",
         "tools": [
           "Stiff carpet brush",
           "Bissell 3624 Spot Clean Professional"
         ],
         "chems": [
-          "Adam's Polishes Carpet Cleaner — per label dilution for Bissell 3624"
+          "Adam's Polishes Carpet Cleaner â per label dilution for Bissell 3624"
         ]
       },
       {
         "id": "int05",
-        "title": "Headliner — spot clean if needed",
-        "desc": "Spot clean only — do not saturate. Spray Surfex HD at 1–2% onto a MF cloth and blot gently — never rub or scrub. Work from outside of stain inward. Allow to air dry fully.",
+        "title": "Headliner â spot clean if needed",
+        "desc": "Spot clean only â do not saturate. Spray Surfex HD at 1â2% onto a MF cloth and blot gently â never rub or scrub. Work from outside of stain inward. Allow to air dry fully.",
         "tools": [
           "Soft MF cloth"
         ],
         "chems": [
-          "Surfex HD 1–2% on cloth — not sprayed direct"
+          "Surfex HD 1â2% on cloth â not sprayed direct"
         ]
       },
       {
         "id": "int06",
         "title": "Clean iDrive curved display and instrument cluster",
-        "desc": "BLANK SCREENS FIRST: with car off, press and hold the volume roller button until both screens go completely dark. Spray 1–2 pumps of Koch Chemie Allround Surface Cleaner (ASC) onto a dedicated ultra-soft screen MF cloth — NEVER spray directly onto screen. Wipe gently in straight lines with minimal pressure. Buff immediately with dry side of cloth. Do NOT use BH Trace-Less, Bilt Hamber Trace-Less, or any alcohol or glass cleaner on the iDrive display.",
+        "desc": "BLANK SCREENS FIRST: with car off, press and hold the volume roller button until both screens go completely dark. Spray 1â2 pumps of Koch Chemie Allround Surface Cleaner (ASC) onto a dedicated ultra-soft screen MF cloth â NEVER spray directly onto screen. Wipe gently in straight lines with minimal pressure. Buff immediately with dry side of cloth. Do NOT use BH Trace-Less, Bilt Hamber Trace-Less, or any alcohol or glass cleaner on the iDrive display.",
         "tools": [
           "Dedicated screen MF cloth (ultra-soft, screen-only)"
         ],
         "chems": [
-          "Koch Chemie Allround Surface Cleaner (ASC) — RTU, onto cloth only. NEVER spray direct on screen."
+          "Koch Chemie Allround Surface Cleaner (ASC) â RTU, onto cloth only. NEVER spray direct on screen."
         ]
       },
       {
         "id": "int07",
         "title": "Clean plastic trim and dash",
-        "desc": "Spray Surfex HD (2–3%) or Cockpit Premium onto a MF towel. Wipe all plastic surfaces — dash, centre console, door cards, vents. Use detail brushes on vent slats and button edges. Follow with a dry MF wipe. Do not use Cockpit Premium on screens or carbon fibre trim.",
+        "desc": "Spray Surfex HD (2â3%) or Cockpit Premium onto a MF towel. Wipe all plastic surfaces â dash, centre console, door cards, vents. Use detail brushes on vent slats and button edges. Follow with a dry MF wipe. Do not use Cockpit Premium on screens or carbon fibre trim.",
         "tools": [
           "MF towels",
           "Detail brushes (soft)",
           "Labeled spray bottle"
         ],
         "chems": [
-          "Surfex HD 2–3% or Cockpit Premium — RTU (on cloth)"
+          "Surfex HD 2â3% or Cockpit Premium â RTU (on cloth)"
         ]
       },
       {
         "id": "int08",
         "title": "Clean interior carbon fibre trim",
-        "desc": "Spray Surfex HD (2%) onto a soft detail brush. Gently agitate the CF trim panels — work along the weave direction. Wipe clean with a soft MF towel. For GLOSS CF: apply a thin coat of Gtechniq C6 or CarPro Carbon C2 with MF applicator, buff off. For MATTE/open-pore CF: dry wipe only after cleaning — no dressings or coating products.",
+        "desc": "Spray Surfex HD (2%) onto a soft detail brush. Gently agitate the CF trim panels â work along the weave direction. Wipe clean with a soft MF towel. For GLOSS CF: apply a thin coat of Gtechniq C6 or CarPro Carbon C2 with MF applicator, buff off. For MATTE/open-pore CF: dry wipe only after cleaning â no dressings or coating products.",
         "tools": [
           "Soft detail brush",
           "MF applicator pad",
@@ -1775,62 +1755,62 @@
         ],
         "chems": [
           "Surfex HD 2% (cleaning)",
-          "Gtechniq C6 or CarPro Carbon C2 — RTU (gloss CF only)"
+          "Gtechniq C6 or CarPro Carbon C2 â RTU (gloss CF only)"
         ]
       },
       {
         "id": "int09",
-        "title": "Clean leather — all surfaces",
-        "desc": "Apply Colourlock Leather Mild Cleaner to a soft leather brush or MF applicator — not directly onto leather. Work in circular motions on all leather surfaces: seats, bolsters, steering wheel (avoid airbag seam), door cards, gear selector. Wipe off with clean MF towel. Do not saturate — multiple light passes better than one heavy soak. Allow leather to dry before conditioning.",
+        "title": "Clean leather â all surfaces",
+        "desc": "Apply Colourlock Leather Mild Cleaner to a soft leather brush or MF applicator â not directly onto leather. Work in circular motions on all leather surfaces: seats, bolsters, steering wheel (avoid airbag seam), door cards, gear selector. Wipe off with clean MF towel. Do not saturate â multiple light passes better than one heavy soak. Allow leather to dry before conditioning.",
         "tools": [
           "Soft leather brush or MF applicator",
           "Clean MF towel"
         ],
         "chems": [
-          "Colourlock Leather Mild Cleaner — RTU or 1:1 dilution"
+          "Colourlock Leather Mild Cleaner â RTU or 1:1 dilution"
         ]
       },
       {
         "id": "int10",
-        "title": "Condition leather — all surfaces",
-        "desc": "Apply Colourlock Leather Conditioner to a MF applicator in a thin even coat. Work into all leather surfaces in circular motion. Allow to absorb 5–10 min. Buff off any excess with a clean dry MF towel. Do not over-apply — leather should feel supple, not greasy.",
+        "title": "Condition leather â all surfaces",
+        "desc": "Apply Colourlock Leather Conditioner to a MF applicator in a thin even coat. Work into all leather surfaces in circular motion. Allow to absorb 5â10 min. Buff off any excess with a clean dry MF towel. Do not over-apply â leather should feel supple, not greasy.",
         "tools": [
           "MF applicator pad",
           "Clean dry MF towel"
         ],
         "chems": [
-          "Colourlock Leather Conditioner — RTU, thin coat"
+          "Colourlock Leather Conditioner â RTU, thin coat"
         ]
       },
       {
         "id": "int11",
-        "title": "Interior glass — BH Trace-Less or Koch Chemie Glass Cleaner",
-        "desc": "Use BH Trace-Less or Koch Chemie Glass Cleaner. Spray onto MF head of Invisible Glass Reach & Clean Tool — NOT directly onto glass. First pass damp to clean; swap to fresh head for dry buff pass. Only use clean lint-free cloths free of detergents and fabric conditioners.",
+        "title": "Interior glass â BH Trace-Less or Koch Chemie Glass Cleaner",
+        "desc": "Use BH Trace-Less or Koch Chemie Glass Cleaner. Spray onto MF head of Invisible Glass Reach & Clean Tool â NOT directly onto glass. First pass damp to clean; swap to fresh head for dry buff pass. Only use clean lint-free cloths free of detergents and fabric conditioners.",
         "tools": [
-          "MF glass towels (interior — dedicated)",
+          "MF glass towels (interior â dedicated)",
           "Invisible Glass Reach & Clean Tool (95160)"
         ],
         "chems": [
-          "BH Trace-Less — RTU (onto tool head)",
-          "OR Koch Chemie Glass Cleaner — RTU (onto tool head)"
+          "BH Trace-Less â RTU (onto tool head)",
+          "OR Koch Chemie Glass Cleaner â RTU (onto tool head)"
         ]
       },
       {
         "id": "int12",
         "title": "Dress interior trim (optional)",
-        "desc": "Apply a light coat of interior trim dressing or Cockpit Premium to plastic trim and rubber seals if desired. Avoid gloss finish products — use matte/satin dressings to match the BMW interior's OEM finish. Do not dress steering wheel, pedals, gear selector, or any grip surface.",
+        "desc": "Apply a light coat of interior trim dressing or Cockpit Premium to plastic trim and rubber seals if desired. Avoid gloss finish products â use matte/satin dressings to match the BMW interior's OEM finish. Do not dress steering wheel, pedals, gear selector, or any grip surface.",
         "tools": [
           "MF applicator pad or soft trim brush"
         ],
         "chems": [
-          "Cockpit Premium or interior trim dressing — RTU (on cloth)"
+          "Cockpit Premium or interior trim dressing â RTU (on cloth)"
         ],
         "optional": true
       },
       {
         "id": "int13",
-        "title": "Reinstall TuxMats — final check",
-        "desc": "Ensure TuxMats are fully dry before reinstalling. Walk through the interior with a flashlight at low angle — check for missed spots, streaks on screens, and any damp areas. Leave doors open until fully dry.",
+        "title": "Reinstall TuxMats â final check",
+        "desc": "Ensure TuxMats are fully dry before reinstalling. Walk through the interior with a flashlight at low angle â check for missed spots, streaks on screens, and any damp areas. Leave doors open until fully dry.",
         "tools": [
           "Flashlight"
         ],
@@ -1839,29 +1819,29 @@
     ]
   },
   "betweenWash": {
-    "note": "For spot cleaning between bi-weekly washes — bird drops, tree sap, dust, fingerprints, light road film. No hose or pressure washer needed. Do not let bird droppings or tree sap sit — the chemistry can etch through ceramic coatings within hours in heat.",
+    "note": "For spot cleaning between bi-weekly washes â bird drops, tree sap, dust, fingerprints, light road film. No hose or pressure washer needed. Do not let bird droppings or tree sap sit â the chemistry can etch through ceramic coatings within hours in heat.",
     "steps": [
       {
         "id": "bw01",
         "title": "Act immediately on bird drops and tree sap",
-        "desc": "Bird droppings and tree sap are the most damaging contaminants on a ceramic coating — do not leave them. Saturate with McKee's 37 N-914 (60–90ml per 950ml spray bottle) and allow to dwell 30–60 sec to soften. Gently wipe with a clean damp MF towel using zero pressure. Do not rub dry — re-wet if needed. Follow with a second clean MF towel.",
+        "desc": "Bird droppings and tree sap are the most damaging contaminants on a ceramic coating â do not leave them. Saturate with McKee's 37 N-914 (60â90ml per 950ml spray bottle) and allow to dwell 30â60 sec to soften. Gently wipe with a clean damp MF towel using zero pressure. Do not rub dry â re-wet if needed. Follow with a second clean MF towel.",
         "tools": [
           "Labeled spray bottle (N-914 QD mix)",
-          "2× clean MF towels"
+          "2Ã clean MF towels"
         ],
         "chems": [
-          "McKee's 37 N-914 — 60–90ml per 950ml water"
+          "McKee's 37 N-914 â 60â90ml per 950ml water"
         ]
       },
       {
         "id": "bw02",
         "title": "Light dust and fingerprint removal",
-        "desc": "Spray McKee's 37 N-914 quick detailer onto a clean MF towel. Work one panel at a time in straight lines — never circular motions. Use a fresh side of the towel after each panel. No pressure needed on a ceramic-coated surface.",
+        "desc": "Spray McKee's 37 N-914 quick detailer onto a clean MF towel. Work one panel at a time in straight lines â never circular motions. Use a fresh side of the towel after each panel. No pressure needed on a ceramic-coated surface.",
         "tools": [
           "Clean MF towel (dedicated QD towel)"
         ],
         "chems": [
-          "McKee's 37 N-914 — 60–90ml per 950ml water in spray bottle"
+          "McKee's 37 N-914 â 60â90ml per 950ml water in spray bottle"
         ]
       },
       {
@@ -1874,7 +1854,7 @@
           "MF drying towel"
         ],
         "chems": [
-          "McKee's 37 N-914 — 30ml per 7.5L (rinseless method)"
+          "McKee's 37 N-914 â 30ml per 7.5L (rinseless method)"
         ]
       },
       {
@@ -1891,45 +1871,45 @@
     "seasons": [
       {
         "season": "Winter (Nov-Mar)",
-        "icon": "❄️",
+        "icon": "âï¸",
         "notes": [
-          "Road salt and mag chloride are extremely aggressive on ceramic coatings — rinse or wash more frequently, ideally within 48 hours of driving on treated roads.",
-          "Do not wash in below-freezing temps — water in gaps, door seals, and locks will freeze. Minimum ambient temp for a wet wash is 40°F.",
+          "Road salt and mag chloride are extremely aggressive on ceramic coatings â rinse or wash more frequently, ideally within 48 hours of driving on treated roads.",
+          "Do not wash in below-freezing temps â water in gaps, door seals, and locks will freeze. Minimum ambient temp for a wet wash is 40Â°F.",
           "Use the rinseless wash method (McKee's N-914, 30ml per 7.5L) indoors or in a heated bay when it's too cold for a full exterior wash.",
-          "CarPro Reload 2.0 should not be applied below 50°F — coating adhesion is compromised. Apply in a warmer environment if needed.",
+          "CarPro Reload 2.0 should not be applied below 50Â°F â coating adhesion is compromised. Apply in a warmer environment if needed.",
           "Check and dress door seals with 303 Aerospace Protectant before winter to prevent freezing and cracking.",
-          "The IK E Foam Pro 12 battery may lose capacity in sub-freezing temps — store indoors and bring to the wash location warm."
+          "The IK E Foam Pro 12 battery may lose capacity in sub-freezing temps â store indoors and bring to the wash location warm."
         ]
       },
       {
         "season": "Spring (Mar-May)",
-        "icon": "🌱",
+        "icon": "ð±",
         "notes": [
-          "Spring is the ideal time for a full Deep Clean wash — decon the coating from winter salt, fallout, and road film buildup.",
-          "Run a full Korrosol + Iron X decon pass — spring fallout (tree pollen, industrial) embeds fast in ceramic coatings.",
+          "Spring is the ideal time for a full Deep Clean wash â decon the coating from winter salt, fallout, and road film buildup.",
+          "Run a full Korrosol + Iron X decon pass â spring fallout (tree pollen, industrial) embeds fast in ceramic coatings.",
           "Check coating condition with a water bead test after spring decon. If beading has degraded significantly, consider a full Reload 2.0 application or consult Angelwax on coating refresh.",
-          "Tree sap season begins in spring — act on drops immediately (see between-wash section).",
-          "Spring hail is common on the Front Range — check paint carefully before and after any hail event."
+          "Tree sap season begins in spring â act on drops immediately (see between-wash section).",
+          "Spring hail is common on the Front Range â check paint carefully before and after any hail event."
         ]
       },
       {
         "season": "Summer (Jun-Sep)",
-        "icon": "☀️",
+        "icon": "âï¸",
         "notes": [
-          "Never wash or apply chemicals in direct sunlight — ION Green metallic and ceramic coatings flash-dry in minutes in Colorado summer heat and altitude UV.",
+          "Never wash or apply chemicals in direct sunlight â ION Green metallic and ceramic coatings flash-dry in minutes in Colorado summer heat and altitude UV.",
           "Early morning (before 9am) or evening washes only in summer.",
-          "Iron X, Bug Out, and Tar X all have dramatically shortened dwell times on hot panels — spray on cooler panels or work in shade exclusively.",
-          "Bug season is peak June–August on I-70, I-25, and mountain roads — Bug Out will be needed on front bumper and hood nearly every wash.",
-          "Altitude UV is significantly stronger than sea level — 303 Aerospace Protectant's UV protection is especially valuable on trim and rubber at elevation.",
-          "303 Aerospace reapplication may need to move to every 3 weeks rather than 3–5 weeks due to high UV intensity at altitude."
+          "Iron X, Bug Out, and Tar X all have dramatically shortened dwell times on hot panels â spray on cooler panels or work in shade exclusively.",
+          "Bug season is peak JuneâAugust on I-70, I-25, and mountain roads â Bug Out will be needed on front bumper and hood nearly every wash.",
+          "Altitude UV is significantly stronger than sea level â 303 Aerospace Protectant's UV protection is especially valuable on trim and rubber at elevation.",
+          "303 Aerospace reapplication may need to move to every 3 weeks rather than 3â5 weeks due to high UV intensity at altitude."
         ]
       },
       {
         "season": "Fall (Sep-Nov)",
-        "icon": "🍂",
+        "icon": "ð",
         "notes": [
-          "Tree sap and falling leaves accelerate — park away from trees where possible.",
-          "Good window to apply Reload 2.0 before winter — temperatures are ideal (50–75°F) and coating will cure properly.",
+          "Tree sap and falling leaves accelerate â park away from trees where possible.",
+          "Good window to apply Reload 2.0 before winter â temperatures are ideal (50â75Â°F) and coating will cure properly.",
           "First snowfall season prep: dress all door seals and trim with 303 Aerospace Protectant, check weatherstripping condition.",
           "Fall is also a good time for an engine bay clean before winter road salt season begins.",
           "Ceramic coating inspection: do a full water bead test and assess whether the Angelwax coating needs a professional boost before winter."
@@ -1938,20 +1918,20 @@
     ]
   },
   "upgrades": {
-    "note": "BMW M3 Competition xDrive upgrade plan — phases represent logical batching of work. Self = DIY install. Shop = professional install required.",
+    "note": "BMW M3 Competition xDrive upgrade plan â phases represent logical batching of work. Self = DIY install. Shop = professional install required.",
     "items": [
       {
         "id": "u01",
-        "phase": "Phase 1 — Protection & Safety",
+        "phase": "Phase 1 â Protection & Safety",
         "priority": 1,
         "item": "Dash Cam",
         "source": "Self",
         "done": false,
-        "notes": "Pair with radar detector — one wiring session covers both."
+        "notes": "Pair with radar detector â one wiring session covers both."
       },
       {
         "id": "u02",
-        "phase": "Phase 1 — Protection & Safety",
+        "phase": "Phase 1 â Protection & Safety",
         "priority": 2,
         "item": "Radar Detector",
         "source": "Self",
@@ -1960,7 +1940,7 @@
       },
       {
         "id": "u03",
-        "phase": "Phase 1 — Protection & Safety",
+        "phase": "Phase 1 â Protection & Safety",
         "priority": 3,
         "item": "Megachip Splash Guard Set",
         "source": "Self",
@@ -1969,7 +1949,7 @@
       },
       {
         "id": "u04",
-        "phase": "Phase 2 — Quick Self Cosmetic Batch",
+        "phase": "Phase 2 â Quick Self Cosmetic Batch",
         "priority": 4,
         "item": "Sto N Sho License Plate Bracket",
         "source": "Self",
@@ -1978,16 +1958,16 @@
       },
       {
         "id": "u05",
-        "phase": "Phase 2 — Quick Self Cosmetic Batch",
+        "phase": "Phase 2 â Quick Self Cosmetic Batch",
         "priority": 5,
         "item": "Door Projectors",
         "source": "Self",
         "done": false,
-        "notes": "Independent, low-effort — knock out with the rest of the quick batch."
+        "notes": "Independent, low-effort â knock out with the rest of the quick batch."
       },
       {
         "id": "u06",
-        "phase": "Phase 2 — Quick Self Cosmetic Batch",
+        "phase": "Phase 2 â Quick Self Cosmetic Batch",
         "priority": 6,
         "item": "Goldenwrench Blackline Performance Cap Covers",
         "source": "Self",
@@ -1996,7 +1976,7 @@
       },
       {
         "id": "u07",
-        "phase": "Phase 2 — Quick Self Cosmetic Batch",
+        "phase": "Phase 2 â Quick Self Cosmetic Batch",
         "priority": 7,
         "item": "Kies Motorsports Hood Latch Handle",
         "source": "Self",
@@ -2005,7 +1985,7 @@
       },
       {
         "id": "u08",
-        "phase": "Phase 2 — Quick Self Cosmetic Batch",
+        "phase": "Phase 2 â Quick Self Cosmetic Batch",
         "priority": 8,
         "item": "JQ Werks Madtrace Paddle Shifters",
         "source": "Self",
@@ -2014,7 +1994,7 @@
       },
       {
         "id": "u22",
-        "phase": "Phase 2 — Quick Self Cosmetic Batch",
+        "phase": "Phase 2 â Quick Self Cosmetic Batch",
         "priority": 8.5,
         "item": "Ceramic coat grill/mesh, front lip, and inlets",
         "source": "Self",
@@ -2023,7 +2003,7 @@
       },
       {
         "id": "u09",
-        "phase": "Phase 3 — Wheels & Fitment",
+        "phase": "Phase 3 â Wheels & Fitment",
         "priority": 9,
         "item": "Spacers",
         "source": "Self",
@@ -2032,7 +2012,7 @@
       },
       {
         "id": "u10",
-        "phase": "Phase 3 — Wheels & Fitment",
+        "phase": "Phase 3 â Wheels & Fitment",
         "priority": 10,
         "item": "Wheel Arch Clearance Kit",
         "source": "Self",
@@ -2041,7 +2021,7 @@
       },
       {
         "id": "u11",
-        "phase": "Phase 4 — Performance Prep",
+        "phase": "Phase 4 â Performance Prep",
         "priority": 11,
         "item": "BMC Filters",
         "source": "Self",
@@ -2050,7 +2030,7 @@
       },
       {
         "id": "u20",
-        "phase": "Phase 4 — Performance Prep",
+        "phase": "Phase 4 â Performance Prep",
         "priority": 11.5,
         "item": "Cando+ Exhaust Controller",
         "source": "Self",
@@ -2059,16 +2039,16 @@
       },
       {
         "id": "u21",
-        "phase": "Phase 4 — Performance Prep",
+        "phase": "Phase 4 â Performance Prep",
         "priority": 11.6,
         "item": "canDO+ iDrive Macro Controller",
         "source": "Self",
         "done": false,
-        "notes": "OBD-based button macro controller for iDrive 8 G8x. Programs OEM buttons (touch, press, long press) to trigger multiple actions — drive mode, DSC, valve position, interior lights — applied automatically at startup. Configured over Wi-Fi. Fully reversible."
+        "notes": "OBD-based button macro controller for iDrive 8 G8x. Programs OEM buttons (touch, press, long press) to trigger multiple actions â drive mode, DSC, valve position, interior lights â applied automatically at startup. Configured over Wi-Fi. Fully reversible."
       },
       {
         "id": "u12",
-        "phase": "Phase 5 — Interior Trim",
+        "phase": "Phase 5 â Interior Trim",
         "priority": 12,
         "item": "Alcantara Armrest/Sides",
         "source": "Self",
@@ -2077,7 +2057,7 @@
       },
       {
         "id": "u13",
-        "phase": "Phase 6 — Audio Build",
+        "phase": "Phase 6 â Audio Build",
         "priority": 13,
         "item": "Audio System",
         "source": "Self",
@@ -2086,7 +2066,7 @@
       },
       {
         "id": "u14",
-        "phase": "Phase 7 — Shop: Brakes",
+        "phase": "Phase 7 â Shop: Brakes",
         "priority": 14,
         "item": "Brake Pads",
         "source": "Shop",
@@ -2095,16 +2075,16 @@
       },
       {
         "id": "u15",
-        "phase": "Phase 8 — Shop: Front-End Batch",
+        "phase": "Phase 8 â Shop: Front-End Batch",
         "priority": 15,
         "item": "Vorsteiner Grill/Mesh",
         "source": "Shop",
         "done": false,
-        "notes": "Front fascia work — batch with lip, guard, and inlets."
+        "notes": "Front fascia work â batch with lip, guard, and inlets."
       },
       {
         "id": "u16",
-        "phase": "Phase 8 — Shop: Front-End Batch",
+        "phase": "Phase 8 â Shop: Front-End Batch",
         "priority": 16,
         "item": "Front Lip",
         "source": "Shop",
@@ -2113,7 +2093,7 @@
       },
       {
         "id": "u17",
-        "phase": "Phase 8 — Shop: Front-End Batch",
+        "phase": "Phase 8 â Shop: Front-End Batch",
         "priority": 17,
         "item": "Oil Cooler Guard",
         "source": "Shop",
@@ -2122,16 +2102,16 @@
       },
       {
         "id": "u18",
-        "phase": "Phase 8 — Shop: Front-End Batch",
+        "phase": "Phase 8 â Shop: Front-End Batch",
         "priority": 18,
         "item": "Inlets",
         "source": "Shop",
         "done": false,
-        "notes": "Front-end access — keep in the same shop visit."
+        "notes": "Front-end access â keep in the same shop visit."
       },
       {
         "id": "u19",
-        "phase": "Phase 9 — Shop: Exhaust",
+        "phase": "Phase 9 â Shop: Exhaust",
         "priority": 19,
         "item": "IRL or MAD Midpipe",
         "source": "Shop",
@@ -2145,15 +2125,15 @@
       "id": "reload",
       "name": "CarPro Reload 2.0",
       "interval": 21,
-      "intervalLabel": "2–3 weeks",
-      "notes": "Apply to clean dry paint. Do not apply below 50°F."
+      "intervalLabel": "2â3 weeks",
+      "notes": "Apply to clean dry paint. Do not apply below 50Â°F."
     },
     {
       "id": "p303",
       "name": "303 Aerospace Protectant",
       "interval": 21,
       "intervalLabel": "3 weeks (Colorado altitude UV)",
-      "notes": "Exterior trim and rubber seals. Wipe completely dry — does not air dry."
+      "notes": "Exterior trim and rubber seals. Wipe completely dry â does not air dry."
     },
     {
       "id": "coating",
@@ -2167,21 +2147,21 @@
       "name": "Full Decontamination Wash",
       "interval": 90,
       "intervalLabel": "Every 3 months",
-      "notes": "BH Touchless → Iron X → CarPro Descale. Run before winter and after spring."
+      "notes": "BH Touchless â Iron X â CarPro Descale. Run before winter and after spring."
     },
     {
       "id": "ikbatt",
       "name": "IK E Foam Pro 12 Battery Check",
       "interval": 90,
       "intervalLabel": "Seasonal",
-      "notes": "Check charge before winter storage. Battery loses capacity in sub-freezing temps — store indoors."
+      "notes": "Check charge before winter storage. Battery loses capacity in sub-freezing temps â store indoors."
     },
     {
       "id": "darkside",
       "name": "CarPro Darkside Reapplication",
       "interval": 60,
-      "intervalLabel": "Every 6–8 weeks",
-      "notes": "Apply to clean dry sidewalls only. Min 1–2 hrs dry before driving."
+      "intervalLabel": "Every 6â8 weeks",
+      "notes": "Apply to clean dry sidewalls only. Min 1â2 hrs dry before driving."
     }
   ]
 }
