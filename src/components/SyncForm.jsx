@@ -190,7 +190,7 @@ export function AddToolForm({ data, onClose }) {
     if (ok && onClose) setTimeout(onClose, 2000)
   }
 
-  const canSave = form.name.trim() && form.category.trim() && form.modes.length > 0 && syncStatus?.type !== 'saving'
+  const canSave = form.name.trim() && form.category.trim() && syncStatus?.type !== 'saving'
 
   return (
     <div style={{ background: 'var(--card)', border: '1px solid var(--bd2)', padding: 20, marginBottom: 16 }}>
