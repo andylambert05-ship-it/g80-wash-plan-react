@@ -396,11 +396,12 @@ export function EditChemicalForm({ chem, onClose }) {
 }
 
 // ── Edit Tool Form ────────────────────────────────────────────────────────────
-export function EditToolForm({ tool, onClose }) {
+export function EditToolForm({ tool, data, onClose }) {
   const { syncStatus, sync } = useGitHubSync()
   const [form, setForm] = useState({ name: tool.name, category: tool.category, qty: tool.qty || '1', usedFor: tool.usedFor || '' })
   const f = (key, val) => setForm(p => ({ ...p, [key]: val }))
   const canSave = form.name.trim() && form.category.trim() && syncStatus?.type !== 'saving'
+  const categories = [...new Set((data?.tools || []).map(t => t.category))].sort()
 
   const handleSave = async () => {
     if (!canSave) return
@@ -414,13 +415,23 @@ export function EditToolForm({ tool, onClose }) {
         Edit — {tool.name}
         {onClose && <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 16 }}>×</button>}
       </div>
-      {[['Tool name', 'name'], ['Category', 'category'], ['Qty', 'qty']].map(([lbl, key]) => (
+      {[['Tool name', 'name'], ['Qty', 'qty']].map(([lbl, key]) => (
         <div key={key} style={{ marginBottom: 10 }}>
           <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>{lbl}</label>
           <input value={form[key]} onChange={e => f(key, e.target.value)}
             style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
         </div>
       ))}
+      <div style={{ marginBottom: 10 }}>
+        <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>Category</label>
+        <select value={form.category} onChange={e => f('category', e.target.value)}
+          style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif', marginBottom: 6 }}>
+          <option value="">— Select category —</option>
+          {categories.map(c => <option key={c} value={c}>{c}</option>)}
+        </select>
+        <input value={form.category} onChange={e => f('category', e.target.value)} placeholder="Or type a new category"
+          style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
+      </div>
       <div style={{ marginBottom: 10 }}>
         <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>Used for</label>
         <textarea value={form.usedFor} onChange={e => f('usedFor', e.target.value)} rows={2}
