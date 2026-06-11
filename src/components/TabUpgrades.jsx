@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import TabFactoryParts from './TabFactoryParts'
 
 const PHOTO_KEY = 'gwp_upgrade_photos'
 
@@ -27,6 +28,7 @@ const SOURCE_BG = { Self: '#0d1a2e', Shop: '#1a0000' }
 const SOURCE_BD = { Self: '#0d2040', Shop: '#2a0000' }
 
 export default function TabUpgrades({ data }) {
+  const [section, setSection] = useState(() => localStorage.getItem('gwp_upgrades_section') || 'mods')
   const [doneState, setDoneState] = useState(loadUpgradeState)
   const [photos, setPhotos] = useState(loadPhotos)
   const [lightbox, setLightbox] = useState(null) // { src, label }
@@ -142,6 +144,41 @@ export default function TabUpgrades({ data }) {
           <div style={{ marginTop: 12, fontSize: 11, color: '#aaa', fontWeight: 300 }}>{lightbox.label} &nbsp;·&nbsp; Tap to close</div>
         </div>
       )}
+      {/* Section toggle: Modifications vs OEM+ factory parts */}
+      <div style={{ display: 'flex', gap: 4, background: 'var(--card)', border: '1px solid var(--bd)', padding: 3, marginBottom: 14 }}>
+        {[
+          { id: 'mods', label: 'Modifications', icon: 'ti-tools' },
+          { id: 'oem', label: 'OEM+ Parts', icon: 'ti-archive' },
+        ].map(s => {
+          const active = section === s.id
+          return (
+            <button
+              key={s.id}
+              onClick={() => {
+                try { navigator.vibrate && navigator.vibrate(8) } catch (e) {}
+                setSection(s.id)
+                localStorage.setItem('gwp_upgrades_section', s.id)
+              }}
+              style={{
+                flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                padding: '8px 10px', border: 'none', cursor: 'pointer',
+                background: active ? '#0066b1' : 'transparent',
+                color: active ? '#fff' : 'var(--t3)',
+                fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
+                fontFamily: 'Inter, sans-serif', transition: 'all 0.15s',
+              }}
+            >
+              <i className={`ti ${s.icon}`} style={{ fontSize: 12 }} aria-hidden="true" />
+              {s.label}
+            </button>
+          )
+        })}
+      </div>
+
+      {section === 'oem' ? (
+        <TabFactoryParts data={data} />
+      ) : (
+      <>
       <div className="notice info" style={{ borderLeftColor: '#0066b1' }}>
         <i className="ti ti-car" aria-hidden="true" />
         <span>{data.upgrades.note}</span>
@@ -296,6 +333,8 @@ export default function TabUpgrades({ data }) {
           </div>
         )
       })}
+      </>
+      )}
     </div>
   )
 }

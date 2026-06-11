@@ -4,8 +4,9 @@
     "car": "Isle of Man Green BMW M3 G80 - S58",
     "coating": "Ceramic coated",
     "lastUpdated": "2026-06-11",
-    "version": "2.5",
+    "version": "2.6",
     "changelog": [
+      "v2.6 (2026-06-11) - OEM+ Reversibility Tracker: new sub-section under Upgrades tab to log factory parts removed during modifications. Tracks component name, storage location, part number, condition, removal date, hardware status, replaced-by mod, and notes. Items group by replacement mod for easy reinstall lookup.",
       "v2.5 (2026-06-11) - Polish bundle: bottom navigation bar (thumb-reach friendly, replaces top tabs), Screen Wake Lock API keeps phone awake during timers, haptic feedback audit (20ms step toggles, 40ms timer start, 8ms nav clicks). Removed duplicate wake lock in useTimer; useWakeLock hook is single source of truth.",
       "v2.4 (2026-06-10) - UX simplification: 12 tabs consolidated to 5 with sub-navigation (Wash, Inventory, Care, Upgrades, More). Step cards collapse by default — tap number to complete, tap body to expand. Expand all/collapse all toggle. Progressive disclosure on add/edit chemical forms. Chemical ID propagation — step chem tags now resolve live from chemicals inventory.",
       "v2.1 (2026-05-17) - Phase grouping on steps, dwell/time estimates, between-wash maintenance section, seasonal notes (Colorado Front Range), product shelf life tracking, 303 Aerospace Protectant, Gaps tab removed, ShortList dwell times, version history in UI.",
@@ -2358,5 +2359,9 @@
       "intervalLabel": "Every 6-8 weeks",
       "notes": "Apply to clean dry sidewalls only. Min 1-2 hrs dry before driving."
     }
-  ]
+  ],
+  "factoryParts": {
+    "note": "Track factory components removed during OEM+ modifications. Records location, removal date, condition, and reinstall notes for fully reversible builds.",
+    "items": []
+  }
 }

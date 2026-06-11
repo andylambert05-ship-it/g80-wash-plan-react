@@ -203,3 +203,27 @@ export async function cycleChemicalMode(config, nameOrId) {
   const chem = content.chemicals.find(c => c.id === nameOrId || c.name === nameOrId)
   await writeFile(config, content, sha, `Cycle ${nameOrId} modes -> ${chem.modes.join(',')}`)
 }
+
+// ── Factory Parts (OEM+ Reversibility Tracker) ──
+export async function addFactoryPart(config, part) {
+  const { content, sha } = await fetchFile(config)
+  if (!content.factoryParts) content.factoryParts = { note: '', items: [] }
+  if (!content.factoryParts.items) content.factoryParts.items = []
+  content.factoryParts.items.push(part)
+  await writeFile(config, content, sha, `Add factory part: ${part.component}`)
+}
+
+export async function editFactoryPart(config, part) {
+  const { content, sha } = await fetchFile(config)
+  if (!content.factoryParts?.items) throw new Error('factoryParts not found')
+  content.factoryParts.items = content.factoryParts.items.map(p => p.id === part.id ? part : p)
+  await writeFile(config, content, sha, `Edit factory part: ${part.component}`)
+}
+
+export async function deleteFactoryPart(config, id) {
+  const { content, sha } = await fetchFile(config)
+  if (!content.factoryParts?.items) throw new Error('factoryParts not found')
+  const part = content.factoryParts.items.find(p => p.id === id)
+  content.factoryParts.items = content.factoryParts.items.filter(p => p.id !== id)
+  await writeFile(config, content, sha, `Remove factory part: ${part?.component || id}`)
+}
