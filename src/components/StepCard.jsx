@@ -13,7 +13,17 @@ export function PhaseHeader({ phase }) {
   )
 }
 
-export default function StepCard({ step, index, isDone, isActive, onToggle, onStartTimer }) {
+// Resolve a chem entry — supports both legacy strings and new { chemId, usage } objects
+function resolveChemLabel(chem, chemicals) {
+  if (typeof chem === 'string') return chem // legacy fallback
+  const { chemId, usage } = chem
+  if (!chemId) return usage // no linked chemical (e.g. trim dressing, untracked products)
+  const match = (chemicals || []).find(c => c.id === chemId)
+  const name = match ? match.name : chemId // fall back to id if chemical was deleted
+  return usage ? `${name} — ${usage}` : name
+}
+
+export default function StepCard({ step, index, isDone, isActive, onToggle, onStartTimer, chemicals }) {
   const cls = ['step', step.isMaint ? 'maint' : step.optional ? 'optional' : 'normal', isDone ? 'done' : '', isActive ? 'active-timer' : ''].join(' ')
 
   return (
@@ -59,11 +69,15 @@ export default function StepCard({ step, index, isDone, isActive, onToggle, onSt
                 <i className="ti ti-tool" style={{ fontSize: 10, marginRight: 2 }} aria-hidden="true" />{t}
               </span>
             ))}
-            {(step.chems || []).map(c => (
-              <span key={c} className="tag tc">
-                <i className="ti ti-flask" style={{ fontSize: 10, marginRight: 2 }} aria-hidden="true" />{c}
-              </span>
-            ))}
+            {(step.chems || []).map((c, i) => {
+              const label = resolveChemLabel(c, chemicals)
+              const key = typeof c === 'string' ? c : (c.chemId || c.usage || i)
+              return (
+                <span key={key} className="tag tc">
+                  <i className="ti ti-flask" style={{ fontSize: 10, marginRight: 2 }} aria-hidden="true" />{label}
+                </span>
+              )
+            })}
           </div>
         ) : null}
 

@@ -80,6 +80,10 @@ export async function testConnection(pat) {
 export async function addChemical(config, chem) {
   const { content, sha } = await fetchFile(config)
   content.chemicals = content.chemicals || []
+  // Auto-assign stable id from name if not provided
+  if (!chem.id) {
+    chem = { id: chem.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''), ...chem }
+  }
   content.chemicals.push(chem)
   await writeFile(config, content, sha, `Add chemical: ${chem.name}`)
 }
@@ -109,14 +113,26 @@ export async function addUpgrade(config, upgrade) {
 
 export async function editChemical(config, updatedChem) {
   const { content, sha } = await fetchFile(config)
-  content.chemicals = content.chemicals.map(c => c.name === updatedChem.name ? updatedChem : c)
+  const oldChem = content.chemicals.find(c => c.id === updatedChem.id)
+  const nameChanged = oldChem && oldChem.name !== updatedChem.name
+
+  // Update the chemical record
+  content.chemicals = content.chemicals.map(c => c.id === updatedChem.id ? updatedChem : c)
+
+  // If name changed, update step titles that embedded the old name in their desc/title
+  // The chemId stays stable so chem tags auto-resolve — no step mutation needed for display.
+  // However if the id itself would change (shouldn't happen via UI), log a warning.
+  if (nameChanged && updatedChem.id !== oldChem.id) {
+    console.warn('GitHubSync: chemical id changed — step chems may need manual update', oldChem.id, '->', updatedChem.id)
+  }
+
   await writeFile(config, content, sha, `Edit chemical: ${updatedChem.name}`)
 }
 
-export async function deleteChemical(config, name) {
+export async function deleteChemical(config, nameOrId) {
   const { content, sha } = await fetchFile(config)
-  content.chemicals = content.chemicals.filter(c => c.name !== name)
-  await writeFile(config, content, sha, `Remove chemical: ${name}`)
+  content.chemicals = content.chemicals.filter(c => c.id !== nameOrId && c.name !== nameOrId)
+  await writeFile(config, content, sha, `Remove chemical: ${nameOrId}`)
 }
 
 export async function editTool(config, updatedTool, originalName) {
@@ -164,27 +180,26 @@ export async function deleteReminder(config, id) {
 
 // ── Chemical status + mode toggles ───────────────────────────────────────────
 
-export async function toggleChemicalStatus(config, name) {
+export async function toggleChemicalStatus(config, nameOrId) {
   const { content, sha } = await fetchFile(config)
   content.chemicals = content.chemicals.map(c => {
-    if (c.name !== name) return c
+    if (c.id !== nameOrId && c.name !== nameOrId) return c
     return { ...c, status: c.status === 'active' ? 'inactive' : 'active' }
   })
-  const chem = content.chemicals.find(c => c.name === name)
-  await writeFile(config, content, sha, `Toggle ${name} status -> ${chem.status}`)
+  const chem = content.chemicals.find(c => c.id === nameOrId || c.name === nameOrId)
+  await writeFile(config, content, sha, `Toggle ${nameOrId} status -> ${chem.status}`)
 }
 
-export async function cycleChemicalMode(config, name) {
+export async function cycleChemicalMode(config, nameOrId) {
   const { content, sha } = await fetchFile(config)
   content.chemicals = content.chemicals.map(c => {
-    if (c.name !== name) return c
-    // Cycle: normal -> both -> maint -> normal
+    if (c.id !== nameOrId && c.name !== nameOrId) return c
     let modes = c.modes || ['normal', 'maint']
     if (modes.includes('normal') && modes.includes('maint')) modes = ['normal']
     else if (modes.includes('normal')) modes = ['maint']
     else modes = ['normal', 'maint']
     return { ...c, modes }
   })
-  const chem = content.chemicals.find(c => c.name === name)
-  await writeFile(config, content, sha, `Cycle ${name} modes -> ${chem.modes.join(',')}`)
+  const chem = content.chemicals.find(c => c.id === nameOrId || c.name === nameOrId)
+  await writeFile(config, content, sha, `Cycle ${nameOrId} modes -> ${chem.modes.join(',')}`)
 }

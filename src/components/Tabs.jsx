@@ -5,6 +5,19 @@ import { useState } from 'react'
 import { EditToolForm, SyncStatus } from './SyncForm'
 import { getConfig, deleteTool } from '../utils/GitHubSync'
 
+// Resolve a chem entry — supports both legacy strings and new { chemId, usage } objects
+function resolveChemLabel(chem, chemicals) {
+  if (typeof chem === 'string') return chem
+  const { chemId, usage } = chem
+  if (!chemId) return usage
+  const match = (chemicals || []).find(c => c.id === chemId)
+  const name = match ? match.name : chemId
+  return usage ? `${name} — ${usage}` : name
+}
+function chemKey(chem, i) {
+  return typeof chem === 'string' ? chem : (chem.chemId || chem.usage || i)
+}
+
 // ── ShortList ────────────────────────────────────────────────────────────────
 const SL_NORMAL = [
   { n: 1, t: 'Koch Chemie MWC — wheels', note: 'dwell 2–5 min' },
@@ -136,7 +149,7 @@ export function TabTools({ data }) {
 }
 
 // ── Interior ─────────────────────────────────────────────────────────────────
-export function TabInterior({ data, intDone, onToggle, onReset, onStartTimer }) {
+export function TabInterior({ data, intDone, onToggle, onReset, onStartTimer, chemicals }) {
   const steps = data.interiorDetail.steps
   const n = steps.filter(s => intDone.has(s.id)).length
   const t = steps.length
@@ -164,6 +177,7 @@ export function TabInterior({ data, intDone, onToggle, onReset, onStartTimer }) 
             isDone={intDone.has(s.id)}
             onToggle={onToggle}
             onStartTimer={onStartTimer}
+            chemicals={chemicals || data.chemicals}
           />
         ))}
       </div>
@@ -195,7 +209,7 @@ export function TabInterior({ data, intDone, onToggle, onReset, onStartTimer }) 
 }
 
 // ── Engine Bay ───────────────────────────────────────────────────────────────
-export function TabEngine({ data, engDone, onToggle, onReset }) {
+export function TabEngine({ data, engDone, onToggle, onReset, chemicals }) {
   const steps = data.engineBay.steps
   const n = steps.filter(s => engDone.has(s.id)).length
   const t = steps.length
@@ -246,6 +260,7 @@ export function TabEngine({ data, engDone, onToggle, onReset }) {
             isDone={engDone.has(s.id)}
             onToggle={onToggle}
             onStartTimer={() => {}}
+            chemicals={chemicals || data.chemicals}
           />
         ))}
       </div>
@@ -272,9 +287,9 @@ export function TabBetweenWash({ data }) {
                   <i className="ti ti-tool" style={{ fontSize: 10, marginRight: 2 }} aria-hidden="true" />{t}
                 </span>
               ))}
-              {(s.chems || []).map(c => (
-                <span key={c} className="tag tc">
-                  <i className="ti ti-flask" style={{ fontSize: 10, marginRight: 2 }} aria-hidden="true" />{c}
+              {(s.chems || []).map((c, i) => (
+                <span key={chemKey(c, i)} className="tag tc">
+                  <i className="ti ti-flask" style={{ fontSize: 10, marginRight: 2 }} aria-hidden="true" />{resolveChemLabel(c, data.chemicals)}
                 </span>
               ))}
             </div>

@@ -219,12 +219,14 @@ export default function App() {
           <TabInterior
             data={data} intDone={intDone}
             onToggle={toggleInt} onReset={resetInt} onStartTimer={startTimer}
+            chemicals={data.chemicals}
           />
         )}
         {activeTab === 'engine' && (
           <TabEngine
             data={data} engDone={engDone}
             onToggle={toggleEng} onReset={resetEng}
+            chemicals={data.chemicals}
           />
         )}
         {activeTab === 'between' && <TabBetweenWash data={data} />}

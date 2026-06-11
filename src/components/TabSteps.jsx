@@ -49,6 +49,7 @@ export default function TabSteps({ data, mode, done, activeId, onToggle, onReset
                 isActive={activeId === step.id}
                 onToggle={onToggle}
                 onStartTimer={onStartTimer}
+                chemicals={data.chemicals}
               />
             </div>
           )
