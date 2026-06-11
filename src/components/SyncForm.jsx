@@ -59,7 +59,7 @@ export function ChemicalLookup({ onResult }) {
     setError(null)
     setPreview(null)
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('https://m3care-anthropic-proxy.andy-lambert05.workers.dev', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
