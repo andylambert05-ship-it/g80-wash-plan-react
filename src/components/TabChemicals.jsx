@@ -155,20 +155,6 @@ function CalcModal({ selected, onClose }) {
           <div style={{ fontSize: 11, color: 'var(--t3)', fontWeight: 300, fontStyle: 'italic' }}>Enter container size to calculate.</div>
         )}
       </div>
-
-      {/* Library — inactive chemicals */}
-      {library.length > 0 && (
-        <div style={{ marginTop: 24 }}>
-          <div className="slbl" style={{ marginBottom: 8 }}>Chemical library — inactive</div>
-          <div className="notice info" style={{ marginBottom: 12 }}>
-            <i className="ti ti-archive" aria-hidden="true" />
-            <span>{library.length} chemical{library.length !== 1 ? 's' : ''} in library. Tap <strong>Activate</strong> to add to an active wash.</span>
-          </div>
-          {library.map(c => (
-            <ChemCard key={c.name} chem={c} onSelectDil={setCalcModal} onToggleStatus={handleToggleStatus} onCycleMode={handleCycleMode} />
-          ))}
-        </div>
-      )}
     </div>
   )
 }
