@@ -1,5 +1,5 @@
 import { SEASON_COLORS } from '../constants'
-import StepCard from './StepCard'
+import StepCard, { ExpandToggle } from './StepCard'
 import ResetButton from './ResetButton'
 import { useState } from 'react'
 import { EditToolForm, SyncStatus } from './SyncForm'
@@ -150,6 +150,7 @@ export function TabTools({ data }) {
 
 // ── Interior ─────────────────────────────────────────────────────────────────
 export function TabInterior({ data, intDone, onToggle, onReset, onStartTimer, chemicals }) {
+  const [expandAll, setExpandAll] = useState(false)
   const steps = data.interiorDetail.steps
   const n = steps.filter(s => intDone.has(s.id)).length
   const t = steps.length
@@ -167,7 +168,10 @@ export function TabInterior({ data, intDone, onToggle, onReset, onStartTimer, ch
         </div>
         <div className="prog-track"><div className="prog-bar" style={{ width: `${pct}%` }} /></div>
       </div>
-      <ResetButton onReset={onReset} label="Reset interior steps" />
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <ResetButton onReset={onReset} label="Reset interior steps" />
+        <ExpandToggle expanded={expandAll} onToggle={() => setExpandAll(x => !x)} />
+      </div>
       <div className="steps-list">
         {steps.map((s, idx) => (
           <StepCard
@@ -178,6 +182,7 @@ export function TabInterior({ data, intDone, onToggle, onReset, onStartTimer, ch
             onToggle={onToggle}
             onStartTimer={onStartTimer}
             chemicals={chemicals || data.chemicals}
+            forceExpand={expandAll}
           />
         ))}
       </div>
@@ -210,6 +215,7 @@ export function TabInterior({ data, intDone, onToggle, onReset, onStartTimer, ch
 
 // ── Engine Bay ───────────────────────────────────────────────────────────────
 export function TabEngine({ data, engDone, onToggle, onReset, chemicals }) {
+  const [expandAll, setExpandAll] = useState(false)
   const steps = data.engineBay.steps
   const n = steps.filter(s => engDone.has(s.id)).length
   const t = steps.length
@@ -250,7 +256,10 @@ export function TabEngine({ data, engDone, onToggle, onReset, chemicals }) {
         </div>
         <div className="prog-track"><div className="prog-bar" style={{ width: `${pct}%` }} /></div>
       </div>
-      <ResetButton onReset={onReset} label="Reset engine steps" />
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <ResetButton onReset={onReset} label="Reset engine steps" />
+        <ExpandToggle expanded={expandAll} onToggle={() => setExpandAll(x => !x)} />
+      </div>
       <div className="steps-list">
         {steps.map((s, idx) => (
           <StepCard
@@ -261,6 +270,7 @@ export function TabEngine({ data, engDone, onToggle, onReset, chemicals }) {
             onToggle={onToggle}
             onStartTimer={() => {}}
             chemicals={chemicals || data.chemicals}
+            forceExpand={expandAll}
           />
         ))}
       </div>

@@ -132,6 +132,7 @@ export function ChemicalLookup({ onResult }) {
 export function AddChemicalForm({ data, onClose }) {
   const { syncStatus, sync } = useGitHubSync()
   const [showLookup, setShowLookup] = useState(true)
+  const [showDetails, setShowDetails] = useState(false)
   const [form, setForm] = useState({
     name: '', category: '', modes: ['normal', 'maint'], usedOn: '',
     shelfLife: '', storageNote: '', tool: '',
@@ -152,6 +153,7 @@ export function AddChemicalForm({ data, onClose }) {
         : [{ context: '', ratio: '', amount: '', note: '' }],
     })
     setShowLookup(false)
+    setShowDetails(true) // lookup filled details — show them
   }
 
   const categories = [...new Set((data?.chemicals || []).map(c => c.category))].sort()
@@ -246,30 +248,44 @@ export function AddChemicalForm({ data, onClose }) {
           <div style={{ fontSize: 10, color: '#c8860a', marginTop: 6 }}>Will only appear in {form.modes[0] === 'normal' ? 'Bi-weekly Wash' : 'Deep Clean'}</div>
         )}
       </div>
-      {inp('Used on / areas of use', 'usedOn', { placeholder: 'e.g. All painted panels after dry' })}
-      {inp('Tool required', 'tool', { placeholder: 'e.g. IK E Foam Pro 2' })}
-      {inp('Shelf life', 'shelfLife', { placeholder: 'e.g. 2 years unopened' })}
-      {inp('Storage note', 'storageNote', { placeholder: 'e.g. Keep above 40°F' })}
 
-      <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t3)', marginBottom: 10, marginTop: 16, paddingTop: 12, borderTop: '1px solid var(--bd)' }}>Dilutions</div>
-      {form.dilutions.map((d, i) => (
-        <div key={i} style={{ background: 'var(--card2)', border: '1px solid var(--bd)', padding: 12, marginBottom: 8 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Dilution {i + 1}</div>
-            {form.dilutions.length > 1 && <button onClick={() => removeDil(i)} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 14 }}>×</button>}
-          </div>
-          {[['Context', 'context', 'e.g. Foam cannon — per CarPro'], ['Ratio', 'ratio', 'e.g. 400–500:1'], ['Amount', 'amount', 'e.g. 12–15ml per 6L'], ['Note', 'note', 'e.g. Do not exceed 3 min dwell']].map(([lbl, key, ph]) => (
-            <div key={key} style={{ marginBottom: 8 }}>
-              <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--t3)', display: 'block', marginBottom: 3 }}>{lbl}</label>
-              <input value={d[key]} onChange={e => updateDil(i, key, e.target.value)} placeholder={ph}
-                style={{ width: '100%', background: 'var(--card)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '6px 8px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
+      {/* Progressive disclosure — details & dilutions */}
+      <button onClick={() => setShowDetails(s => !s)} className="detail-toggle">
+        <i className={`ti ti-chevron-${showDetails ? 'up' : 'down'}`} style={{ fontSize: 11 }} aria-hidden="true" />
+        {showDetails ? 'Hide details' : 'Details & dilutions'}
+        {!showDetails && form.dilutions.filter(d => d.ratio.trim()).length > 0 && (
+          <span style={{ opacity: 0.6 }}>· {form.dilutions.filter(d => d.ratio.trim()).length} dilution{form.dilutions.filter(d => d.ratio.trim()).length !== 1 ? 's' : ''}</span>
+        )}
+      </button>
+
+      {showDetails && (
+        <>
+          {inp('Used on / areas of use', 'usedOn', { placeholder: 'e.g. All painted panels after dry' })}
+          {inp('Tool required', 'tool', { placeholder: 'e.g. IK E Foam Pro 2' })}
+          {inp('Shelf life', 'shelfLife', { placeholder: 'e.g. 2 years unopened' })}
+          {inp('Storage note', 'storageNote', { placeholder: 'e.g. Keep above 40°F' })}
+
+          <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t3)', marginBottom: 10, marginTop: 16, paddingTop: 12, borderTop: '1px solid var(--bd)' }}>Dilutions</div>
+          {form.dilutions.map((d, i) => (
+            <div key={i} style={{ background: 'var(--card2)', border: '1px solid var(--bd)', padding: 12, marginBottom: 8 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Dilution {i + 1}</div>
+                {form.dilutions.length > 1 && <button onClick={() => removeDil(i)} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 14 }}>×</button>}
+              </div>
+              {[['Context', 'context', 'e.g. Foam cannon — per CarPro'], ['Ratio', 'ratio', 'e.g. 400–500:1'], ['Amount', 'amount', 'e.g. 12–15ml per 6L'], ['Note', 'note', 'e.g. Do not exceed 3 min dwell']].map(([lbl, key, ph]) => (
+                <div key={key} style={{ marginBottom: 8 }}>
+                  <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--t3)', display: 'block', marginBottom: 3 }}>{lbl}</label>
+                  <input value={d[key]} onChange={e => updateDil(i, key, e.target.value)} placeholder={ph}
+                    style={{ width: '100%', background: 'var(--card)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '6px 8px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
+                </div>
+              ))}
             </div>
           ))}
-        </div>
-      ))}
-      <button onClick={addDil} style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', background: 'transparent', border: '1px solid var(--bd2)', padding: '5px 12px', cursor: 'pointer', fontFamily: 'Inter, sans-serif', marginBottom: 14 }}>
-        + Add dilution
-      </button>
+          <button onClick={addDil} style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', background: 'transparent', border: '1px solid var(--bd2)', padding: '5px 12px', cursor: 'pointer', fontFamily: 'Inter, sans-serif', marginBottom: 14 }}>
+            + Add dilution
+          </button>
+        </>
+      )}
 
       <SyncStatus status={syncStatus} />
       <div style={{ marginTop: 12 }}>
@@ -417,6 +433,7 @@ export function AddUpgradeForm({ data, onClose }) {
 // ── Edit Chemical Form ────────────────────────────────────────────────────────
 export function EditChemicalForm({ chem, onClose }) {
   const { syncStatus, sync } = useGitHubSync()
+  const [showDetails, setShowDetails] = useState(false)
   const [form, setForm] = useState({
     name: chem.name,
     category: chem.category,
@@ -470,27 +487,41 @@ export function EditChemicalForm({ chem, onClose }) {
           })}
         </div>
       </div>
-      {inp('Used on', 'usedOn')}
-      {inp('Tool', 'tool')}
-      {inp('Shelf life', 'shelfLife')}
-      {inp('Storage note', 'storageNote')}
-      <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t3)', marginBottom: 10, marginTop: 14, paddingTop: 12, borderTop: '1px solid var(--bd)' }}>Dilutions</div>
-      {form.dilutions.map((d, i) => (
-        <div key={i} style={{ background: 'var(--card2)', border: '1px solid var(--bd)', padding: 12, marginBottom: 8 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase' }}>Dilution {i + 1}</div>
-            {form.dilutions.length > 1 && <button onClick={() => removeDil(i)} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 14 }}>×</button>}
-          </div>
-          {[['Context', 'context', ''], ['Ratio', 'ratio', ''], ['Amount', 'amount', ''], ['Note', 'note', '']].map(([lbl, key]) => (
-            <div key={key} style={{ marginBottom: 8 }}>
-              <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--t3)', display: 'block', marginBottom: 3 }}>{lbl}</label>
-              <input value={d[key] || ''} onChange={e => updateDil(i, key, e.target.value)}
-                style={{ width: '100%', background: 'var(--card)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '6px 8px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
+
+      {/* Progressive disclosure — details & dilutions */}
+      <button onClick={() => setShowDetails(s => !s)} className="detail-toggle">
+        <i className={`ti ti-chevron-${showDetails ? 'up' : 'down'}`} style={{ fontSize: 11 }} aria-hidden="true" />
+        {showDetails ? 'Hide details' : 'Details & dilutions'}
+        {!showDetails && (
+          <span style={{ opacity: 0.6 }}>· {form.dilutions.filter(d => (d.ratio || '').trim()).length} dilution{form.dilutions.filter(d => (d.ratio || '').trim()).length !== 1 ? 's' : ''}</span>
+        )}
+      </button>
+
+      {showDetails && (
+        <>
+          {inp('Used on', 'usedOn')}
+          {inp('Tool', 'tool')}
+          {inp('Shelf life', 'shelfLife')}
+          {inp('Storage note', 'storageNote')}
+          <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t3)', marginBottom: 10, marginTop: 14, paddingTop: 12, borderTop: '1px solid var(--bd)' }}>Dilutions</div>
+          {form.dilutions.map((d, i) => (
+            <div key={i} style={{ background: 'var(--card2)', border: '1px solid var(--bd)', padding: 12, marginBottom: 8 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase' }}>Dilution {i + 1}</div>
+                {form.dilutions.length > 1 && <button onClick={() => removeDil(i)} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 14 }}>×</button>}
+              </div>
+              {[['Context', 'context', ''], ['Ratio', 'ratio', ''], ['Amount', 'amount', ''], ['Note', 'note', '']].map(([lbl, key]) => (
+                <div key={key} style={{ marginBottom: 8 }}>
+                  <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--t3)', display: 'block', marginBottom: 3 }}>{lbl}</label>
+                  <input value={d[key] || ''} onChange={e => updateDil(i, key, e.target.value)}
+                    style={{ width: '100%', background: 'var(--card)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '6px 8px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
+                </div>
+              ))}
             </div>
           ))}
-        </div>
-      ))}
-      <button onClick={addDil} style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', background: 'transparent', border: '1px solid var(--bd2)', padding: '5px 12px', cursor: 'pointer', fontFamily: 'Inter, sans-serif', marginBottom: 14 }}>+ Add dilution</button>
+          <button onClick={addDil} style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', background: 'transparent', border: '1px solid var(--bd2)', padding: '5px 12px', cursor: 'pointer', fontFamily: 'Inter, sans-serif', marginBottom: 14 }}>+ Add dilution</button>
+        </>
+      )}
       <SyncStatus status={syncStatus} />
       <div style={{ marginTop: 12 }}>
         <button onClick={handleSave} disabled={!canSave}

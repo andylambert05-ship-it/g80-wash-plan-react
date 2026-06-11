@@ -1,8 +1,10 @@
-import StepCard, { PhaseHeader } from './StepCard'
+import { useState } from 'react'
+import StepCard, { PhaseHeader, ExpandToggle } from './StepCard'
 import ResetButton from './ResetButton'
 import { getVisibleSteps } from '../constants'
 
 export default function TabSteps({ data, mode, done, activeId, onToggle, onReset, onStartTimer }) {
+  const [expandAll, setExpandAll] = useState(false)
   const steps = getVisibleSteps(data, mode)
   const n = steps.filter(s => done.has(s.id)).length
   const t = steps.length
@@ -32,7 +34,10 @@ export default function TabSteps({ data, mode, done, activeId, onToggle, onReset
         </div>
       </div>
 
-      <ResetButton onReset={onReset} label="Reset all" />
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <ResetButton onReset={onReset} label="Reset all" />
+        <ExpandToggle expanded={expandAll} onToggle={() => setExpandAll(x => !x)} />
+      </div>
 
       <div className="steps-list">
         {steps.map((step, idx) => {
@@ -50,6 +55,7 @@ export default function TabSteps({ data, mode, done, activeId, onToggle, onReset
                 onToggle={onToggle}
                 onStartTimer={onStartTimer}
                 chemicals={data.chemicals}
+                forceExpand={expandAll}
               />
             </div>
           )

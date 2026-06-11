@@ -31,29 +31,49 @@ import TabReminders from './components/TabReminders'
 import TabSettings from './components/TabSettings'
 import { AddChemicalForm, AddToolForm, AddUpgradeForm } from './components/SyncForm'
 
+// ── 5 top-level tabs with sub-navigation ────────────────────────────────────
 const TABS = [
-  { id: 'steps', label: 'Steps' },
-  { id: 'chems', label: 'Chemicals' },
-  { id: 'shortlist', label: 'ShortList' },
-  { id: 'tools', label: 'Tools' },
-  { id: 'interior', label: 'Interior' },
-  { id: 'engine', label: 'Engine Bay' },
-  { id: 'between', label: 'Between Washes' },
-  { id: 'seasonal', label: 'Seasonal' },
+  { id: 'wash', label: 'Wash' },
+  { id: 'inventory', label: 'Inventory' },
+  { id: 'care', label: 'Care' },
   { id: 'upgrades', label: 'Upgrades' },
-  { id: 'history', label: 'History' },
-  { id: 'reminders', label: 'Reminders' },
-  { id: 'settings', label: 'Settings' },
+  { id: 'more', label: 'More' },
 ]
+
+const SUBTABS = {
+  wash: [
+    { id: 'steps', label: 'Steps' },
+    { id: 'shortlist', label: 'ShortList' },
+    { id: 'interior', label: 'Interior' },
+    { id: 'engine', label: 'Engine Bay' },
+  ],
+  inventory: [
+    { id: 'chems', label: 'Chemicals' },
+    { id: 'tools', label: 'Tools' },
+  ],
+  care: [
+    { id: 'reminders', label: 'Reminders' },
+    { id: 'between', label: 'Between Washes' },
+    { id: 'seasonal', label: 'Seasonal' },
+  ],
+  more: [
+    { id: 'history', label: 'History' },
+    { id: 'settings', label: 'Settings' },
+  ],
+}
 
 export default function App() {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
-  const [activeTab, setActiveTab] = useState('steps')
+  const [activeTab, setActiveTab] = useState('wash')
+  const [sub, setSub] = useState({ wash: 'steps', inventory: 'chems', care: 'reminders', more: 'history' })
   const { mode, setMode, done, toggleStep, resetSteps, engDone, toggleEng, resetEng, intDone, toggleInt, resetInt } = useWashState()
   const [theme, setTheme] = useState(() => localStorage.getItem('gwp_theme') || 'dark')
-  const [historyKey, setHistoryKey] = useState(0)
-  const [addForm, setAddForm] = useState(null) // 'chemical' | 'tool' | 'upgrade' // increment to force TabHistory refresh
+  const [addForm, setAddForm] = useState(null) // 'chemical' | 'tool' | 'upgrade'
+
+  const activeSub = sub[activeTab] || null
+  const setActiveSub = (id) => setSub(s => ({ ...s, [activeTab]: id }))
+  const panelKey = `${activeTab}-${activeSub || ''}`
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -74,7 +94,7 @@ export default function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [activeTab])
+  }, [panelKey])
 
   useEffect(() => {
     fetch('wash-plan.json')
@@ -103,11 +123,20 @@ export default function App() {
 
   const { meta } = data
 
-  // Sticky mini-progress — only meaningful on the Steps tab
+  // Sticky mini-progress — only meaningful on Wash > Steps
   const visibleSteps = getVisibleSteps(data, mode)
   const stepsDone = visibleSteps.filter(s => done.has(s.id)).length
   const stepsPct = visibleSteps.length > 0 ? Math.round((stepsDone / visibleSteps.length) * 100) : 0
-  const showMiniProgress = activeTab === 'steps' && stepsDone > 0
+  const showMiniProgress = activeTab === 'wash' && activeSub === 'steps' && stepsDone > 0
+
+  // Mode toggle only matters on Wash + Inventory
+  const showModeRow = activeTab === 'wash' || activeTab === 'inventory'
+
+  // Contextual + button
+  const addAction =
+    activeTab === 'inventory' && activeSub === 'chems' ? 'chemical' :
+    activeTab === 'inventory' && activeSub === 'tools' ? 'tool' :
+    activeTab === 'upgrades' ? 'upgrade' : null
 
   return (
     <div className="app">
@@ -128,7 +157,7 @@ export default function App() {
           </div>
         </div>
       )}
-      {/* Sticky mini progress — top of viewport on Steps tab */}
+      {/* Sticky mini progress — top of viewport on Wash > Steps */}
       {showMiniProgress && (
         <div className="mini-progress">
           <div className="mini-progress-bar" style={{ width: `${stepsPct}%` }} />
@@ -152,18 +181,8 @@ export default function App() {
             <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'} aria-label="Toggle theme">
               <i className={`ti ${theme === 'dark' ? 'ti-sun' : 'ti-moon'}`} aria-hidden="true" />
             </button>
-            {activeTab === 'chems' && (
-              <button className="theme-toggle" onClick={() => setAddForm('chemical')} title="Add chemical" aria-label="Add chemical">
-                <i className="ti ti-plus" aria-hidden="true" />
-              </button>
-            )}
-            {activeTab === 'tools' && (
-              <button className="theme-toggle" onClick={() => setAddForm('tool')} title="Add tool" aria-label="Add tool">
-                <i className="ti ti-plus" aria-hidden="true" />
-              </button>
-            )}
-            {activeTab === 'upgrades' && (
-              <button className="theme-toggle" onClick={() => setAddForm('upgrade')} title="Add upgrade" aria-label="Add upgrade">
+            {addAction && (
+              <button className="theme-toggle" onClick={() => setAddForm(addAction)} title={`Add ${addAction}`} aria-label={`Add ${addAction}`}>
                 <i className="ti ti-plus" aria-hidden="true" />
               </button>
             )}
@@ -171,23 +190,25 @@ export default function App() {
           </div>
         </div>
 
-        <div className="mode-row">
-          <button
-            className={`mbtn ${mode === 'normal' ? 'normal' : ''}`}
-            onClick={() => setMode('normal')}
-          >
-            <i className="ti ti-droplet" aria-hidden="true" /> Bi-weekly wash
-          </button>
-          <button
-            className={`mbtn ${mode === 'maint' ? 'maint' : ''}`}
-            onClick={() => setMode('maint')}
-          >
-            <i className="ti ti-shield-check" aria-hidden="true" /> Deep Clean
-          </button>
-        </div>
+        {showModeRow && (
+          <div className="mode-row">
+            <button
+              className={`mbtn ${mode === 'normal' ? 'normal' : ''}`}
+              onClick={() => setMode('normal')}
+            >
+              <i className="ti ti-droplet" aria-hidden="true" /> Bi-weekly wash
+            </button>
+            <button
+              className={`mbtn ${mode === 'maint' ? 'maint' : ''}`}
+              onClick={() => setMode('maint')}
+            >
+              <i className="ti ti-shield-check" aria-hidden="true" /> Deep Clean
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Tabs */}
+      {/* Top-level tabs */}
       <div className="tabs">
         {TABS.map(tab => (
           <button
@@ -200,63 +221,83 @@ export default function App() {
         ))}
       </div>
 
-      {/* Panels — keyed div re-triggers fade on every tab change */}
-      <div key={activeTab} className="tab-panel">
-        {activeTab === 'steps' && (
+      {/* Sub-navigation */}
+      {SUBTABS[activeTab] && (
+        <div className="subnav">
+          {SUBTABS[activeTab].map(st => (
+            <button
+              key={st.id}
+              className={`subnav-btn ${activeSub === st.id ? 'active' : ''}`}
+              onClick={() => setActiveSub(st.id)}
+            >
+              {st.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Panels — keyed div re-triggers fade on every tab/sub change */}
+      <div key={panelKey} className="tab-panel">
+        {activeTab === 'wash' && activeSub === 'steps' && (
           <TabSteps
             data={data} mode={mode} done={done} activeId={timer?.activeId}
             onToggle={toggleStep} onReset={resetSteps} onStartTimer={startTimer}
           />
         )}
-        {activeTab === 'chems' && (
-        <div className="panel-full">
-          <TabChemicals data={data} mode={mode} />
-        </div>
-      )}
-        {activeTab === 'shortlist' && <TabShortList mode={mode} />}
-        {activeTab === 'tools' && <TabTools data={data} />}
-        {activeTab === 'interior' && (
+        {activeTab === 'wash' && activeSub === 'shortlist' && <TabShortList mode={mode} />}
+        {activeTab === 'wash' && activeSub === 'interior' && (
           <TabInterior
             data={data} intDone={intDone}
             onToggle={toggleInt} onReset={resetInt} onStartTimer={startTimer}
             chemicals={data.chemicals}
           />
         )}
-        {activeTab === 'engine' && (
+        {activeTab === 'wash' && activeSub === 'engine' && (
           <TabEngine
             data={data} engDone={engDone}
             onToggle={toggleEng} onReset={resetEng}
             chemicals={data.chemicals}
           />
         )}
-        {activeTab === 'between' && <TabBetweenWash data={data} />}
-        {activeTab === 'seasonal' && <TabSeasonal data={data} />}
+
+        {activeTab === 'inventory' && activeSub === 'chems' && (
+          <div className="panel-full">
+            <TabChemicals data={data} mode={mode} />
+          </div>
+        )}
+        {activeTab === 'inventory' && activeSub === 'tools' && <TabTools data={data} />}
+
+        {activeTab === 'care' && activeSub === 'reminders' && <ErrorBoundary><TabReminders data={data} /></ErrorBoundary>}
+        {activeTab === 'care' && activeSub === 'between' && <TabBetweenWash data={data} />}
+        {activeTab === 'care' && activeSub === 'seasonal' && <TabSeasonal data={data} />}
+
         {activeTab === 'upgrades' && <ErrorBoundary><TabUpgrades data={data} /></ErrorBoundary>}
-      {activeTab === 'history' && <ErrorBoundary><TabHistory data={data} mode={mode} done={done} /></ErrorBoundary>}
-      {activeTab === 'reminders' && <ErrorBoundary><TabReminders data={data} /></ErrorBoundary>}
-      {activeTab === 'settings' && <ErrorBoundary><TabSettings /></ErrorBoundary>}
-      {/* Floating add forms */}
-      {addForm === 'chemical' && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
-          <div style={{ maxWidth: 600, margin: '0 auto' }}>
-            <AddChemicalForm data={data} onClose={() => setAddForm(null)} />
+
+        {activeTab === 'more' && activeSub === 'history' && <ErrorBoundary><TabHistory data={data} mode={mode} done={done} /></ErrorBoundary>}
+        {activeTab === 'more' && activeSub === 'settings' && <ErrorBoundary><TabSettings /></ErrorBoundary>}
+
+        {/* Floating add forms */}
+        {addForm === 'chemical' && (
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
+            <div style={{ maxWidth: 600, margin: '0 auto' }}>
+              <AddChemicalForm data={data} onClose={() => setAddForm(null)} />
+            </div>
           </div>
-        </div>
-      )}
-      {addForm === 'tool' && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
-          <div style={{ maxWidth: 600, margin: '0 auto' }}>
-            <AddToolForm data={data} onClose={() => setAddForm(null)} />
+        )}
+        {addForm === 'tool' && (
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
+            <div style={{ maxWidth: 600, margin: '0 auto' }}>
+              <AddToolForm data={data} onClose={() => setAddForm(null)} />
+            </div>
           </div>
-        </div>
-      )}
-      {addForm === 'upgrade' && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
-          <div style={{ maxWidth: 600, margin: '0 auto' }}>
-            <AddUpgradeForm data={data} onClose={() => setAddForm(null)} />
+        )}
+        {addForm === 'upgrade' && (
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
+            <div style={{ maxWidth: 600, margin: '0 auto' }}>
+              <AddUpgradeForm data={data} onClose={() => setAddForm(null)} />
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
 
       {/* Floating timer */}
