@@ -4,8 +4,9 @@
     "car": "Isle of Man Green BMW M3 G80 - S58",
     "coating": "Ceramic coated",
     "lastUpdated": "2026-06-11",
-    "version": "2.6",
+    "version": "2.7",
     "changelog": [
+      "v2.7 (2026-06-11) - Weather banner on Wash tab: Open-Meteo API (no key) fetches conditions for Greeley CO. Triggers detail-relevant alerts for incoming rain (next 48h), high UV (≥8 — flash-dry risk), high heat (≥90°F), and high wind (≥20mph — dust contamination). Dismissible per-session, 30min cache. Future TODO: dilution calculator + floating timer visual polish.",
       "v2.6 (2026-06-11) - OEM+ Reversibility Tracker: new sub-section under Upgrades tab to log factory parts removed during modifications. Tracks component name, storage location, part number, condition, removal date, hardware status, replaced-by mod, and notes. Items group by replacement mod for easy reinstall lookup.",
       "v2.5 (2026-06-11) - Polish bundle: bottom navigation bar (thumb-reach friendly, replaces top tabs), Screen Wake Lock API keeps phone awake during timers, haptic feedback audit (20ms step toggles, 40ms timer start, 8ms nav clicks). Removed duplicate wake lock in useTimer; useWakeLock hook is single source of truth.",
       "v2.4 (2026-06-10) - UX simplification: 12 tabs consolidated to 5 with sub-navigation (Wash, Inventory, Care, Upgrades, More). Step cards collapse by default — tap number to complete, tap body to expand. Expand all/collapse all toggle. Progressive disclosure on add/edit chemical forms. Chemical ID propagation — step chem tags now resolve live from chemicals inventory.",

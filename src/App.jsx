@@ -31,6 +31,7 @@ import TabHistory from './components/TabHistory'
 import TabReminders from './components/TabReminders'
 import TabSettings from './components/TabSettings'
 import { AddChemicalForm, AddToolForm, AddUpgradeForm } from './components/SyncForm'
+import WeatherBanner from './components/WeatherBanner'
 
 // ── 5 top-level tabs with sub-navigation ────────────────────────────────────
 const TABS = [
@@ -234,6 +235,7 @@ export default function App() {
 
       {/* Panels — keyed div re-triggers fade on every tab/sub change */}
       <div key={panelKey} className="tab-panel">
+        {activeTab === 'wash' && <WeatherBanner />}
         {activeTab === 'wash' && activeSub === 'steps' && (
           <TabSteps
             data={data} mode={mode} done={done} activeId={timer?.activeId}
