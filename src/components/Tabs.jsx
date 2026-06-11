@@ -93,7 +93,7 @@ export function TabTools({ data }) {
       {editingTool && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
           <div style={{ maxWidth: 600, margin: '0 auto' }}>
-            <EditToolForm tool={editingTool} onClose={() => setEditingTool(null)} />
+            <EditToolForm tool={editingTool} data={data} onClose={() => setEditingTool(null)} />
           </div>
         </div>
       )}
