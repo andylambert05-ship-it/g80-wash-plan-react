@@ -63,7 +63,7 @@ export function ChemicalLookup({ onResult }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-sonnet-4-6',
           max_tokens: 1000,
           tools: [{ type: 'web_search_20250305', name: 'web_search' }],
           system: `You are a detailing chemical expert. Search the web for the product and extract structured info. Respond ONLY with a valid JSON object — no markdown, no backticks, no preamble. Keys: name (string), category (string — one of: Wheel Cleaner, Iron Remover, Tar Remover, Pre-wash / Snow Foam, All-Purpose Cleaner, Shampoo / Wash, Ceramic Coating Maintenance, Tyre Dressing, Glass Cleaner, Leather Cleaner, Leather Conditioner, Interior Cleaner, Paint Decontamination, Quick Detailer, Other), modes (array of "normal" and/or "maint"), usedOn (string), tool (string or null), shelfLife (string or null), storageNote (string or null), dilutions (array of objects with context/ratio/amount/note). If not found return {"error":"not found"}.`,
