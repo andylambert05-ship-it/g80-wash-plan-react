@@ -161,3 +161,30 @@ export async function deleteReminder(config, id) {
   content.reminders = content.reminders.filter(r => r.id !== id)
   await writeFile(config, content, sha, `Remove reminder: ${id}`)
 }
+
+// ── Chemical status + mode toggles ───────────────────────────────────────────
+
+export async function toggleChemicalStatus(config, name) {
+  const { content, sha } = await fetchFile(config)
+  content.chemicals = content.chemicals.map(c => {
+    if (c.name !== name) return c
+    return { ...c, status: c.status === 'active' ? 'inactive' : 'active' }
+  })
+  const chem = content.chemicals.find(c => c.name === name)
+  await writeFile(config, content, sha, `Toggle ${name} status -> ${chem.status}`)
+}
+
+export async function cycleChemicalMode(config, name) {
+  const { content, sha } = await fetchFile(config)
+  content.chemicals = content.chemicals.map(c => {
+    if (c.name !== name) return c
+    // Cycle: normal -> both -> maint -> normal
+    let modes = c.modes || ['normal', 'maint']
+    if (modes.includes('normal') && modes.includes('maint')) modes = ['normal']
+    else if (modes.includes('normal')) modes = ['maint']
+    else modes = ['normal', 'maint']
+    return { ...c, modes }
+  })
+  const chem = content.chemicals.find(c => c.name === name)
+  await writeFile(config, content, sha, `Cycle ${name} modes -> ${chem.modes.join(',')}`)
+}

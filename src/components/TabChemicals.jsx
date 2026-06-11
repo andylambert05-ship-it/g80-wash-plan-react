@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { getBrand, getShortName, CAT_ORDER } from '../constants'
 import { EditChemicalForm, SyncStatus } from './SyncForm'
-import { getConfig, deleteChemical } from '../utils/GitHubSync'
+import { getConfig, deleteChemical, toggleChemicalStatus, cycleChemicalMode } from '../utils/GitHubSync'
 
 // ── Ratio parser ─────────────────────────────────────────────────────────────
 function parseRatio(ratio) {
@@ -155,6 +155,20 @@ function CalcModal({ selected, onClose }) {
           <div style={{ fontSize: 11, color: 'var(--t3)', fontWeight: 300, fontStyle: 'italic' }}>Enter container size to calculate.</div>
         )}
       </div>
+
+      {/* Library — inactive chemicals */}
+      {library.length > 0 && (
+        <div style={{ marginTop: 24 }}>
+          <div className="slbl" style={{ marginBottom: 8 }}>Chemical library — inactive</div>
+          <div className="notice info" style={{ marginBottom: 12 }}>
+            <i className="ti ti-archive" aria-hidden="true" />
+            <span>{library.length} chemical{library.length !== 1 ? 's' : ''} in library. Tap <strong>Activate</strong> to add to an active wash.</span>
+          </div>
+          {library.map(c => (
+            <ChemCard key={c.name} chem={c} onSelectDil={setCalcModal} onToggleStatus={handleToggleStatus} onCycleMode={handleCycleMode} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -205,10 +219,12 @@ function ChemChart({ chemicals, onSelectDil }) {
 }
 
 // ── Chem card ─────────────────────────────────────────────────────────────────
-function ChemCard({ chem, onSelectDil }) {
+function ChemCard({ chem, onSelectDil, onToggleStatus, onCycleMode }) {
   const [editing, setEditing] = useState(false)
   const [confirmDel, setConfirmDel] = useState(false)
   const [delStatus, setDelStatus] = useState(null)
+  const [toggling, setToggling] = useState(false)
+  const [cycling, setCycling] = useState(false)
 
   const handleDelete = async () => {
     if (!confirmDel) { setConfirmDel(true); setTimeout(() => setConfirmDel(false), 3000); return }
@@ -237,6 +253,19 @@ function ChemCard({ chem, onSelectDil }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           {maintOnly && <span className="pill pm">maint. only</span>}
           {normalOnly && <span className="pill po">normal only</span>}
+          {/* Mode cycle button — only for active chemicals */}
+          {chem.status !== 'inactive' && (
+            <button onClick={() => !cycling && onCycleMode(chem.name, setCycling)} title="Cycle wash mode"
+              style={{ padding: '2px 8px', border: '1px solid var(--bd2)', background: 'transparent', color: '#0066b1', cursor: 'pointer', fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
+              <i className="ti ti-refresh" style={{ fontSize: 10 }} aria-hidden="true" />
+              {chem.modes?.includes('normal') && chem.modes?.includes('maint') ? 'Both' : chem.modes?.includes('normal') ? 'Bi-weekly' : 'Deep Clean'}
+            </button>
+          )}
+          {/* Status toggle */}
+          <button onClick={() => !toggling && onToggleStatus(chem.name, setToggling)} title={chem.status === 'inactive' ? 'Move to active' : 'Move to library'}
+            style={{ padding: '2px 8px', border: `1px solid ${chem.status === 'inactive' ? '#1a9e62' : 'var(--bd2)'}`, background: chem.status === 'inactive' ? '#1a9e62' : 'transparent', color: chem.status === 'inactive' ? '#fff' : 'var(--t3)', cursor: 'pointer', fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', flexShrink: 0 }}>
+            {toggling ? '...' : chem.status === 'inactive' ? 'Activate' : 'Library'}
+          </button>
           <button onClick={() => setEditing(true)} title="Edit"
             style={{ background: 'transparent', border: '1px solid var(--bd2)', color: 'var(--t3)', width: 26, height: 26, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0 }}>
             <i className="ti ti-pencil" aria-hidden="true" />
@@ -278,6 +307,20 @@ function ChemCard({ chem, onSelectDil }) {
         {chem.shelfLife && <div className="chem-shelf"><i className="ti ti-clock" aria-hidden="true" /><span><strong>Shelf life:</strong> {chem.shelfLife}</span></div>}
         {chem.storageNote && <div className="chem-shelf"><i className="ti ti-alert-circle" aria-hidden="true" /><span>{chem.storageNote}</span></div>}
       </div>
+
+      {/* Library — inactive chemicals */}
+      {library.length > 0 && (
+        <div style={{ marginTop: 24 }}>
+          <div className="slbl" style={{ marginBottom: 8 }}>Chemical library — inactive</div>
+          <div className="notice info" style={{ marginBottom: 12 }}>
+            <i className="ti ti-archive" aria-hidden="true" />
+            <span>{library.length} chemical{library.length !== 1 ? 's' : ''} in library. Tap <strong>Activate</strong> to add to an active wash.</span>
+          </div>
+          {library.map(c => (
+            <ChemCard key={c.name} chem={c} onSelectDil={setCalcModal} onToggleStatus={handleToggleStatus} onCycleMode={handleCycleMode} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -285,8 +328,43 @@ function ChemCard({ chem, onSelectDil }) {
 // ── Main tab ──────────────────────────────────────────────────────────────────
 export default function TabChemicals({ data, mode }) {
   const [calcModal, setCalcModal] = useState(null) // { name, ctx, ratio } or null
+  const [localData, setLocalData] = useState(null) // optimistic UI updates
 
-  const active = data.chemicals.filter(c => c.modes.includes(mode))
+  const chemicals = (localData || data).chemicals || []
+
+  const handleToggleStatus = async (name, setToggling) => {
+    setToggling(true)
+    // Optimistic update
+    const updated = { ...(localData || data), chemicals: (localData || data).chemicals.map(c => c.name === name ? { ...c, status: c.status === 'active' ? 'inactive' : 'active' } : c) }
+    setLocalData(updated)
+    const config = getConfig()
+    if (config.pat) {
+      try { await toggleChemicalStatus(config, name) } catch(e) { setLocalData(null) }
+    }
+    setToggling(false)
+  }
+
+  const handleCycleMode = async (name, setCycling) => {
+    setCycling(true)
+    // Cycle modes optimistically
+    const updated = { ...(localData || data), chemicals: (localData || data).chemicals.map(c => {
+      if (c.name !== name) return c
+      let modes = c.modes || ['normal', 'maint']
+      if (modes.includes('normal') && modes.includes('maint')) modes = ['normal']
+      else if (modes.includes('normal')) modes = ['maint']
+      else modes = ['normal', 'maint']
+      return { ...c, modes }
+    })}
+    setLocalData(updated)
+    const config = getConfig()
+    if (config.pat) {
+      try { await cycleChemicalMode(config, name) } catch(e) { setLocalData(null) }
+    }
+    setCycling(false)
+  }
+
+  const active = chemicals.filter(c => c.status !== 'inactive' && c.modes.includes(mode))
+  const library = chemicals.filter(c => c.status === 'inactive')
   const sorted = [...active].sort((a, b) => {
     const ai = CAT_ORDER.indexOf(a.category)
     const bi = CAT_ORDER.indexOf(b.category)
@@ -313,7 +391,7 @@ export default function TabChemicals({ data, mode }) {
         {Object.entries(cats).map(([cat, chems]) => (
           <div key={cat}>
             <div className="slbl" style={{ marginTop: 12 }}>{cat}</div>
-            {chems.map(c => <ChemCard key={c.name} chem={c} onSelectDil={setCalcModal} />)}
+            {chems.map(c => <ChemCard key={c.name} chem={c} onSelectDil={setCalcModal} onToggleStatus={handleToggleStatus} onCycleMode={handleCycleMode} />)}
           </div>
         ))}
       </div>

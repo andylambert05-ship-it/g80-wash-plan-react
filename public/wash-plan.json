@@ -141,8 +141,8 @@
       "usedFor": "Pre-rinse, all rinse passes"
     },
     {
-      "name": "EGO Power+ LB5804 580 CFM 56-Volt Lithium-ion Cordless Leaf Blower",
       "category": "Rinsing & Drying",
+      "name": "Leaf blower",
       "qty": "1",
       "usedFor": "100% touchless drying - paint, gaps, badges, exhausts; engine bay drying"
     },
@@ -241,12 +241,6 @@
       "qty": "1",
       "category": "Foam / Pre-wash",
       "usedFor": "Manual pump foam sprayer - wheels, spot treatment, chemical application without pressure washer. 3 interchangeable tips for loose, medium, or thick foam density. 3L capacity."
-    },
-    {
-      "name": "OG Solo 260-Li Powered Sprayer",
-      "category": "Sprayer",
-      "qty": "1",
-      "usedFor": "Used for spraying drying aid, waterless wash, glass cleaner, etc"
     }
   ],
   "chemicals": [
@@ -274,7 +268,8 @@
       "tool": "IK E Foam Pro 12 pre-foam + 2-bucket wash (Buckets 2 & 3)",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Store in cool dark place. Keep sealed.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "CarPro Iron X",
@@ -295,7 +290,8 @@
       "tool": "Labeled spray bottle",
       "shelfLife": "2 years unopened, 6-12 months opened",
       "storageNote": "Do not freeze. Keep sealed - oxidises when exposed to air. Discard if purple/red before use.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "CarPro Bug Out",
@@ -316,7 +312,8 @@
       "tool": "Labeled spray bottle + dedicated bug MF towel",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Shake before use. Keep sealed.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "CarPro Tar X",
@@ -337,7 +334,8 @@
       "tool": "Labeled spray bottle + dedicated tar MF towel",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Keep sealed. Store away from heat.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "Koch Chemie Magic Wheel Cleaner (MWC)",
@@ -358,7 +356,8 @@
       "tool": "IK E Foam Pro 2 or spray direct; EZ Detail brushes + Barrel Blade; high-pressure rinse",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Keep sealed. Do not use on hot surfaces.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "Brake Buster",
@@ -376,7 +375,8 @@
           "note": "Use when wheels are unusually contaminated, e.g. after track days."
         }
       ],
-      "tool": "Spray direct + EZ Detail brushes + Barrel Blade"
+      "tool": "Spray direct + EZ Detail brushes + Barrel Blade",
+      "status": "active"
     },
     {
       "name": "DIY Detail AllClean (APC)",
@@ -412,7 +412,8 @@
           "note": ""
         }
       ],
-      "tool": "Labeled spray bottle + Detail Factory Fender Well Brush (wells); detail brushes (engine bay)"
+      "tool": "Labeled spray bottle + Detail Factory Fender Well Brush (wells); detail brushes (engine bay)",
+      "status": "active"
     },
     {
       "name": "CarPro MultiX (APC option)",
@@ -436,7 +437,8 @@
           "note": "For use in pressure washing applications. Test on inconspicuous area first."
         }
       ],
-      "tool": "Labeled spray bottle + Detail Factory Fender Well Brush / detail brushes"
+      "tool": "Labeled spray bottle + Detail Factory Fender Well Brush / detail brushes",
+      "status": "active"
     },
     {
       "name": "Bilt Hamber Touchless",
@@ -474,7 +476,8 @@
       "tool": "IK E Foam Pro 12 (primary); also compatible with pump spray or trigger spray per BH",
       "shelfLife": "3 years unopened, 2 years opened",
       "storageNote": "Sugar-based, stable. Keep sealed.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "CarPro Descale",
@@ -500,7 +503,8 @@
       "tool": "2-bucket method - dedicated Descale wash bucket + rinse bucket",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Acidic - keep sealed, store away from metals.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "CarPro ReTyre",
@@ -521,7 +525,8 @@
       "tool": "Labeled spray bottle with foaming nozzle + stiff tire brush",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "High pH - keep sealed. PPE for handling.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "CarPro Darkside",
@@ -542,7 +547,8 @@
       "tool": "Dedicated foam tire applicator pads (Darkside-only, never mixed)",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Contains citral. Store cool and dry. Shake before use.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "CarPro Reload 2.0",
@@ -563,7 +569,8 @@
       "tool": "2 dedicated MF towels per session - one to spread, one to buff off. Never use on glass.",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Keep sealed. Store at room temperature.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "P21S Polishing Soap",
@@ -581,7 +588,8 @@
           "note": "Circular motion on each exhaust tip. Wipe clean. Keep soap off surrounding painted bumper."
         }
       ],
-      "tool": "P21S applicator or soft MF cloth"
+      "tool": "P21S applicator or soft MF cloth",
+      "status": "active"
     },
     {
       "name": "Bilt Hamber Trace-Less",
@@ -608,7 +616,8 @@
       "tool": "Dedicated exterior MF glass towels; Invisible Glass Reach & Clean Tool (interior)",
       "shelfLife": "3 years unopened, 2 years opened",
       "storageNote": "Shake well before use. Keep sealed.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "303 Products Aerospace Protectant",
@@ -629,7 +638,8 @@
       "tool": "Spray direct or onto soft MF towel / foam applicator - dedicated trim applicator recommended to avoid glass overspray",
       "shelfLife": "3 years unopened, 2 years opened",
       "storageNote": "Water-based. Keep from freezing. Store cool and dry.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "McKee's 37 N-914 Rinseless Wash V2",
@@ -668,7 +678,8 @@
       "tool": "Labeled spray bottle (quick detailer / waterless / clay lube); bucket + MF wash mitt (rinseless wash); soft MF towels for all applications",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Shake before use. Keep sealed. Mixed dilution can be stored and reused.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "Bilt Hamber Touch-On",
@@ -698,7 +709,8 @@
           "note": "Trigger apply liberally panel by panel, then thoroughly rinse with pressure washer or hose. Dry with MF towel or air blower. Car must NOT be allowed to air dry - water spotting may occur."
         }
       ],
-      "tool": "Pressure washer lance / trigger spray / bucket + wash mitt - one 30ml sachet per session"
+      "tool": "Pressure washer lance / trigger spray / bucket + wash mitt - one 30ml sachet per session",
+      "status": "active"
     },
     {
       "name": "Bilt Hamber Korrosol",
@@ -719,7 +731,8 @@
       "tool": "Trigger spray direct - no agitation required in most cases",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Keep sealed. Do not freeze.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "Bilt Hamber Surfex HD",
@@ -770,7 +783,8 @@
       "tool": "Labeled spray bottle + appropriate brush (stiff for exterior/engine, soft for interior); IK E Foam Pro 2 for larger areas",
       "shelfLife": "3 years unopened, 2 years opened",
       "storageNote": "Concentrated - keep sealed, store cool.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "Bilt Hamber Auto Wheel",
@@ -791,7 +805,8 @@
       "tool": "Trigger spray direct; EZ Detail brushes + Barrel Blade for agitation if needed; hose/jetwash to rinse",
       "shelfLife": "2 years unopened, 1 year opened",
       "storageNote": "Keep sealed. Do not freeze.",
-      "openedDate": ""
+      "openedDate": "",
+      "status": "active"
     },
     {
       "name": "Koch Chemie Allround Surface Cleaner (ASC)",
@@ -809,7 +824,8 @@
           "note": "Spray undiluted onto stained area. Allow to absorb briefly. Wipe with clean MF cloth. Leaves streak-free, residue-free finish on all smooth surfaces including non-polar plastics. Can also be used with cleaning gun (e.g. Cyclone) for ventilation slots and textiles - switch off chemical spray and dry with compressed air."
         }
       ],
-      "tool": "Spray direct onto surface or MF cloth; cleaning gun for vents and textiles"
+      "tool": "Spray direct onto surface or MF cloth; cleaning gun for vents and textiles",
+      "status": "active"
     },
     {
       "name": "Koch Chemie Glass Cleaner",
@@ -827,7 +843,8 @@
           "note": "Ready-to-use. Effortlessly removes road film, oil, grease, insects. Runs off quickly without streaks. Gloss and smoothness additive improves wiping effect of cloth. Safe for tinted glass and chrome. Use with dedicated MF glass towel - waffle-weave for first pass, suede or clean side for buff pass. Do NOT spray directly on iDrive screen - spray onto cloth only."
         }
       ],
-      "tool": "Dedicated MF glass towels - waffle-weave first pass, suede or clean MF buff pass. Interior: Invisible Glass Reach & Clean Tool."
+      "tool": "Dedicated MF glass towels - waffle-weave first pass, suede or clean MF buff pass. Interior: Invisible Glass Reach & Clean Tool.",
+      "status": "active"
     }
   ],
   "washSteps": {
@@ -839,7 +856,7 @@
         "tools": [],
         "chems": [],
         "phase": "Wheels & Tires",
-        "phaseIcon": "ðµ",
+        "phaseIcon": "\ud83d\udd35",
         "estMins": 2
       },
       {
@@ -851,7 +868,7 @@
         ],
         "chems": [],
         "phase": "Wheels & Tires",
-        "phaseIcon": "ðµ",
+        "phaseIcon": "\ud83d\udd35",
         "estMins": 3
       },
       {
@@ -870,7 +887,7 @@
           "Brake Buster - RTU (option)"
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "ðµ",
+        "phaseIcon": "\ud83d\udd35",
         "estMins": 8,
         "dwellMins": "2-5",
         "dwellMin": 120,
@@ -888,7 +905,7 @@
           "CarPro ReTyre - RTU"
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "ðµ",
+        "phaseIcon": "\ud83d\udd35",
         "estMins": 4,
         "dwellMins": "0.5",
         "dwellMin": 30,
@@ -906,7 +923,7 @@
           "AllClean 5:1-10:1 or CarPro MultiX 1:20"
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "ðµ",
+        "phaseIcon": "\ud83d\udd35",
         "estMins": 4
       },
       {
@@ -927,7 +944,7 @@
         "optional": true,
         "normalOnly": true,
         "phase": "Wheels & Tires",
-        "phaseIcon": "ðµ",
+        "phaseIcon": "\ud83d\udd35",
         "estMins": 10
       },
       {
@@ -942,7 +959,7 @@
           "CarPro Bug Out - RTU"
         ],
         "phase": "Pre-treatment",
-        "phaseIcon": "ð´",
+        "phaseIcon": "\ud83d\udd34",
         "estMins": 3,
         "dwellMins": "0.5-2",
         "dwellMin": 30,
@@ -960,7 +977,7 @@
           "CarPro Tar X - RTU"
         ],
         "phase": "Pre-treatment",
-        "phaseIcon": "ð´",
+        "phaseIcon": "\ud83d\udd34",
         "estMins": 3,
         "dwellMins": "2-3",
         "dwellMin": 120,
@@ -975,7 +992,7 @@
         ],
         "chems": [],
         "phase": "Prewash",
-        "phaseIcon": "ð£",
+        "phaseIcon": "\ud83d\udfe3",
         "estMins": 3
       },
       {
@@ -990,7 +1007,7 @@
         ],
         "normalOnly": true,
         "phase": "Prewash",
-        "phaseIcon": "ð£",
+        "phaseIcon": "\ud83d\udfe3",
         "estMins": 6,
         "dwellMins": "5",
         "dwellMin": 300,
@@ -1007,7 +1024,7 @@
           "CarPro Iron X - RTU"
         ],
         "phase": "Prewash",
-        "phaseIcon": "ð£",
+        "phaseIcon": "\ud83d\udfe3",
         "estMins": 7,
         "dwellMins": "3-5",
         "dwellMin": 180,
@@ -1026,7 +1043,7 @@
         ],
         "normalOnly": true,
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "ð¡",
+        "phaseIcon": "\ud83d\udfe1",
         "estMins": 15
       },
       {
@@ -1038,7 +1055,7 @@
         ],
         "chems": [],
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "ð¡",
+        "phaseIcon": "\ud83d\udfe1",
         "estMins": 3
       },
       {
@@ -1050,7 +1067,7 @@
         ],
         "chems": [],
         "phase": "Dry & Protect",
-        "phaseIcon": "ð¢",
+        "phaseIcon": "\ud83d\udfe2",
         "estMins": 8
       },
       {
@@ -1058,13 +1075,13 @@
         "title": "Apply CarPro Reload 2.0 - paint sealant",
         "desc": "Apply after paint is fully blower-dried. Work one panel at a time. Shake well. Spray 3-4 sprays onto a dedicated MF towel (or 1-2 sprays directly on panel). Spread evenly immediately. Wait 30-60 sec until almost flashed. Flip towel and buff in. Switch to a second clean dry MF towel and buff off completely. Do NOT apply in direct sunlight. Do NOT apply to glass. If uneven or hazy after buffing, wipe off with IPA and re-apply.",
         "tools": [
-          "2Ã dedicated MF towels (spread + buff off)"
+          "2\u00d7 dedicated MF towels (spread + buff off)"
         ],
         "chems": [
           "CarPro Reload 2.0 - RTU, 3-4 sprays per section onto towel"
         ],
         "phase": "Dry & Protect",
-        "phaseIcon": "ð¢",
+        "phaseIcon": "\ud83d\udfe2",
         "estMins": 10
       },
       {
@@ -1078,7 +1095,7 @@
           "P21S Polishing Soap - small amount direct"
         ],
         "phase": "Finish",
-        "phaseIcon": "âª",
+        "phaseIcon": "\u26aa",
         "estMins": 4
       },
       {
@@ -1093,7 +1110,7 @@
           "OR Koch Chemie Glass Cleaner - RTU"
         ],
         "phase": "Finish",
-        "phaseIcon": "âª",
+        "phaseIcon": "\u26aa",
         "estMins": 4
       },
       {
@@ -1109,7 +1126,7 @@
           "OR Koch Chemie Glass Cleaner - RTU (onto tool head)"
         ],
         "phase": "Finish",
-        "phaseIcon": "âª",
+        "phaseIcon": "\u26aa",
         "estMins": 5
       },
       {
@@ -1123,7 +1140,7 @@
           "CarPro Darkside - RTU, squirt onto applicator. MIN 1-2 hrs dry before driving."
         ],
         "phase": "Finish",
-        "phaseIcon": "âª",
+        "phaseIcon": "\u26aa",
         "estMins": 5
       },
       {
@@ -1137,7 +1154,7 @@
           "303 Aerospace Protectant - RTU, wipe completely dry. Reapply every 3-5 weeks."
         ],
         "phase": "Finish",
-        "phaseIcon": "âª",
+        "phaseIcon": "\u26aa",
         "estMins": 4
       },
       {
@@ -1152,7 +1169,7 @@
           "McKee's 37 N-914 - 60-90ml per 950ml water in spray bottle"
         ],
         "phase": "Finish",
-        "phaseIcon": "âª",
+        "phaseIcon": "\u26aa",
         "estMins": 5
       }
     ],
@@ -1169,7 +1186,7 @@
         ],
         "insertAfter": "n075",
         "phase": "Prewash",
-        "phaseIcon": "ð£",
+        "phaseIcon": "\ud83d\udfe3",
         "estMins": 8,
         "dwellMins": "1-5",
         "dwellMin": 60,
@@ -1188,7 +1205,7 @@
         ],
         "insertAfter": "n08",
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "ð¡",
+        "phaseIcon": "\ud83d\udfe1",
         "estMins": 20,
         "dwellMins": "max per panel"
       },
@@ -1209,7 +1226,7 @@
         ],
         "insertAfter": "n07",
         "phase": "Wheels & Tires",
-        "phaseIcon": "ðµ",
+        "phaseIcon": "\ud83d\udd35",
         "estMins": 10
       }
     ]
@@ -1492,7 +1509,7 @@
         "id": "c03",
         "priority": "recommended",
         "name": "Between-wash Deep Clean spray",
-        "why": "For ION Green between bi-weekly washes - bird drops, tree sap, light road film. Gyeon QÂ²M Cure or CarPro ELIXIR.",
+        "why": "For ION Green between bi-weekly washes - bird drops, tree sap, light road film. Gyeon Q\u00b2M Cure or CarPro ELIXIR.",
         "washTypes": [
           "normal",
           "maint"
@@ -1833,7 +1850,7 @@
         "desc": "Bird droppings and tree sap are the most damaging contaminants on a ceramic coating - do not leave them. Saturate with McKee's 37 N-914 (60-90ml per 950ml spray bottle) and allow to dwell 30-60 sec to soften. Gently wipe with a clean damp MF towel using zero pressure. Do not rub dry - re-wet if needed. Follow with a second clean MF towel.",
         "tools": [
           "Labeled spray bottle (N-914 QD mix)",
-          "2Ã clean MF towels"
+          "2\u00d7 clean MF towels"
         ],
         "chems": [
           "McKee's 37 N-914 - 60-90ml per 950ml water"
@@ -1877,7 +1894,7 @@
     "seasons": [
       {
         "season": "Winter (Nov-Mar)",
-        "icon": "âï¸",
+        "icon": "\u2744\ufe0f",
         "notes": [
           "Road salt and mag chloride are extremely aggressive on ceramic coatings - rinse or wash more frequently, ideally within 48 hours of driving on treated roads.",
           "Do not wash in below-freezing temps - water in gaps, door seals, and locks will freeze. Minimum ambient temp for a wet wash is 40 degF.",
@@ -1889,7 +1906,7 @@
       },
       {
         "season": "Spring (Mar-May)",
-        "icon": "ð±",
+        "icon": "\ud83c\udf31",
         "notes": [
           "Spring is the ideal time for a full Deep Clean wash - decon the coating from winter salt, fallout, and road film buildup.",
           "Run a full Korrosol + Iron X decon pass - spring fallout (tree pollen, industrial) embeds fast in ceramic coatings.",
@@ -1900,7 +1917,7 @@
       },
       {
         "season": "Summer (Jun-Sep)",
-        "icon": "âï¸",
+        "icon": "\u2600\ufe0f",
         "notes": [
           "Never wash or apply chemicals in direct sunlight - ION Green metallic and ceramic coatings flash-dry in minutes in Colorado summer heat and altitude UV.",
           "Early morning (before 9am) or evening washes only in summer.",
@@ -1912,7 +1929,7 @@
       },
       {
         "season": "Fall (Sep-Nov)",
-        "icon": "ð",
+        "icon": "\ud83c\udf42",
         "notes": [
           "Tree sap and falling leaves accelerate - park away from trees where possible.",
           "Good window to apply Reload 2.0 before winter - temperatures are ideal (50-75 degF) and coating will cure properly.",
