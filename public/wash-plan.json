@@ -141,8 +141,8 @@
       "usedFor": "Pre-rinse, all rinse passes"
     },
     {
+      "name": "EGO Power+ LB5804 580 CFM 56-Volt Lithium-ion Cordless Leaf Blower",
       "category": "Rinsing & Drying",
-      "name": "Leaf blower",
       "qty": "1",
       "usedFor": "100% touchless drying - paint, gaps, badges, exhausts; engine bay drying"
     },
@@ -839,7 +839,7 @@
         "tools": [],
         "chems": [],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 2
       },
       {
@@ -851,7 +851,7 @@
         ],
         "chems": [],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 3
       },
       {
@@ -870,7 +870,7 @@
           "Brake Buster - RTU (option)"
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 8,
         "dwellMins": "2-5",
         "dwellMin": 120,
@@ -888,7 +888,7 @@
           "CarPro ReTyre - RTU"
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 4,
         "dwellMins": "0.5",
         "dwellMin": 30,
@@ -906,7 +906,7 @@
           "AllClean 5:1-10:1 or CarPro MultiX 1:20"
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 4
       },
       {
@@ -927,7 +927,7 @@
         "optional": true,
         "normalOnly": true,
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 10
       },
       {
@@ -942,7 +942,7 @@
           "CarPro Bug Out - RTU"
         ],
         "phase": "Pre-treatment",
-        "phaseIcon": "🔴",
+        "phaseIcon": "ð´",
         "estMins": 3,
         "dwellMins": "0.5-2",
         "dwellMin": 30,
@@ -960,7 +960,7 @@
           "CarPro Tar X - RTU"
         ],
         "phase": "Pre-treatment",
-        "phaseIcon": "🔴",
+        "phaseIcon": "ð´",
         "estMins": 3,
         "dwellMins": "2-3",
         "dwellMin": 120,
@@ -975,7 +975,7 @@
         ],
         "chems": [],
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 3
       },
       {
@@ -990,7 +990,7 @@
         ],
         "normalOnly": true,
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 6,
         "dwellMins": "5",
         "dwellMin": 300,
@@ -1007,7 +1007,7 @@
           "CarPro Iron X - RTU"
         ],
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 7,
         "dwellMins": "3-5",
         "dwellMin": 180,
@@ -1026,7 +1026,7 @@
         ],
         "normalOnly": true,
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "🟡",
+        "phaseIcon": "ð¡",
         "estMins": 15
       },
       {
@@ -1038,7 +1038,7 @@
         ],
         "chems": [],
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "🟡",
+        "phaseIcon": "ð¡",
         "estMins": 3
       },
       {
@@ -1050,7 +1050,7 @@
         ],
         "chems": [],
         "phase": "Dry & Protect",
-        "phaseIcon": "🟢",
+        "phaseIcon": "ð¢",
         "estMins": 8
       },
       {
@@ -1058,13 +1058,13 @@
         "title": "Apply CarPro Reload 2.0 - paint sealant",
         "desc": "Apply after paint is fully blower-dried. Work one panel at a time. Shake well. Spray 3-4 sprays onto a dedicated MF towel (or 1-2 sprays directly on panel). Spread evenly immediately. Wait 30-60 sec until almost flashed. Flip towel and buff in. Switch to a second clean dry MF towel and buff off completely. Do NOT apply in direct sunlight. Do NOT apply to glass. If uneven or hazy after buffing, wipe off with IPA and re-apply.",
         "tools": [
-          "2× dedicated MF towels (spread + buff off)"
+          "2Ã dedicated MF towels (spread + buff off)"
         ],
         "chems": [
           "CarPro Reload 2.0 - RTU, 3-4 sprays per section onto towel"
         ],
         "phase": "Dry & Protect",
-        "phaseIcon": "🟢",
+        "phaseIcon": "ð¢",
         "estMins": 10
       },
       {
@@ -1078,7 +1078,7 @@
           "P21S Polishing Soap - small amount direct"
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 4
       },
       {
@@ -1093,7 +1093,7 @@
           "OR Koch Chemie Glass Cleaner - RTU"
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 4
       },
       {
@@ -1109,7 +1109,7 @@
           "OR Koch Chemie Glass Cleaner - RTU (onto tool head)"
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 5
       },
       {
@@ -1123,7 +1123,7 @@
           "CarPro Darkside - RTU, squirt onto applicator. MIN 1-2 hrs dry before driving."
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 5
       },
       {
@@ -1137,7 +1137,7 @@
           "303 Aerospace Protectant - RTU, wipe completely dry. Reapply every 3-5 weeks."
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 4
       },
       {
@@ -1152,7 +1152,7 @@
           "McKee's 37 N-914 - 60-90ml per 950ml water in spray bottle"
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 5
       }
     ],
@@ -1169,7 +1169,7 @@
         ],
         "insertAfter": "n075",
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 8,
         "dwellMins": "1-5",
         "dwellMin": 60,
@@ -1188,7 +1188,7 @@
         ],
         "insertAfter": "n08",
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "🟡",
+        "phaseIcon": "ð¡",
         "estMins": 20,
         "dwellMins": "max per panel"
       },
@@ -1209,7 +1209,7 @@
         ],
         "insertAfter": "n07",
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 10
       }
     ]
@@ -1492,7 +1492,7 @@
         "id": "c03",
         "priority": "recommended",
         "name": "Between-wash Deep Clean spray",
-        "why": "For ION Green between bi-weekly washes - bird drops, tree sap, light road film. Gyeon Q²M Cure or CarPro ELIXIR.",
+        "why": "For ION Green between bi-weekly washes - bird drops, tree sap, light road film. Gyeon QÂ²M Cure or CarPro ELIXIR.",
         "washTypes": [
           "normal",
           "maint"
@@ -1833,7 +1833,7 @@
         "desc": "Bird droppings and tree sap are the most damaging contaminants on a ceramic coating - do not leave them. Saturate with McKee's 37 N-914 (60-90ml per 950ml spray bottle) and allow to dwell 30-60 sec to soften. Gently wipe with a clean damp MF towel using zero pressure. Do not rub dry - re-wet if needed. Follow with a second clean MF towel.",
         "tools": [
           "Labeled spray bottle (N-914 QD mix)",
-          "2× clean MF towels"
+          "2Ã clean MF towels"
         ],
         "chems": [
           "McKee's 37 N-914 - 60-90ml per 950ml water"
@@ -1877,7 +1877,7 @@
     "seasons": [
       {
         "season": "Winter (Nov-Mar)",
-        "icon": "❄️",
+        "icon": "âï¸",
         "notes": [
           "Road salt and mag chloride are extremely aggressive on ceramic coatings - rinse or wash more frequently, ideally within 48 hours of driving on treated roads.",
           "Do not wash in below-freezing temps - water in gaps, door seals, and locks will freeze. Minimum ambient temp for a wet wash is 40 degF.",
@@ -1889,7 +1889,7 @@
       },
       {
         "season": "Spring (Mar-May)",
-        "icon": "🌱",
+        "icon": "ð±",
         "notes": [
           "Spring is the ideal time for a full Deep Clean wash - decon the coating from winter salt, fallout, and road film buildup.",
           "Run a full Korrosol + Iron X decon pass - spring fallout (tree pollen, industrial) embeds fast in ceramic coatings.",
@@ -1900,7 +1900,7 @@
       },
       {
         "season": "Summer (Jun-Sep)",
-        "icon": "☀️",
+        "icon": "âï¸",
         "notes": [
           "Never wash or apply chemicals in direct sunlight - ION Green metallic and ceramic coatings flash-dry in minutes in Colorado summer heat and altitude UV.",
           "Early morning (before 9am) or evening washes only in summer.",
@@ -1912,7 +1912,7 @@
       },
       {
         "season": "Fall (Sep-Nov)",
-        "icon": "🍂",
+        "icon": "ð",
         "notes": [
           "Tree sap and falling leaves accelerate - park away from trees where possible.",
           "Good window to apply Reload 2.0 before winter - temperatures are ideal (50-75 degF) and coating will cure properly.",
