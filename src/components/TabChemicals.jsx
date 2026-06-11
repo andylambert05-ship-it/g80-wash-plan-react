@@ -293,20 +293,6 @@ function ChemCard({ chem, onSelectDil, onToggleStatus, onCycleMode }) {
         {chem.shelfLife && <div className="chem-shelf"><i className="ti ti-clock" aria-hidden="true" /><span><strong>Shelf life:</strong> {chem.shelfLife}</span></div>}
         {chem.storageNote && <div className="chem-shelf"><i className="ti ti-alert-circle" aria-hidden="true" /><span>{chem.storageNote}</span></div>}
       </div>
-
-      {/* Library — inactive chemicals */}
-      {library.length > 0 && (
-        <div style={{ marginTop: 24 }}>
-          <div className="slbl" style={{ marginBottom: 8 }}>Chemical library — inactive</div>
-          <div className="notice info" style={{ marginBottom: 12 }}>
-            <i className="ti ti-archive" aria-hidden="true" />
-            <span>{library.length} chemical{library.length !== 1 ? 's' : ''} in library. Tap <strong>Activate</strong> to add to an active wash.</span>
-          </div>
-          {library.map(c => (
-            <ChemCard key={c.name} chem={c} onSelectDil={setCalcModal} onToggleStatus={handleToggleStatus} onCycleMode={handleCycleMode} />
-          ))}
-        </div>
-      )}
     </div>
   )
 }
@@ -382,6 +368,19 @@ export default function TabChemicals({ data, mode }) {
         ))}
       </div>
 
+      {/* Library — inactive chemicals */}
+      {library.length > 0 && (
+        <div style={{ marginTop: 24 }}>
+          <div className="slbl" style={{ marginBottom: 8 }}>Chemical library - inactive</div>
+          <div className="notice info" style={{ marginBottom: 12 }}>
+            <i className="ti ti-archive" aria-hidden="true" />
+            <span>{library.length} chemical{library.length !== 1 ? 's' : ''} in library. Tap <strong>Activate</strong> to add to an active wash.</span>
+          </div>
+          {library.map(c => (
+            <ChemCard key={c.name} chem={c} onSelectDil={setCalcModal} onToggleStatus={handleToggleStatus} onCycleMode={handleCycleMode} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
