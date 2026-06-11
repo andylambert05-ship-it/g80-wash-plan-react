@@ -1,6 +1,6 @@
 // Service worker for offline support
 // Bump CACHE version on every deploy to purge stale assets
-const CACHE = 'm3care-v3'
+const CACHE = 'm3care-v4'
 const BASE = '/g80-wash-plan-react/'
 
 // Core files to pre-cache on install
