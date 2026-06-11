@@ -45,14 +45,114 @@ export function useGitHubSync() {
   return { syncStatus, sync, setSyncStatus }
 }
 
+
+// ── Chemical Lookup ───────────────────────────────────────────────────────────
+export function ChemicalLookup({ onResult }) {
+  const [query, setQuery] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [preview, setPreview] = useState(null)
+
+  const search = async () => {
+    if (!query.trim()) return
+    setLoading(true)
+    setError(null)
+    setPreview(null)
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          system: `You are a detailing chemical expert. Search the web for the product and extract structured info. Respond ONLY with a valid JSON object — no markdown, no backticks, no preamble. Keys: name (string), category (string — one of: Wheel Cleaner, Iron Remover, Tar Remover, Pre-wash / Snow Foam, All-Purpose Cleaner, Shampoo / Wash, Ceramic Coating Maintenance, Tyre Dressing, Glass Cleaner, Leather Cleaner, Leather Conditioner, Interior Cleaner, Paint Decontamination, Quick Detailer, Other), modes (array of "normal" and/or "maint"), usedOn (string), tool (string or null), shelfLife (string or null), storageNote (string or null), dilutions (array of objects with context/ratio/amount/note). If not found return {"error":"not found"}.`,
+          messages: [{ role: 'user', content: `Look up detailing product: ${query}` }]
+        })
+      })
+      const data = await response.json()
+      const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim()
+      const result = JSON.parse(text.replace(/```json|```/g, '').trim())
+      if (result.error) setError('Product not found — try a more specific name.')
+      else setPreview(result)
+    } catch (e) {
+      setError('Search failed. Check your connection and try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div style={{ marginBottom: 20, paddingBottom: 16, borderBottom: '1px solid var(--bd)' }}>
+      <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t3)', marginBottom: 6 }}>
+        <i className="ti ti-search" aria-hidden="true" /> Chemical lookup
+      </div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+        <input
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && search()}
+          placeholder="e.g. CarPro Eraser, Koch Chemie GSF..."
+          style={{ flex: 1, background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '8px 10px', fontSize: 13, fontFamily: 'Inter, sans-serif', outline: 'none' }}
+        />
+        <button onClick={search} disabled={loading || !query.trim()}
+          style={{ padding: '8px 16px', background: loading ? 'var(--card2)' : '#0066b1', color: loading ? 'var(--t3)' : '#fff', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: loading ? 'default' : 'pointer', fontFamily: 'Inter, sans-serif', flexShrink: 0 }}>
+          {loading ? 'Searching...' : 'Search'}
+        </button>
+      </div>
+      {error && (
+        <div style={{ padding: '10px 12px', background: 'var(--amber-bg)', border: '1px solid var(--amber-bd)', fontSize: 12, color: 'var(--amber)', marginBottom: 10 }}>{error}</div>
+      )}
+      {preview && (
+        <div style={{ background: 'var(--card2)', border: '1px solid var(--iom-bd)', padding: 14, marginBottom: 6 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--t1)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 2 }}>{preview.name}</div>
+              <div style={{ fontSize: 10, color: 'var(--t3)' }}>{preview.category}</div>
+            </div>
+            <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', padding: '2px 8px', background: 'var(--iom-bg)', color: 'var(--iom)', border: '1px solid var(--iom-bd)' }}>Found</span>
+          </div>
+          {preview.usedOn && <div style={{ fontSize: 11, color: 'var(--t2)', marginBottom: 8, fontWeight: 300, lineHeight: 1.5 }}>{preview.usedOn}</div>}
+          {preview.dilutions?.map((d, i) => (
+            <div key={i} style={{ fontSize: 11, color: 'var(--blue)', fontWeight: 700, marginBottom: 2 }}>
+              {d.context}: <span style={{ fontWeight: 300, color: 'var(--t2)' }}>{d.ratio}{d.amount ? ` (${d.amount})` : ''}</span>
+            </div>
+          ))}
+          <button onClick={() => onResult(preview)}
+            style={{ width: '100%', marginTop: 12, padding: '9px', background: '#1a9e62', color: '#fff', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
+            + Add to inventory
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // Add Chemical Form
 export function AddChemicalForm({ data, onClose }) {
   const { syncStatus, sync } = useGitHubSync()
+  const [showLookup, setShowLookup] = useState(true)
   const [form, setForm] = useState({
     name: '', category: '', modes: ['normal', 'maint'], usedOn: '',
     shelfLife: '', storageNote: '', tool: '',
     dilutions: [{ context: '', ratio: '', amount: '', note: '' }],
   })
+
+  const handleLookupResult = (result) => {
+    setForm({
+      name: result.name || '',
+      category: result.category || '',
+      modes: result.modes || ['normal', 'maint'],
+      usedOn: result.usedOn || '',
+      shelfLife: result.shelfLife || '',
+      storageNote: result.storageNote || '',
+      tool: result.tool || '',
+      dilutions: result.dilutions?.length
+        ? result.dilutions.map(d => ({ context: d.context || '', ratio: d.ratio || '', amount: d.amount || '', note: d.note || '' }))
+        : [{ context: '', ratio: '', amount: '', note: '' }],
+    })
+    setShowLookup(false)
+  }
 
   const categories = [...new Set((data?.chemicals || []).map(c => c.category))].sort()
   const f = (key, val) => setForm(p => ({ ...p, [key]: val }))
@@ -99,8 +199,15 @@ export function AddChemicalForm({ data, onClose }) {
     <div style={{ background: 'var(--card)', border: '1px solid var(--bd2)', padding: 20, marginBottom: 16 }}>
       <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t1)', marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
         Add Chemical
-        {onClose && <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 16 }}>×</button>}
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <button onClick={() => setShowLookup(s => !s)}
+            style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', padding: '3px 10px', border: '1px solid var(--bd2)', background: showLookup ? '#0066b1' : 'transparent', color: showLookup ? '#fff' : 'var(--t3)', cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
+            <i className="ti ti-search" aria-hidden="true" /> Lookup
+          </button>
+          {onClose && <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 16 }}>×</button>}
+        </div>
       </div>
+      {showLookup && <ChemicalLookup onResult={handleLookupResult} />}
       {inp('Product name *', 'name', { placeholder: 'e.g. CarPro HydrO2 Foam' })}
       <div style={{ marginBottom: 10 }}>
         <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>Category *</label>
