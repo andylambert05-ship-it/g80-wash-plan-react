@@ -67,10 +67,12 @@ function ratioLabel(type) {
 // ── Calc Modal ───────────────────────────────────────────────────────────────
 // Container presets — Andy's actual tooling
 const CONTAINER_PRESETS = [
-  { label: 'IK 2',  ml: 1250, sub: 'Foam Pro' },
-  { label: 'Marolex', ml: 3000, sub: '3000' },
-  { label: 'IK 12', ml: 6000, sub: 'Foam Pro' },
-  { label: 'Bucket', ml: 15000, sub: '4 gal' },
+  { label: 'Pressol',    ml: 500,  sub: '500ml' },
+  { label: 'Pressol',    ml: 750,  sub: '750ml' },
+  { label: 'IK 2',       ml: 1250, sub: 'Foam Pro' },
+  { label: 'Marolex 3k', ml: 3000, sub: '3L' },
+  { label: 'IK 12',      ml: 6000, sub: 'Foam Pro' },
+  { label: 'Bucket',     ml: 15000, sub: '4 gal' },
 ]
 
 function CalcModal({ selected, onClose }) {
