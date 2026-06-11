@@ -3,19 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 export function useTimer() {
   const [timer, setTimer] = useState(null) // { label, remaining, total }
   const intervalRef = useRef(null)
-  const wakeLockRef = useRef(null)
-
-  const requestWakeLock = async () => {
-    try {
-      if ('wakeLock' in navigator) {
-        wakeLockRef.current = await navigator.wakeLock.request('screen')
-      }
-    } catch (e) {}
-  }
-
-  const releaseWakeLock = () => {
-    if (wakeLockRef.current) { wakeLockRef.current.release(); wakeLockRef.current = null }
-  }
+  // Wake lock is owned by App.jsx via useWakeLock(!!timer) — single source of truth.
 
   const playBeep = () => {
     try {
@@ -34,7 +22,8 @@ export function useTimer() {
 
   const start = useCallback((seconds, label, activeId = null) => {
     if (intervalRef.current) clearInterval(intervalRef.current)
-    requestWakeLock()
+    // Stronger haptic on timer start — confirms the action happened
+    try { navigator.vibrate && navigator.vibrate(40) } catch (e) {}
     setTimer({ label, remaining: seconds, total: seconds, done: false, activeId })
     intervalRef.current = setInterval(() => {
       setTimer(prev => {
@@ -43,7 +32,6 @@ export function useTimer() {
         if (next <= 0) {
           clearInterval(intervalRef.current)
           intervalRef.current = null
-          releaseWakeLock()
           playBeep()
           try { navigator.vibrate && navigator.vibrate([300, 150, 300, 150, 300]) } catch (e) {}
           return { ...prev, remaining: 0, done: true }
@@ -55,19 +43,12 @@ export function useTimer() {
 
   const stop = useCallback(() => {
     if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null }
-    releaseWakeLock()
     setTimer(null)
   }, [])
 
   useEffect(() => {
-    const handleVisibility = () => {
-      if (document.visibilityState === 'visible' && intervalRef.current) requestWakeLock()
-    }
-    document.addEventListener('visibilitychange', handleVisibility)
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibility)
       if (intervalRef.current) clearInterval(intervalRef.current)
-      releaseWakeLock()
     }
   }, [])
 

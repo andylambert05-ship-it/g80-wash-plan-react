@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 
-// Short haptic tap on toggle — like iDrive's confirmation feedback
+// Short haptic tap on toggle — like iDrive's confirmation feedback.
+// 20ms is the sweet spot: felt through nitrile gloves, not annoying bare-handed.
 function haptic() {
-  try { navigator.vibrate && navigator.vibrate(12) } catch (e) {}
+  try { navigator.vibrate && navigator.vibrate(20) } catch (e) {}
 }
 
 

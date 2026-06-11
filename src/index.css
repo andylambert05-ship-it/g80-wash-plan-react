@@ -405,3 +405,50 @@ body { background: var(--bg); min-height: 100vh; padding-left: env(safe-area-ins
 .expand-toggle:hover { color: var(--t1); border-color: var(--t3); }
 .detail-toggle { display: flex; align-items: center; gap: 6px; width: 100%; border: 1px solid var(--bd2); background: var(--card2); color: var(--t2); font-size: 10px; padding: 9px 12px; cursor: pointer; margin: 14px 0; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; font-family: 'Inter', sans-serif; transition: all 0.15s; }
 .detail-toggle:hover { color: var(--t1); border-color: var(--t3); }
+
+/* ── Bottom navigation (replaces top tabs) ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background: var(--card);
+  border-top: 1px solid var(--bd);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 100;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.25);
+}
+.bnav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 8px 4px 10px;
+  border: none;
+  background: transparent;
+  color: #888888;
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  border-top: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.bnav-btn i { font-size: 20px; line-height: 1; }
+.bnav-btn span { line-height: 1; }
+.bnav-btn.active {
+  color: var(--t1);
+  border-top-color: #0066b1;
+}
+.bnav-btn:active { background: var(--card2); }
+
+/* Reserve space at the bottom of the app so content isn't hidden behind nav */
+.app { padding-bottom: calc(62px + env(safe-area-inset-bottom, 0px)); }
+/* FloatingTimer needs to clear the bottom nav */
+.float-timer { bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important; }

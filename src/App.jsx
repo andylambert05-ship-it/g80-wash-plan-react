@@ -17,6 +17,7 @@ class ErrorBoundary extends Component {
 import './index.css'
 import { useTimer } from './hooks/useTimer'
 import { usePullToRefresh } from './hooks/usePullToRefresh'
+import { useWakeLock } from './hooks/useWakeLock'
 import { getVisibleSteps } from './constants'
 import { useWashState } from './hooks/useWashState'
 import FloatingTimer from './components/FloatingTimer'
@@ -33,11 +34,11 @@ import { AddChemicalForm, AddToolForm, AddUpgradeForm } from './components/SyncF
 
 // ── 5 top-level tabs with sub-navigation ────────────────────────────────────
 const TABS = [
-  { id: 'wash', label: 'Wash' },
-  { id: 'inventory', label: 'Inventory' },
-  { id: 'care', label: 'Care' },
-  { id: 'upgrades', label: 'Upgrades' },
-  { id: 'more', label: 'More' },
+  { id: 'wash', label: 'Wash', icon: 'ti-droplet' },
+  { id: 'inventory', label: 'Inventory', icon: 'ti-flask' },
+  { id: 'care', label: 'Care', icon: 'ti-calendar-event' },
+  { id: 'upgrades', label: 'Upgrades', icon: 'ti-tools' },
+  { id: 'more', label: 'More', icon: 'ti-dots' },
 ]
 
 const SUBTABS = {
@@ -82,6 +83,9 @@ export default function App() {
 
   const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark')
   const { timer, start: startTimer, stop: stopTimer } = useTimer()
+
+  // Screen Wake Lock — keep phone screen alive while a timer is running
+  useWakeLock(!!timer)
 
   // Pull-to-refresh — re-fetches wash-plan.json
   const refreshData = useCallback(() => {
@@ -208,18 +212,7 @@ export default function App() {
         )}
       </div>
 
-      {/* Top-level tabs */}
-      <div className="tabs">
-        {TABS.map(tab => (
-          <button
-            key={tab.id}
-            className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      {/* Top-level tabs moved to bottom (see .bottom-nav below) */}
 
       {/* Sub-navigation */}
       {SUBTABS[activeTab] && (
@@ -228,7 +221,10 @@ export default function App() {
             <button
               key={st.id}
               className={`subnav-btn ${activeSub === st.id ? 'active' : ''}`}
-              onClick={() => setActiveSub(st.id)}
+              onClick={() => {
+                try { navigator.vibrate && navigator.vibrate(8) } catch (e) {}
+                setActiveSub(st.id)
+              }}
             >
               {st.label}
             </button>
@@ -302,6 +298,28 @@ export default function App() {
 
       {/* Floating timer */}
       {timer && <FloatingTimer timer={timer} onStop={stopTimer} />}
+
+      {/* Bottom navigation — fixed, thumb-reach friendly */}
+      <nav className="bottom-nav" role="tablist" aria-label="Primary">
+        {TABS.map(tab => {
+          const isActive = activeTab === tab.id
+          return (
+            <button
+              key={tab.id}
+              role="tab"
+              aria-selected={isActive}
+              className={`bnav-btn ${isActive ? 'active' : ''}`}
+              onClick={() => {
+                try { navigator.vibrate && navigator.vibrate(8) } catch (e) {}
+                setActiveTab(tab.id)
+              }}
+            >
+              <i className={`ti ${tab.icon}`} aria-hidden="true" />
+              <span>{tab.label}</span>
+            </button>
+          )
+        })}
+      </nav>
     </div>
   )
 }
