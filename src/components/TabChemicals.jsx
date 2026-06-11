@@ -69,7 +69,7 @@ function ratioLabel(type) {
 const CONTAINER_PRESETS = [
   { label: 'IK 2',  ml: 1250, sub: 'Foam Pro' },
   { label: 'Marolex', ml: 3000, sub: '3000' },
-  { label: 'IK E12', ml: 6000, sub: 'Foam Pro' },
+  { label: 'IK 12', ml: 6000, sub: 'Foam Pro' },
   { label: 'Bucket', ml: 15000, sub: '4 gal' },
 ]
 
