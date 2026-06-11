@@ -83,7 +83,7 @@ export default function App() {
   }, [theme])
 
   const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark')
-  const { timer, start: startTimer, stop: stopTimer } = useTimer()
+  const { timer, start: startTimer, stop: stopTimer, extend: extendTimer } = useTimer()
 
   // Screen Wake Lock — keep phone screen alive while a timer is running
   useWakeLock(!!timer)
@@ -299,7 +299,7 @@ export default function App() {
       </div>
 
       {/* Floating timer */}
-      {timer && <FloatingTimer timer={timer} onStop={stopTimer} />}
+      {timer && <FloatingTimer timer={timer} onStop={stopTimer} onExtend={extendTimer} />}
 
       {/* Bottom navigation — fixed, thumb-reach friendly */}
       <nav className="bottom-nav" role="tablist" aria-label="Primary">

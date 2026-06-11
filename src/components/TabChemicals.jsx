@@ -65,6 +65,14 @@ function ratioLabel(type) {
 }
 
 // ── Calc Modal ───────────────────────────────────────────────────────────────
+// Container presets — Andy's actual tooling
+const CONTAINER_PRESETS = [
+  { label: 'IK 2',  ml: 1250, sub: 'Foam Pro' },
+  { label: 'Marolex', ml: 3000, sub: '3000' },
+  { label: 'IK E12', ml: 6000, sub: 'Foam Pro' },
+  { label: 'Bucket', ml: 15000, sub: '4 gal' },
+]
+
 function CalcModal({ selected, onClose }) {
   const [containerVal, setContainerVal] = useState('')
   const [unit, setUnit] = useState('ml')
@@ -78,81 +86,118 @@ function CalcModal({ selected, onClose }) {
     : 0
   const result = calcProduct(parsed, containerMl)
 
-  return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
-      onClick={onClose}>
-      <div style={{ background: 'var(--card)', border: '1px solid var(--bd2)', padding: 20, width: '100%', maxWidth: 380, maxHeight: '90vh', overflowY: 'auto', position: 'relative' }}
-        onClick={e => e.stopPropagation()}>
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-          <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--t3)' }}>Dilution Calculator</div>
-          <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: '0 4px' }}>×</button>
-        </div>
+  const setPreset = (ml) => {
+    if (ml >= 1000 && ml % 1000 === 0) {
+      setContainerVal(String(ml / 1000)); setUnit('L')
+    } else if (ml >= 1000) {
+      setContainerVal((ml / 1000).toFixed(2).replace(/\.?0+$/, '')); setUnit('L')
+    } else {
+      setContainerVal(String(ml)); setUnit('ml')
+    }
+  }
+  const activePreset = CONTAINER_PRESETS.find(p => p.ml === containerMl)
 
-        {/* Selected chemical */}
-        {selected && (
-          <div style={{ marginBottom: 14, paddingBottom: 14, borderBottom: '1px solid var(--bd)' }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--t1)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 2 }}>{selected.name}</div>
-            <div style={{ fontSize: 10, color: 'var(--t3)', marginBottom: 6 }}>{selected.ctx}</div>
-            <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.5px' }}>{selected.ratio}</div>
-            {parsed && parsed.type !== 'rtu' && (
-              <div style={{ fontSize: 10, color: 'var(--t3)', marginTop: 3, fontWeight: 300 }}>{ratioLabel(parsed.type)}</div>
+  // Average ml of product for mix-ratio visualization
+  const productAvg = result && result.type !== 'rtu' ? (result.lo + result.hi) / 2 : 0
+  const productPct = containerMl > 0 ? Math.max(0.5, Math.min(100, (productAvg / containerMl) * 100)) : 0
+
+  return (
+    <div className="calc-overlay" onClick={onClose}>
+      <div className="calc-modal" onClick={e => e.stopPropagation()}>
+        {/* Header */}
+        <div className="calc-header">
+          <div>
+            {selected ? (
+              <>
+                <div className="calc-chem-name">{selected.name}</div>
+                <div className="calc-chem-ctx">{selected.ctx} · <span className="calc-chem-ratio">{selected.ratio}</span></div>
+              </>
+            ) : (
+              <div className="calc-chem-name">Dilution Calculator</div>
             )}
           </div>
-        )}
-
-        {/* Manual override */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-          <button onClick={() => setManualMode(m => !m)}
-            style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', padding: '4px 10px', border: '1px solid var(--bd2)', background: manualMode ? '#0066b1' : 'transparent', color: manualMode ? '#fff' : 'var(--t3)', cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
-            Manual ratio
+          <button onClick={onClose} className="calc-close" aria-label="Close">
+            <i className="ti ti-x" aria-hidden="true" />
           </button>
-          {manualMode && (
-            <input value={manualRatio} onChange={e => setManualRatio(e.target.value)} placeholder="e.g. 1:10, 5%, 400:1"
-              style={{ flex: 1, background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '4px 8px', fontSize: 12, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
-          )}
         </div>
 
-        {/* Container size */}
-        <div style={{ marginBottom: 14 }}>
-          <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', marginBottom: 6 }}>Container size</div>
-          <div style={{ display: 'flex', gap: 6 }}>
-            <input type="number" min="0" placeholder="e.g. 6000" value={containerVal} onChange={e => setContainerVal(e.target.value)}
-              style={{ flex: 1, background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '8px 10px', fontSize: 16, fontFamily: 'Inter, sans-serif', outline: 'none', minWidth: 0 }} />
-            <div style={{ display: 'flex' }}>
-              {['ml', 'L'].map(u => (
-                <button key={u} onClick={() => setUnit(u)}
-                  style={{ padding: '8px 14px', border: '1px solid var(--bd2)', background: unit === u ? '#0066b1' : 'transparent', color: unit === u ? '#fff' : 'var(--t3)', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
-                  {u}
-                </button>
-              ))}
-            </div>
+        {/* Manual ratio toggle */}
+        <button onClick={() => setManualMode(m => !m)} className={`calc-manual-toggle${manualMode ? ' active' : ''}`}>
+          <i className={`ti ${manualMode ? 'ti-chevron-up' : 'ti-edit'}`} aria-hidden="true" />
+          {manualMode ? 'Hide manual ratio' : 'Use manual ratio'}
+        </button>
+        {manualMode && (
+          <input value={manualRatio} onChange={e => setManualRatio(e.target.value)}
+            placeholder="e.g. 1:10, 5%, 400:1"
+            className="calc-manual-input" />
+        )}
+
+        {/* Container presets */}
+        <div className="calc-section-label">Container</div>
+        <div className="calc-presets">
+          {CONTAINER_PRESETS.map(p => (
+            <button
+              key={p.label}
+              onClick={() => setPreset(p.ml)}
+              className={`calc-preset${activePreset?.ml === p.ml ? ' active' : ''}`}
+            >
+              <span className="calc-preset-main">{p.label}</span>
+              <span className="calc-preset-sub">{p.ml >= 1000 ? `${p.ml/1000}L` : `${p.ml}ml`}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Custom container input */}
+        <div className="calc-custom-row">
+          <input
+            type="number" min="0" placeholder="Custom amount"
+            value={containerVal}
+            onChange={e => setContainerVal(e.target.value)}
+            className="calc-custom-input"
+          />
+          <div className="calc-unit-toggle">
+            {['ml', 'L'].map(u => (
+              <button key={u} onClick={() => setUnit(u)}
+                className={`calc-unit${unit === u ? ' active' : ''}`}>{u}</button>
+            ))}
           </div>
         </div>
 
         {/* Result */}
-        {containerMl > 0 && result && (
-          <div style={{ background: result.type === 'rtu' ? 'var(--card2)' : 'var(--green-bg)', border: `1px solid ${result.type === 'rtu' ? 'var(--bd2)' : 'var(--iom-bd)'}`, padding: '14px 16px' }}>
-            {result.type === 'rtu' ? (
-              <div style={{ fontSize: 12, color: 'var(--t2)', fontWeight: 300 }}>RTU — use undiluted.</div>
-            ) : (
-              <>
-                <div style={{ fontSize: 10, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: 4 }}>Add to {containerVal}{unit} of water</div>
-                <div style={{ fontSize: 32, fontWeight: 700, color: 'var(--iom)', letterSpacing: '-1px', lineHeight: 1.1 }}>
-                  {Math.abs(result.lo - result.hi) < 0.5 ? fmtMl(result.lo) : `${fmtMl(result.lo)}–${fmtMl(result.hi)}`}
-                </div>
-                <div style={{ fontSize: 11, color: 'var(--t2)', marginTop: 4, fontWeight: 300 }}>of product</div>
-              </>
-            )}
+        {containerMl > 0 && result && result.type !== 'rtu' && (
+          <div className="calc-result">
+            <div className="calc-result-label">Add product</div>
+            <div className="calc-result-value">
+              {Math.abs(result.lo - result.hi) < 0.5 ? fmtMl(result.lo) : `${fmtMl(result.lo)}–${fmtMl(result.hi)}`}
+              <span className="calc-result-unit">ml</span>
+            </div>
+            {/* Mix ratio bar */}
+            <div className="calc-mix">
+              <div className="calc-mix-legend">
+                <span><span className="calc-dot calc-dot-product" /> Product</span>
+                <span><span className="calc-dot calc-dot-water" /> Water {containerVal}{unit}</span>
+              </div>
+              <div className="calc-mix-bar">
+                <div className="calc-mix-fill" style={{ width: `${productPct}%` }} />
+              </div>
+            </div>
+          </div>
+        )}
+        {containerMl > 0 && result && result.type === 'rtu' && (
+          <div className="calc-result calc-result-rtu">
+            <div className="calc-result-label">Ready to use</div>
+            <div className="calc-result-rtu-msg">No dilution needed — apply undiluted.</div>
           </div>
         )}
         {containerMl > 0 && !result && (
-          <div style={{ background: 'var(--amber-bg)', border: '1px solid var(--amber-bd)', padding: '10px 14px' }}>
-            <div style={{ fontSize: 12, color: 'var(--amber)', fontWeight: 300 }}>Cannot calculate — try Manual ratio.</div>
+          <div className="calc-result calc-result-warn">
+            <div className="calc-result-warn-msg">
+              <i className="ti ti-alert-circle" aria-hidden="true" /> Can't calculate this ratio — try Manual mode.
+            </div>
           </div>
         )}
         {!containerMl && parsed && parsed.type !== 'rtu' && (
-          <div style={{ fontSize: 11, color: 'var(--t3)', fontWeight: 300, fontStyle: 'italic' }}>Enter container size to calculate.</div>
+          <div className="calc-hint">Pick a container or enter custom amount.</div>
         )}
       </div>
     </div>

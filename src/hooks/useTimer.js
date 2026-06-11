@@ -46,11 +46,41 @@ export function useTimer() {
     setTimer(null)
   }, [])
 
+  // Add `seconds` to a running (or finished) timer. Resumes if it was done.
+  const extend = useCallback((seconds) => {
+    setTimer(prev => {
+      if (!prev) return prev
+      try { navigator.vibrate && navigator.vibrate(20) } catch (e) {}
+      // If finished, kick the interval back on
+      if (prev.done && !intervalRef.current) {
+        intervalRef.current = setInterval(() => {
+          setTimer(p => {
+            if (!p || p.remaining <= 0) return p
+            const next = p.remaining - 1
+            if (next <= 0) {
+              clearInterval(intervalRef.current); intervalRef.current = null
+              playBeep()
+              try { navigator.vibrate && navigator.vibrate([300, 150, 300, 150, 300]) } catch (e) {}
+              return { ...p, remaining: 0, done: true }
+            }
+            return { ...p, remaining: next }
+          })
+        }, 1000)
+      }
+      return {
+        ...prev,
+        remaining: prev.remaining + seconds,
+        total: prev.total + seconds,
+        done: false,
+      }
+    })
+  }, [])
+
   useEffect(() => {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
   }, [])
 
-  return { timer, start, stop }
+  return { timer, start, stop, extend }
 }
