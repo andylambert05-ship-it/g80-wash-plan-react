@@ -3,10 +3,10 @@
     "title": "BMW M3 Competition xDrive Care Plan",
     "car": "Isle of Man Green BMW M3 G80 - S58",
     "coating": "Ceramic coated",
-    "lastUpdated": "2026-05-30",
-    "version": "2.3",
+    "lastUpdated": "2026-06-10",
+    "version": "2.4",
     "changelog": [
-      "v2.1 (2026-05-17) - Phase grouping on steps, dwell/time estimates, between-wash maintenance section, seasonal notes (Colorado Front Range), product shelf life tracking, 303 Aerospace Protectant, Gaps tab removed, ShortList dwell times, version history in UI.",
+      "v2.4 (2026-06-10) - UX simplification: 12 tabs consolidated to 5 with sub-navigation (Wash, Inventory, Care, Upgrades, More). Step cards collapse by default — tap number to complete, tap body to expand. Expand all/collapse all toggle. Progressive disclosure on add/edit chemical forms. Chemical ID propagation — step chem tags now resolve live from chemicals inventory.", Phase grouping on steps, dwell/time estimates, between-wash maintenance section, seasonal notes (Colorado Front Range), product shelf life tracking, 303 Aerospace Protectant, Gaps tab removed, ShortList dwell times, version history in UI.",
       "v2.0 (2026-05-16) - Full redesign: BMW automotive theme, light mode, 5 tabs, interior detail tab, engine bay tab. All CarPro specs verified from carpro-us.com. All BH specs from bilthamber.com. Koch Chemie + Colourlock from kcxusa.com. Koch Chemie Glass Cleaner from autofinesse.com. 23 chemicals, 34 tools, mode-aware chemicals tab with wash sequence sort order. HydrO2 Lite replaced with Reload 2.0. All IK sprayer names corrected. nextzett Cockpit Premium brand fixed. Koch Chemie Allround Surface Cleaner confirmed as iDrive screen cleaner.",
       "v1.0 (initial) - Basic wash plan with steps, chemicals, tools, gaps checklist."
     ]
