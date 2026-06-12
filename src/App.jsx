@@ -182,6 +182,12 @@ export default function App() {
               <div className="hdr-sub">{meta.car} &middot; Updated {meta.lastUpdated}</div>
             </div>
           </div>
+          <img
+            className="hdr-hero"
+            src={`${import.meta.env.BASE_URL}g80-hero.jpg`}
+            alt="BMW M3 Competition, Isle of Man Green"
+            loading="lazy"
+          />
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'} aria-label="Toggle theme">
               <i className={`ti ${theme === 'dark' ? 'ti-sun' : 'ti-moon'}`} aria-hidden="true" />
