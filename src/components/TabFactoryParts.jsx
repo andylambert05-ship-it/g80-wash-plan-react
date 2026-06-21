@@ -110,7 +110,7 @@ function FactoryPartForm({ part, onClose }) {
 
   const sync = async (action, label) => {
     const config = getConfig()
-    if (!config.token || !config.user || !config.repo) {
+    if (!config.pat || !config.owner || !config.repo) {
       setSyncStatus({ status: 'error', message: 'GitHub not configured (Settings tab)' }); return
     }
     setSyncStatus({ status: 'syncing', message: 'Syncing…' })

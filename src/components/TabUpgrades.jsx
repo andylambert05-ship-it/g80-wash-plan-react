@@ -45,7 +45,7 @@ export default function TabUpgrades({ data }) {
     if (!cache || Object.keys(cache).length === 0) return
 
     const config = getConfig()
-    if (!config.token) return
+    if (!config.pat) return
 
     const diff = {}
     const matchedIds = []
@@ -140,7 +140,7 @@ export default function TabUpgrades({ data }) {
     try { navigator.vibrate && navigator.vibrate(20) } catch (e) {}
 
     const config = getConfig()
-    if (!config.token) {
+    if (!config.pat) {
       setSyncErrors(e => ({ ...e, [id]: 'No GitHub token — open Settings to enable sync' }))
       return
     }
