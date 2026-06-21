@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TabFactoryParts from './TabFactoryParts'
+import { getConfig, toggleUpgradeDone, bulkSetUpgradesDone } from '../utils/GitHubSync'
 
 const PHOTO_KEY = 'gwp_upgrade_photos'
 
@@ -10,12 +11,6 @@ function savePhotos(photos) {
   try { localStorage.setItem(PHOTO_KEY, JSON.stringify(photos)) } catch {}
 }
 
-function loadUpgradeState() {
-  try { return JSON.parse(localStorage.getItem('gwp_upgrades') || '{}') } catch { return {} }
-}
-function saveUpgradeState(state) {
-  try { localStorage.setItem('gwp_upgrades', JSON.stringify(state)) } catch {}
-}
 function loadCustomUpgrades() {
   try { return JSON.parse(localStorage.getItem('gwp_custom_upgrades') || '[]') } catch { return [] }
 }
@@ -29,12 +24,43 @@ const SOURCE_BD = { Self: '#0d2040', Shop: '#2a0000' }
 
 export default function TabUpgrades({ data }) {
   const [section, setSection] = useState(() => localStorage.getItem('gwp_upgrades_section') || 'mods')
-  const [doneState, setDoneState] = useState(loadUpgradeState)
+  // Optimistic local overrides for instant UI: { id: true/false }
+  // Cleared when the page re-fetches fresh JSON.
+  const [doneOverrides, setDoneOverrides] = useState({})
+  const [syncing, setSyncing] = useState({}) // { id: true } while a toggle is in-flight
   const [photos, setPhotos] = useState(loadPhotos)
   const [lightbox, setLightbox] = useState(null) // { src, label }
   const [custom, setCustom] = useState(loadCustomUpgrades)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ phase: '', customPhase: '', item: '', source: 'Self', notes: '' })
+
+  // One-shot migration: pull any old localStorage upgrade-completion state into
+  // the JSON so the user doesn't lose what they'd already marked. Runs once
+  // per device after this version is deployed.
+  useEffect(() => {
+    if (!data?.upgrades?.items) return
+    let legacy
+    try { legacy = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}') } catch { legacy = {} }
+    if (!legacy || Object.keys(legacy).length === 0) return
+
+    const config = getConfig()
+    if (!config.token) return // can't migrate without PAT — leave for next visit
+
+    // Build a diff map: only items where legacy says done but JSON doesn't (or vice versa)
+    const diff = {}
+    for (const item of data.upgrades.items) {
+      if (item.id in legacy && !!legacy[item.id] !== !!item.done) {
+        diff[item.id] = !!legacy[item.id]
+      }
+    }
+    if (Object.keys(diff).length === 0) {
+      localStorage.removeItem('gwp_upgrades')
+      return
+    }
+    bulkSetUpgradesDone(config, diff)
+      .then(() => { localStorage.removeItem('gwp_upgrades') })
+      .catch(e => console.warn('Upgrade sync migration failed:', e.message))
+  }, [data])
 
   if (!data.upgrades) return (
     <div className="panel">
@@ -48,12 +74,43 @@ export default function TabUpgrades({ data }) {
   const baseItems = data.upgrades.items || []
   const allItems = [...baseItems, ...custom]
 
-  const toggle = (id) => {
-    const next = { ...doneState, [id]: !doneState[id] }
-    setDoneState(next)
-    saveUpgradeState(next)
-    try { navigator.vibrate && navigator.vibrate(12) } catch (e) {}
+  // Effective done state: optimistic override wins, else the JSON, else false
+  const isItemDone = (item) => {
+    if (item.id in doneOverrides) return doneOverrides[item.id]
+    return !!item.done
+  }
 
+  const toggle = async (id) => {
+    const item = allItems.find(i => i.id === id)
+    if (!item) return
+    if (item.custom) {
+      // Custom items still live in localStorage — flip in place
+      const next = custom.map(c => c.id === id ? { ...c, done: !c.done } : c)
+      setCustom(next); saveCustomUpgrades(next)
+      try { navigator.vibrate && navigator.vibrate(20) } catch (e) {}
+      return
+    }
+    // Synced items: optimistic flip + GitHub write
+    const newDone = !isItemDone(item)
+    setDoneOverrides(d => ({ ...d, [id]: newDone }))
+    try { navigator.vibrate && navigator.vibrate(20) } catch (e) {}
+
+    const config = getConfig()
+    if (!config.token) {
+      // No PAT — keep optimistic state; user will need to configure GitHub to sync
+      console.warn('GitHub not configured — completion not synced across devices')
+      return
+    }
+    setSyncing(s => ({ ...s, [id]: true }))
+    try {
+      await toggleUpgradeDone(config, id)
+    } catch (e) {
+      // Sync failed — revert
+      setDoneOverrides(d => { const n = { ...d }; delete n[id]; return n })
+      console.warn('Upgrade sync failed:', e.message)
+    } finally {
+      setSyncing(s => { const n = { ...s }; delete n[id]; return n })
+    }
   }
 
   const addItem = () => {
@@ -126,7 +183,7 @@ export default function TabUpgrades({ data }) {
     phases[item.phase].push(item)
   })
 
-  const totalDone = allItems.filter(i => doneState[i.id]).length
+  const totalDone = allItems.filter(i => isItemDone(i)).length
   const total = allItems.length
   const pct = total > 0 ? Math.round((totalDone / total) * 100) : 0
   const existingPhases = [...new Set(baseItems.map(i => i.phase))]
@@ -265,7 +322,7 @@ export default function TabUpgrades({ data }) {
 
       {phaseOrder.map(phase => {
         const items = phases[phase]
-        const phaseDone = items.filter(i => doneState[i.id]).length
+        const phaseDone = items.filter(i => isItemDone(i)).length
         return (
           <div key={phase} style={{ marginBottom: 20 }}>
             <div className="phase-hdr" style={{ borderLeftColor: '#0066b1', color: '#ffffff', fontSize: 13 }}>
@@ -275,13 +332,16 @@ export default function TabUpgrades({ data }) {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
               {items.map(item => {
-                const isDone = !!doneState[item.id]
+                const isDone = isItemDone(item)
+                const isSyncing = !!syncing[item.id]
                 return (
                   <div key={item.id} onClick={() => toggle(item.id)}
                     style={{ background: 'var(--card)', border: '1px solid var(--bd)', padding: '12px 14px', display: 'flex', alignItems: 'flex-start', gap: 12, cursor: 'pointer', opacity: isDone ? 0.35 : 1, position: 'relative', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 1, background: '#0066b1' }} />
                     <div style={{ width: 20, height: 20, border: `1px solid ${isDone ? '#0066b1' : 'var(--bd2)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, background: isDone ? '#0066b1' : 'transparent', marginTop: 1 }}>
-                      {isDone && <i className="ti ti-check" style={{ fontSize: 11, color: '#fff' }} aria-hidden="true" />}
+                      {isSyncing
+                        ? <i className="ti ti-loader-2" style={{ fontSize: 11, color: isDone ? '#fff' : '#0066b1', animation: 'spin 0.8s linear infinite' }} aria-hidden="true" />
+                        : isDone && <i className="ti ti-check" style={{ fontSize: 11, color: '#fff' }} aria-hidden="true" />}
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--t1)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 3, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>

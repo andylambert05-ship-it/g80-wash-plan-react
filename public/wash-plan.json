@@ -4,8 +4,9 @@
     "car": "Isle of Man Green BMW M3 G80 - S58",
     "coating": "Ceramic coated",
     "lastUpdated": "2026-06-11",
-    "version": "2.9",
+    "version": "3.0",
     "changelog": [
+      "v3.0 (2026-06-11) - Fixed cross-device sync for upgrade completion. Upgrades now read 'done' state from JSON (synced via GitHub) instead of localStorage. Toggling a complete writes to GitHub immediately with optimistic UI and inline syncing spinner. One-shot migration on first load pulls existing localStorage state into the JSON in a single commit so nothing is lost.",
       "v2.9 (2026-06-11) - Added Pressol Pro-Series 500ml and 750ml spray bottles to Tools (new Spray bottles category) and to Dilution Calculator presets. Renamed Marolex preset to 'Marolex 3k'. Preset grid relayout: 3 columns x 2 rows to fit six containers.",
       "v2.8 (2026-06-11) - Visual polish pass: FloatingTimer redesigned with rounded card, backdrop blur, tabular numerals, larger ring, +30s/+1m extend buttons, dedicated done-state banner with pulse animation. Dilution Calculator redesigned with quick-pick container presets (IK Foam Pro 2 1.25L, Marolex 3000 3L, IK E Foam Pro 12 6L, Bucket 2 4gal), hero result number at 36px with tabular numerals, mix-ratio visualization bar showing product:water proportion, cleaner header hierarchy. New extend(seconds) action on useTimer hook.",
       "v2.7 (2026-06-11) - Weather banner on Wash tab: Open-Meteo API (no key) fetches conditions for Greeley CO. Triggers detail-relevant alerts for incoming rain (next 48h), high UV (≥8 — flash-dry risk), high heat (≥90°F), and high wind (≥20mph — dust contamination). Dismissible per-session, 30min cache. Future TODO: dilution calculator + floating timer visual polish.",

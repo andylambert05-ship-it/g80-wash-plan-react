@@ -153,6 +153,33 @@ export async function editUpgrade(config, updatedUpgrade) {
   await writeFile(config, content, sha, `Edit upgrade: ${updatedUpgrade.item}`)
 }
 
+// Toggle a single upgrade's done state (cross-device sync)
+export async function toggleUpgradeDone(config, id) {
+  const { content, sha } = await fetchFile(config)
+  let item
+  content.upgrades.items = content.upgrades.items.map(u => {
+    if (u.id !== id) return u
+    item = { ...u, done: !u.done, completedDate: !u.done ? new Date().toISOString().slice(0, 10) : null }
+    return item
+  })
+  await writeFile(config, content, sha, `${item?.done ? 'Complete' : 'Reopen'} upgrade: ${item?.item || id}`)
+}
+
+// Bulk update — used for one-shot migration from localStorage. Single commit.
+export async function bulkSetUpgradesDone(config, idDoneMap) {
+  const { content, sha } = await fetchFile(config)
+  const changed = []
+  content.upgrades.items = content.upgrades.items.map(u => {
+    if (!(u.id in idDoneMap)) return u
+    if (u.done === idDoneMap[u.id]) return u
+    changed.push(u.id)
+    return { ...u, done: idDoneMap[u.id], completedDate: idDoneMap[u.id] ? new Date().toISOString().slice(0, 10) : null }
+  })
+  if (changed.length === 0) return false
+  await writeFile(config, content, sha, `Sync ${changed.length} upgrade completion(s) from device`)
+  return true
+}
+
 export async function deleteUpgrade(config, id) {
   const { content, sha } = await fetchFile(config)
   content.upgrades.items = content.upgrades.items.filter(u => u.id !== id)

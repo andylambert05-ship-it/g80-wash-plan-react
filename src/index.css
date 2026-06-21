@@ -829,3 +829,5 @@ body { background: var(--bg); min-height: 100vh; padding-left: env(safe-area-ins
   padding: 8px;
 }
 
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
