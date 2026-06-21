@@ -28,38 +28,60 @@ export default function TabUpgrades({ data }) {
   // Cleared when the page re-fetches fresh JSON.
   const [doneOverrides, setDoneOverrides] = useState({})
   const [syncing, setSyncing] = useState({}) // { id: true } while a toggle is in-flight
+  const [syncErrors, setSyncErrors] = useState({}) // { id: errorMessage } if a sync fails
   const [photos, setPhotos] = useState(loadPhotos)
   const [lightbox, setLightbox] = useState(null) // { src, label }
   const [custom, setCustom] = useState(loadCustomUpgrades)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ phase: '', customPhase: '', item: '', source: 'Self', notes: '' })
 
-  // One-shot migration: pull any old localStorage upgrade-completion state into
-  // the JSON so the user doesn't lose what they'd already marked. Runs once
-  // per device after this version is deployed.
+  // On mount (and whenever data changes), push any local-only completion state
+  // up to GitHub. This catches up devices where sync failed previously, and
+  // handles the migration from the old localStorage-only behaviour.
   useEffect(() => {
     if (!data?.upgrades?.items) return
-    let legacy
-    try { legacy = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}') } catch { legacy = {} }
-    if (!legacy || Object.keys(legacy).length === 0) return
+    let cache
+    try { cache = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}') } catch { cache = {} }
+    if (!cache || Object.keys(cache).length === 0) return
 
     const config = getConfig()
-    if (!config.token) return // can't migrate without PAT — leave for next visit
+    if (!config.token) return
 
-    // Build a diff map: only items where legacy says done but JSON doesn't (or vice versa)
     const diff = {}
+    const matchedIds = []
     for (const item of data.upgrades.items) {
-      if (item.id in legacy && !!legacy[item.id] !== !!item.done) {
-        diff[item.id] = !!legacy[item.id]
+      if (item.id in cache) {
+        matchedIds.push(item.id)
+        if (!!cache[item.id] !== !!item.done) diff[item.id] = !!cache[item.id]
       }
     }
     if (Object.keys(diff).length === 0) {
-      localStorage.removeItem('gwp_upgrades')
+      // JSON already reflects all cached entries — clean them out
+      if (matchedIds.length) {
+        const next = { ...cache }
+        matchedIds.forEach(id => delete next[id])
+        localStorage.setItem('gwp_upgrades', JSON.stringify(next))
+      }
       return
     }
     bulkSetUpgradesDone(config, diff)
-      .then(() => { localStorage.removeItem('gwp_upgrades') })
-      .catch(e => console.warn('Upgrade sync migration failed:', e.message))
+      .then(() => {
+        // Clear pushed entries from local cache
+        try {
+          const fresh = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}')
+          Object.keys(diff).forEach(id => delete fresh[id])
+          localStorage.setItem('gwp_upgrades', JSON.stringify(fresh))
+        } catch {}
+      })
+      .catch(e => {
+        console.warn('Bulk upgrade sync failed:', e)
+        // Surface on each affected item so the user sees something is wrong
+        setSyncErrors(prev => {
+          const next = { ...prev }
+          Object.keys(diff).forEach(id => { next[id] = e.message || 'Sync failed' })
+          return next
+        })
+      })
   }, [data])
 
   if (!data.upgrades) return (
@@ -74,10 +96,30 @@ export default function TabUpgrades({ data }) {
   const baseItems = data.upgrades.items || []
   const allItems = [...baseItems, ...custom]
 
-  // Effective done state: optimistic override wins, else the JSON, else false
+  // Effective done state: optimistic override wins, then localStorage cache, then the JSON
   const isItemDone = (item) => {
     if (item.id in doneOverrides) return doneOverrides[item.id]
+    // localStorage cache survives reload until JSON catches up
+    try {
+      const cache = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}')
+      if (item.id in cache) return !!cache[item.id]
+    } catch {}
     return !!item.done
+  }
+
+  const persistLocal = (id, done) => {
+    try {
+      const cache = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}')
+      cache[id] = done
+      localStorage.setItem('gwp_upgrades', JSON.stringify(cache))
+    } catch {}
+  }
+  const clearLocal = (id) => {
+    try {
+      const cache = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}')
+      delete cache[id]
+      localStorage.setItem('gwp_upgrades', JSON.stringify(cache))
+    } catch {}
   }
 
   const toggle = async (id) => {
@@ -90,24 +132,27 @@ export default function TabUpgrades({ data }) {
       try { navigator.vibrate && navigator.vibrate(20) } catch (e) {}
       return
     }
-    // Synced items: optimistic flip + GitHub write
+    // Synced items: optimistic flip + persistent local cache + GitHub write
     const newDone = !isItemDone(item)
     setDoneOverrides(d => ({ ...d, [id]: newDone }))
+    persistLocal(id, newDone)
+    setSyncErrors(e => { const n = { ...e }; delete n[id]; return n })
     try { navigator.vibrate && navigator.vibrate(20) } catch (e) {}
 
     const config = getConfig()
     if (!config.token) {
-      // No PAT — keep optimistic state; user will need to configure GitHub to sync
-      console.warn('GitHub not configured — completion not synced across devices')
+      setSyncErrors(e => ({ ...e, [id]: 'No GitHub token — open Settings to enable sync' }))
       return
     }
     setSyncing(s => ({ ...s, [id]: true }))
     try {
       await toggleUpgradeDone(config, id)
+      // Sync succeeded — local cache no longer needed for this item; JSON will reflect it on next fetch
+      clearLocal(id)
     } catch (e) {
-      // Sync failed — revert
-      setDoneOverrides(d => { const n = { ...d }; delete n[id]; return n })
-      console.warn('Upgrade sync failed:', e.message)
+      // Don't revert the visual state — keep what the user tapped. Surface the error.
+      setSyncErrors(err => ({ ...err, [id]: e.message || 'Sync failed' }))
+      console.warn('Upgrade sync failed:', e)
     } finally {
       setSyncing(s => { const n = { ...s }; delete n[id]; return n })
     }
@@ -334,10 +379,11 @@ export default function TabUpgrades({ data }) {
               {items.map(item => {
                 const isDone = isItemDone(item)
                 const isSyncing = !!syncing[item.id]
+                const syncErr = syncErrors[item.id]
                 return (
                   <div key={item.id} onClick={() => toggle(item.id)}
-                    style={{ background: 'var(--card)', border: '1px solid var(--bd)', padding: '12px 14px', display: 'flex', alignItems: 'flex-start', gap: 12, cursor: 'pointer', opacity: isDone ? 0.35 : 1, position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 1, background: '#0066b1' }} />
+                    style={{ background: 'var(--card)', border: `1px solid ${syncErr ? '#5a1a1a' : 'var(--bd)'}`, padding: '12px 14px', display: 'flex', alignItems: 'flex-start', gap: 12, cursor: 'pointer', opacity: isDone ? 0.4 : 1, position: 'relative', overflow: 'hidden' }}>
+                    <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 1, background: syncErr ? '#cc1e1e' : '#0066b1' }} />
                     <div style={{ width: 20, height: 20, border: `1px solid ${isDone ? '#0066b1' : 'var(--bd2)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, background: isDone ? '#0066b1' : 'transparent', marginTop: 1 }}>
                       {isSyncing
                         ? <i className="ti ti-loader-2" style={{ fontSize: 11, color: isDone ? '#fff' : '#0066b1', animation: 'spin 0.8s linear infinite' }} aria-hidden="true" />
@@ -352,7 +398,18 @@ export default function TabUpgrades({ data }) {
                         {item.custom && (
                           <span style={{ fontSize: 9, padding: '2px 7px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--card2)', color: 'var(--t3)', border: '1px solid var(--bd2)' }}>Custom</span>
                         )}
+                        {syncErr && (
+                          <span title={syncErr} style={{ fontSize: 9, padding: '2px 7px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: '#1a0000', color: '#cc1e1e', border: '1px solid #5a1a1a', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                            <i className="ti ti-alert-triangle" style={{ fontSize: 10 }} aria-hidden="true" />
+                            Not synced
+                          </span>
+                        )}
                       </div>
+                      {syncErr && (
+                        <div style={{ fontSize: 11, color: '#cc1e1e', lineHeight: 1.4, fontWeight: 400, marginBottom: 4 }}>
+                          Sync error: {syncErr}
+                        </div>
+                      )}
                       {item.notes && <div style={{ fontSize: 12, color: 'var(--t2)', lineHeight: 1.6, fontWeight: 300 }}>{item.notes}</div>}
                       {/* Photo thumbnails */}
                       {photos[item.id] && photos[item.id].length > 0 && (
