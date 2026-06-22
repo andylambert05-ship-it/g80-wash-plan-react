@@ -6,20 +6,20 @@
     "lastUpdated": "2026-06-11",
     "version": "3.1",
     "changelog": [
-      "v3.1 (2026-06-21) - Rearchitected upgrade sync to local-first batch model. Taps are now instant and purely local — no GitHub writes on each tap, no SHA conflicts possible. Changes accumulate locally and a Save button pushes them all in one bulk commit. Blue 'Unsaved' badge on each modified item. 15-minute reminder banner if unsaved changes are detected. Removes all per-tap sync complexity.",
-      "v3.0.6 (2026-06-21) - Smarter conflict retry: escalating backoff (500ms/1s/2s/3s instead of 250ms), 5 attempts instead of 4, and SHA-loop detection — if the fetched SHA is the same as the one that just failed, waits an extra 1.5s before retrying rather than immediately hitting the same conflict again.",
-      "v3.0.5 (2026-06-21) - Fixed write loop: catch-up sync was using [data] as its useEffect dependency, so every successful commit (which triggers a JSON rebuild + re-fetch) would fire the sync again against a stale SHA. Changed to [] — runs exactly once on mount.",
+      "v3.1 (2026-06-21) - Rearchitected upgrade sync to local-first batch model. Taps are now instant and purely local â no GitHub writes on each tap, no SHA conflicts possible. Changes accumulate locally and a Save button pushes them all in one bulk commit. Blue 'Unsaved' badge on each modified item. 15-minute reminder banner if unsaved changes are detected. Removes all per-tap sync complexity.",
+      "v3.0.6 (2026-06-21) - Smarter conflict retry: escalating backoff (500ms/1s/2s/3s instead of 250ms), 5 attempts instead of 4, and SHA-loop detection â if the fetched SHA is the same as the one that just failed, waits an extra 1.5s before retrying rather than immediately hitting the same conflict again.",
+      "v3.0.5 (2026-06-21) - Fixed write loop: catch-up sync was using [data] as its useEffect dependency, so every successful commit (which triggers a JSON rebuild + re-fetch) would fire the sync again against a stale SHA. Changed to [] â runs exactly once on mount.",
       "v3.0.4 (2026-06-11) - Sync queue: all retryable sync writes now go through a single global promise chain so no two operations are in flight at once on the same device. Eliminates self-collisions where catch-up sync (useEffect) and a user tap both started writing at the same SHA. Retry still wraps each operation for the rare cross-device case (phone + desktop writing simultaneously).",
-      "v3.0.3 (2026-06-11) - Fixed SHA conflict (HTTP 409) errors when multiple upgrade syncs race. New syncWithRetry helper: on conflict, re-fetches the latest SHA, re-applies the change, and retries up to 4 times with brief backoff. Applied to toggleUpgradeDone and bulkSetUpgradesDone — handles the common case of catch-up sync running at the same time the user is tapping items.",
+      "v3.0.3 (2026-06-11) - Fixed SHA conflict (HTTP 409) errors when multiple upgrade syncs race. New syncWithRetry helper: on conflict, re-fetches the latest SHA, re-applies the change, and retries up to 4 times with brief backoff. Applied to toggleUpgradeDone and bulkSetUpgradesDone â handles the common case of catch-up sync running at the same time the user is tapping items.",
       "v3.0.2 (2026-06-11) - Fixed PAT field-name mismatch in TabUpgrades and TabFactoryParts: code was checking config.token (and config.user in factory parts) but getConfig returns config.pat / config.owner. Sync now correctly recognizes configured credentials.",
-      "v3.0.1 (2026-06-11) - Upgrade sync hardening: completion state now persists to localStorage AND GitHub, so taps survive reload even when sync fails. Failed syncs are now visible in the UI — red border + 'Not synced' badge with the error message inline. Catch-up sync runs every mount: any local-only completions get pushed to GitHub the next time the PAT is reachable.",
+      "v3.0.1 (2026-06-11) - Upgrade sync hardening: completion state now persists to localStorage AND GitHub, so taps survive reload even when sync fails. Failed syncs are now visible in the UI â red border + 'Not synced' badge with the error message inline. Catch-up sync runs every mount: any local-only completions get pushed to GitHub the next time the PAT is reachable.",
       "v3.0 (2026-06-11) - Fixed cross-device sync for upgrade completion. Upgrades now read 'done' state from JSON (synced via GitHub) instead of localStorage. Toggling a complete writes to GitHub immediately with optimistic UI and inline syncing spinner. One-shot migration on first load pulls existing localStorage state into the JSON in a single commit so nothing is lost.",
       "v2.9 (2026-06-11) - Added Pressol Pro-Series 500ml and 750ml spray bottles to Tools (new Spray bottles category) and to Dilution Calculator presets. Renamed Marolex preset to 'Marolex 3k'. Preset grid relayout: 3 columns x 2 rows to fit six containers.",
       "v2.8 (2026-06-11) - Visual polish pass: FloatingTimer redesigned with rounded card, backdrop blur, tabular numerals, larger ring, +30s/+1m extend buttons, dedicated done-state banner with pulse animation. Dilution Calculator redesigned with quick-pick container presets (IK Foam Pro 2 1.25L, Marolex 3000 3L, IK E Foam Pro 12 6L, Bucket 2 4gal), hero result number at 36px with tabular numerals, mix-ratio visualization bar showing product:water proportion, cleaner header hierarchy. New extend(seconds) action on useTimer hook.",
-      "v2.7 (2026-06-11) - Weather banner on Wash tab: Open-Meteo API (no key) fetches conditions for Greeley CO. Triggers detail-relevant alerts for incoming rain (next 48h), high UV (≥8 — flash-dry risk), high heat (≥90°F), and high wind (≥20mph — dust contamination). Dismissible per-session, 30min cache. Future TODO: dilution calculator + floating timer visual polish.",
+      "v2.7 (2026-06-11) - Weather banner on Wash tab: Open-Meteo API (no key) fetches conditions for Greeley CO. Triggers detail-relevant alerts for incoming rain (next 48h), high UV (â¥8 â flash-dry risk), high heat (â¥90Â°F), and high wind (â¥20mph â dust contamination). Dismissible per-session, 30min cache. Future TODO: dilution calculator + floating timer visual polish.",
       "v2.6 (2026-06-11) - OEM+ Reversibility Tracker: new sub-section under Upgrades tab to log factory parts removed during modifications. Tracks component name, storage location, part number, condition, removal date, hardware status, replaced-by mod, and notes. Items group by replacement mod for easy reinstall lookup.",
       "v2.5 (2026-06-11) - Polish bundle: bottom navigation bar (thumb-reach friendly, replaces top tabs), Screen Wake Lock API keeps phone awake during timers, haptic feedback audit (20ms step toggles, 40ms timer start, 8ms nav clicks). Removed duplicate wake lock in useTimer; useWakeLock hook is single source of truth.",
-      "v2.4 (2026-06-10) - UX simplification: 12 tabs consolidated to 5 with sub-navigation (Wash, Inventory, Care, Upgrades, More). Step cards collapse by default — tap number to complete, tap body to expand. Expand all/collapse all toggle. Progressive disclosure on add/edit chemical forms. Chemical ID propagation — step chem tags now resolve live from chemicals inventory.",
+      "v2.4 (2026-06-10) - UX simplification: 12 tabs consolidated to 5 with sub-navigation (Wash, Inventory, Care, Upgrades, More). Step cards collapse by default â tap number to complete, tap body to expand. Expand all/collapse all toggle. Progressive disclosure on add/edit chemical forms. Chemical ID propagation â step chem tags now resolve live from chemicals inventory.",
       "v2.1 (2026-05-17) - Phase grouping on steps, dwell/time estimates, between-wash maintenance section, seasonal notes (Colorado Front Range), product shelf life tracking, 303 Aerospace Protectant, Gaps tab removed, ShortList dwell times, version history in UI.",
       "v2.0 (2026-05-16) - Full redesign: BMW automotive theme, light mode, 5 tabs, interior detail tab, engine bay tab. All CarPro specs verified from carpro-us.com. All BH specs from bilthamber.com. Koch Chemie + Colourlock from kcxusa.com. Koch Chemie Glass Cleaner from autofinesse.com. 23 chemicals, 34 tools, mode-aware chemicals tab with wash sequence sort order. HydrO2 Lite replaced with Reload 2.0. All IK sprayer names corrected. nextzett Cockpit Premium brand fixed. Koch Chemie Allround Surface Cleaner confirmed as iDrive screen cleaner.",
       "v1.0 (initial) - Basic wash plan with steps, chemicals, tools, gaps checklist."
@@ -905,7 +905,7 @@
         "tools": [],
         "chems": [],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 2
       },
       {
@@ -917,7 +917,7 @@
         ],
         "chems": [],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 3
       },
       {
@@ -942,7 +942,7 @@
           }
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 8,
         "dwellMins": "2-5",
         "dwellMin": 120,
@@ -963,7 +963,7 @@
           }
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 4,
         "dwellMins": "0.5",
         "dwellMin": 30,
@@ -980,7 +980,7 @@
         "chems": [
           {
             "chemId": "diy-detail-allclean-apc",
-            "usage": "5:1–10:1"
+            "usage": "5:1â10:1"
           },
           {
             "chemId": "carpro-multix-apc-option",
@@ -988,7 +988,7 @@
           }
         ],
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 4
       },
       {
@@ -1005,7 +1005,7 @@
         "chems": [
           {
             "chemId": "diy-detail-allclean-apc",
-            "usage": "3:1–5:1"
+            "usage": "3:1â5:1"
           },
           {
             "chemId": "carpro-multix-apc-option",
@@ -1013,13 +1013,13 @@
           },
           {
             "chemId": "303-products-aerospace-protectant",
-            "usage": "RTU — seals"
+            "usage": "RTU â seals"
           }
         ],
         "optional": true,
         "normalOnly": true,
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 10
       },
       {
@@ -1037,7 +1037,7 @@
           }
         ],
         "phase": "Pre-treatment",
-        "phaseIcon": "🔴",
+        "phaseIcon": "ð´",
         "estMins": 3,
         "dwellMins": "0.5-2",
         "dwellMin": 30,
@@ -1058,7 +1058,7 @@
           }
         ],
         "phase": "Pre-treatment",
-        "phaseIcon": "🔴",
+        "phaseIcon": "ð´",
         "estMins": 3,
         "dwellMins": "2-3",
         "dwellMin": 120,
@@ -1073,7 +1073,7 @@
         ],
         "chems": [],
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 3
       },
       {
@@ -1086,12 +1086,12 @@
         "chems": [
           {
             "chemId": "carpro-reset",
-            "usage": "12–15ml per 6L fill in IK E Foam Pro 12 (400–500:1)"
+            "usage": "12â15ml per 6L fill in IK E Foam Pro 12 (400â500:1)"
           }
         ],
         "normalOnly": true,
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 6,
         "dwellMins": "5",
         "dwellMin": 300,
@@ -1111,7 +1111,7 @@
           }
         ],
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 7,
         "dwellMins": "3-5",
         "dwellMin": 180,
@@ -1133,7 +1133,7 @@
         ],
         "normalOnly": true,
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "🟡",
+        "phaseIcon": "ð¡",
         "estMins": 15
       },
       {
@@ -1145,7 +1145,7 @@
         ],
         "chems": [],
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "🟡",
+        "phaseIcon": "ð¡",
         "estMins": 3
       },
       {
@@ -1157,7 +1157,7 @@
         ],
         "chems": [],
         "phase": "Dry & Protect",
-        "phaseIcon": "🟢",
+        "phaseIcon": "ð¢",
         "estMins": 8
       },
       {
@@ -1165,16 +1165,16 @@
         "title": "Apply CarPro Reload 2.0 - paint sealant",
         "desc": "Apply after paint is fully blower-dried. Work one panel at a time. Shake well. Spray 3-4 sprays onto a dedicated MF towel (or 1-2 sprays directly on panel). Spread evenly immediately. Wait 30-60 sec until almost flashed. Flip towel and buff in. Switch to a second clean dry MF towel and buff off completely. Do NOT apply in direct sunlight. Do NOT apply to glass. If uneven or hazy after buffing, wipe off with IPA and re-apply.",
         "tools": [
-          "2× dedicated MF towels (spread + buff off)"
+          "2Ã dedicated MF towels (spread + buff off)"
         ],
         "chems": [
           {
             "chemId": "carpro-reload-2-0",
-            "usage": "RTU — 3–4 sprays per section onto towel"
+            "usage": "RTU â 3â4 sprays per section onto towel"
           }
         ],
         "phase": "Dry & Protect",
-        "phaseIcon": "🟢",
+        "phaseIcon": "ð¢",
         "estMins": 10
       },
       {
@@ -1191,7 +1191,7 @@
           }
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 4
       },
       {
@@ -1204,7 +1204,7 @@
         "chems": [
           {
             "chemId": "bilt-hamber-trace-less",
-            "usage": "RTU — shake well"
+            "usage": "RTU â shake well"
           },
           {
             "chemId": "koch-chemie-glass-cleaner",
@@ -1212,7 +1212,7 @@
           }
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 4
       },
       {
@@ -1226,15 +1226,15 @@
         "chems": [
           {
             "chemId": "bilt-hamber-trace-less",
-            "usage": "RTU — onto tool head"
+            "usage": "RTU â onto tool head"
           },
           {
             "chemId": "koch-chemie-glass-cleaner",
-            "usage": "RTU — onto tool head (alt.)"
+            "usage": "RTU â onto tool head (alt.)"
           }
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 5
       },
       {
@@ -1247,11 +1247,11 @@
         "chems": [
           {
             "chemId": "carpro-darkside",
-            "usage": "RTU — squirt onto applicator. Min 1–2 hrs dry before driving."
+            "usage": "RTU â squirt onto applicator. Min 1â2 hrs dry before driving."
           }
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 5
       },
       {
@@ -1264,11 +1264,11 @@
         "chems": [
           {
             "chemId": "303-products-aerospace-protectant",
-            "usage": "RTU — wipe completely dry. Reapply every 3–5 weeks."
+            "usage": "RTU â wipe completely dry. Reapply every 3â5 weeks."
           }
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 4
       },
       {
@@ -1282,11 +1282,11 @@
         "chems": [
           {
             "chemId": "mckee-s-37-n-914-rinseless-wash-v2",
-            "usage": "60–90ml per 950ml water in spray bottle"
+            "usage": "60â90ml per 950ml water in spray bottle"
           }
         ],
         "phase": "Finish",
-        "phaseIcon": "⚪",
+        "phaseIcon": "âª",
         "estMins": 5
       }
     ],
@@ -1306,7 +1306,7 @@
         ],
         "insertAfter": "n075",
         "phase": "Prewash",
-        "phaseIcon": "🟣",
+        "phaseIcon": "ð£",
         "estMins": 8,
         "dwellMins": "1-5",
         "dwellMin": 60,
@@ -1328,7 +1328,7 @@
         ],
         "insertAfter": "n08",
         "phase": "2-Bucket Method Wash",
-        "phaseIcon": "🟡",
+        "phaseIcon": "ð¡",
         "estMins": 20,
         "dwellMins": "max per panel"
       },
@@ -1346,7 +1346,7 @@
         "chems": [
           {
             "chemId": "diy-detail-allclean-apc",
-            "usage": "3:1–5:1"
+            "usage": "3:1â5:1"
           },
           {
             "chemId": "carpro-multix-apc-option",
@@ -1354,12 +1354,12 @@
           },
           {
             "chemId": "303-products-aerospace-protectant",
-            "usage": "RTU — seals"
+            "usage": "RTU â seals"
           }
         ],
         "insertAfter": "n07",
         "phase": "Wheels & Tires",
-        "phaseIcon": "🔵",
+        "phaseIcon": "ðµ",
         "estMins": 10
       }
     ]
@@ -1423,7 +1423,7 @@
         "chems": [
           {
             "chemId": "diy-detail-allclean-apc",
-            "usage": "5:1–10:1 (3:1 heavy deposits)"
+            "usage": "5:1â10:1 (3:1 heavy deposits)"
           },
           {
             "chemId": "carpro-multix-apc-option",
@@ -1473,7 +1473,7 @@
         "chems": [
           {
             "chemId": null,
-            "usage": "Trim dressing — RTU"
+            "usage": "Trim dressing â RTU"
           }
         ],
         "warn": false
@@ -1652,7 +1652,7 @@
         "id": "c03",
         "priority": "recommended",
         "name": "Between-wash Deep Clean spray",
-        "why": "For ION Green between bi-weekly washes - bird drops, tree sap, light road film. Gyeon Q²M Cure or CarPro ELIXIR.",
+        "why": "For ION Green between bi-weekly washes - bird drops, tree sap, light road film. Gyeon QÂ²M Cure or CarPro ELIXIR.",
         "washTypes": [
           "normal",
           "maint"
@@ -1862,7 +1862,7 @@
         "chems": [
           {
             "chemId": "bilt-hamber-surfex-hd",
-            "usage": "2–3%"
+            "usage": "2â3%"
           },
           {
             "chemId": "diy-detail-allclean-apc",
@@ -1895,7 +1895,7 @@
         "chems": [
           {
             "chemId": "bilt-hamber-surfex-hd",
-            "usage": "1–2% on cloth — not sprayed direct"
+            "usage": "1â2% on cloth â not sprayed direct"
           }
         ]
       },
@@ -1909,7 +1909,7 @@
         "chems": [
           {
             "chemId": "koch-chemie-allround-surface-cleaner-asc",
-            "usage": "RTU — onto cloth only. NEVER spray direct on screen."
+            "usage": "RTU â onto cloth only. NEVER spray direct on screen."
           }
         ]
       },
@@ -1925,7 +1925,7 @@
         "chems": [
           {
             "chemId": "bilt-hamber-surfex-hd",
-            "usage": "2–3% on cloth"
+            "usage": "2â3% on cloth"
           },
           {
             "chemId": null,
@@ -1949,7 +1949,7 @@
           },
           {
             "chemId": null,
-            "usage": "Gtechniq C6 or CarPro Carbon C2 — RTU (gloss CF only)"
+            "usage": "Gtechniq C6 or CarPro Carbon C2 â RTU (gloss CF only)"
           }
         ]
       },
@@ -1979,7 +1979,7 @@
         "chems": [
           {
             "chemId": null,
-            "usage": "RTU — thin coat"
+            "usage": "RTU â thin coat"
           }
         ]
       },
@@ -1994,11 +1994,11 @@
         "chems": [
           {
             "chemId": "bilt-hamber-trace-less",
-            "usage": "RTU — onto tool head"
+            "usage": "RTU â onto tool head"
           },
           {
             "chemId": "koch-chemie-glass-cleaner",
-            "usage": "RTU — onto tool head (alt.)"
+            "usage": "RTU â onto tool head (alt.)"
           }
         ]
       },
@@ -2012,7 +2012,7 @@
         "chems": [
           {
             "chemId": null,
-            "usage": "Cockpit Premium or interior trim dressing — RTU on cloth"
+            "usage": "Cockpit Premium or interior trim dressing â RTU on cloth"
           }
         ],
         "optional": true
@@ -2037,12 +2037,12 @@
         "desc": "Bird droppings and tree sap are the most damaging contaminants on a ceramic coating - do not leave them. Saturate with McKee's 37 N-914 (60-90ml per 950ml spray bottle) and allow to dwell 30-60 sec to soften. Gently wipe with a clean damp MF towel using zero pressure. Do not rub dry - re-wet if needed. Follow with a second clean MF towel.",
         "tools": [
           "Labeled spray bottle (N-914 QD mix)",
-          "2× clean MF towels"
+          "2Ã clean MF towels"
         ],
         "chems": [
           {
             "chemId": "mckee-s-37-n-914-rinseless-wash-v2",
-            "usage": "60–90ml per 950ml water"
+            "usage": "60â90ml per 950ml water"
           }
         ]
       },
@@ -2056,7 +2056,7 @@
         "chems": [
           {
             "chemId": "mckee-s-37-n-914-rinseless-wash-v2",
-            "usage": "60–90ml per 950ml water in spray bottle"
+            "usage": "60â90ml per 950ml water in spray bottle"
           }
         ]
       },
@@ -2090,7 +2090,7 @@
     "seasons": [
       {
         "season": "Winter (Nov-Mar)",
-        "icon": "❄️",
+        "icon": "âï¸",
         "notes": [
           "Road salt and mag chloride are extremely aggressive on ceramic coatings - rinse or wash more frequently, ideally within 48 hours of driving on treated roads.",
           "Do not wash in below-freezing temps - water in gaps, door seals, and locks will freeze. Minimum ambient temp for a wet wash is 40 degF.",
@@ -2102,7 +2102,7 @@
       },
       {
         "season": "Spring (Mar-May)",
-        "icon": "🌱",
+        "icon": "ð±",
         "notes": [
           "Spring is the ideal time for a full Deep Clean wash - decon the coating from winter salt, fallout, and road film buildup.",
           "Run a full Korrosol + Iron X decon pass - spring fallout (tree pollen, industrial) embeds fast in ceramic coatings.",
@@ -2113,7 +2113,7 @@
       },
       {
         "season": "Summer (Jun-Sep)",
-        "icon": "☀️",
+        "icon": "âï¸",
         "notes": [
           "Never wash or apply chemicals in direct sunlight - ION Green metallic and ceramic coatings flash-dry in minutes in Colorado summer heat and altitude UV.",
           "Early morning (before 9am) or evening washes only in summer.",
@@ -2125,7 +2125,7 @@
       },
       {
         "season": "Fall (Sep-Nov)",
-        "icon": "🍂",
+        "icon": "ð",
         "notes": [
           "Tree sap and falling leaves accelerate - park away from trees where possible.",
           "Good window to apply Reload 2.0 before winter - temperatures are ideal (50-75 degF) and coating will cure properly.",
@@ -2181,8 +2181,9 @@
         "priority": 5,
         "item": "Door Projectors",
         "source": "Self",
-        "done": false,
-        "notes": "Independent, low-effort - knock out with the rest of the quick batch."
+        "done": true,
+        "notes": "Independent, low-effort - knock out with the rest of the quick batch.",
+        "completedDate": "2026-06-22"
       },
       {
         "id": "u06",
@@ -2190,8 +2191,9 @@
         "priority": 6,
         "item": "Goldenwrench Blackline Performance Cap Covers",
         "source": "Self",
-        "done": false,
-        "notes": "Engine bay cosmetic upgrade; snap/twist-on over OEM caps, fully reversible."
+        "done": true,
+        "notes": "Engine bay cosmetic upgrade; snap/twist-on over OEM caps, fully reversible.",
+        "completedDate": "2026-06-22"
       },
       {
         "id": "u07",
