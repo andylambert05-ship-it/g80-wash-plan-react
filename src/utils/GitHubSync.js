@@ -15,10 +15,33 @@ export function getConfig() {
 }
 
 export function saveConfig(config) {
-  localStorage.setItem(REPO_OWNER_KEY, config.owner)
-  localStorage.setItem(REPO_NAME_KEY, config.repo)
-  localStorage.setItem(PAT_KEY, config.pat)
-  localStorage.setItem(BRANCH_KEY, config.branch)
+  // Each setItem can throw QuotaExceededError if localStorage is full.
+  // We attempt every write, verify each one by reading it back, and return
+  // a structured result so the caller can surface a real error to the user.
+  const writes = [
+    [REPO_OWNER_KEY, config.owner],
+    [REPO_NAME_KEY, config.repo],
+    [PAT_KEY, config.pat],
+    [BRANCH_KEY, config.branch],
+  ]
+  const failed = []
+  for (const [key, value] of writes) {
+    try {
+      localStorage.setItem(key, value || '')
+      // Verify — iOS PWAs can silently no-op when over quota
+      if (localStorage.getItem(key) !== (value || '')) {
+        failed.push({ key, reason: 'Value did not persist (write-read mismatch)' })
+      }
+    } catch (e) {
+      failed.push({ key, reason: e.message || 'Storage write failed' })
+    }
+  }
+  return { ok: failed.length === 0, failed }
+}
+
+// Quick check used by global banner: is GitHub usable right now?
+export function hasGithubConfig() {
+  try { return !!localStorage.getItem(PAT_KEY) } catch { return false }
 }
 
 const FILE_PATH = 'public/wash-plan.json'
@@ -74,6 +97,43 @@ export async function testConnection(pat) {
   if (!res.ok) throw new Error('Invalid token or no access')
   const data = await res.json()
   return data.login
+}
+
+// Fetch + mutate + write, with automatic retry on SHA conflict.
+//
+// `mutate(content)` should modify `content` in place (or return a new object)
+// and may also return false/null to signal "no change needed". It's called
+// fresh on each retry so any sequence-dependent logic re-runs against the
+// latest content.
+//
+// `messageFn()` is called AFTER a successful mutate to produce the commit
+// message — this lets callers reference state captured during mutate (e.g.
+// the new value of a flipped flag).
+async function syncWithRetry(config, mutate, messageFn, maxAttempts = 4) {
+  let lastError
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      const { content, sha } = await fetchFile(config)
+      const result = await mutate(content)
+      if (result === false || result === null) return false // mutate signaled no-op
+      const finalContent = (result && typeof result === 'object') ? result : content
+      await writeFile(config, finalContent, sha, messageFn())
+      return true
+    } catch (e) {
+      lastError = e
+      const isConflict =
+        /does not match/i.test(e.message || '') ||
+        /409/.test(e.message || '') ||
+        /conflict/i.test(e.message || '')
+      if (isConflict && attempt < maxAttempts - 1) {
+        // Brief backoff so the racing write can finish, then retry the whole cycle
+        await new Promise(r => setTimeout(r, 250 * (attempt + 1)))
+        continue
+      }
+      throw e
+    }
+  }
+  throw lastError
 }
 
 // High-level: add a chemical to wash-plan.json and commit
@@ -153,31 +213,40 @@ export async function editUpgrade(config, updatedUpgrade) {
   await writeFile(config, content, sha, `Edit upgrade: ${updatedUpgrade.item}`)
 }
 
-// Toggle a single upgrade's done state (cross-device sync)
+// Toggle a single upgrade's done state (cross-device sync, retries on conflict)
 export async function toggleUpgradeDone(config, id) {
-  const { content, sha } = await fetchFile(config)
   let item
-  content.upgrades.items = content.upgrades.items.map(u => {
-    if (u.id !== id) return u
-    item = { ...u, done: !u.done, completedDate: !u.done ? new Date().toISOString().slice(0, 10) : null }
-    return item
-  })
-  await writeFile(config, content, sha, `${item?.done ? 'Complete' : 'Reopen'} upgrade: ${item?.item || id}`)
+  return syncWithRetry(
+    config,
+    (content) => {
+      content.upgrades.items = content.upgrades.items.map(u => {
+        if (u.id !== id) return u
+        item = { ...u, done: !u.done, completedDate: !u.done ? new Date().toISOString().slice(0, 10) : null }
+        return item
+      })
+    },
+    () => `${item?.done ? 'Complete' : 'Reopen'} upgrade: ${item?.item || id}`
+  )
 }
 
-// Bulk update — used for one-shot migration from localStorage. Single commit.
+// Bulk update — used for one-shot migration from localStorage. Single commit, retries on conflict.
 export async function bulkSetUpgradesDone(config, idDoneMap) {
-  const { content, sha } = await fetchFile(config)
-  const changed = []
-  content.upgrades.items = content.upgrades.items.map(u => {
-    if (!(u.id in idDoneMap)) return u
-    if (u.done === idDoneMap[u.id]) return u
-    changed.push(u.id)
-    return { ...u, done: idDoneMap[u.id], completedDate: idDoneMap[u.id] ? new Date().toISOString().slice(0, 10) : null }
-  })
-  if (changed.length === 0) return false
-  await writeFile(config, content, sha, `Sync ${changed.length} upgrade completion(s) from device`)
-  return true
+  let changedCount = 0
+  return syncWithRetry(
+    config,
+    (content) => {
+      const changed = []
+      content.upgrades.items = content.upgrades.items.map(u => {
+        if (!(u.id in idDoneMap)) return u
+        if (u.done === idDoneMap[u.id]) return u
+        changed.push(u.id)
+        return { ...u, done: idDoneMap[u.id], completedDate: idDoneMap[u.id] ? new Date().toISOString().slice(0, 10) : null }
+      })
+      changedCount = changed.length
+      if (changedCount === 0) return false // no-op
+    },
+    () => `Sync ${changedCount} upgrade completion(s) from device`
+  )
 }
 
 export async function deleteUpgrade(config, id) {
