@@ -101,6 +101,11 @@ export async function testConnection(pat) {
 
 // Fetch + mutate + write, with automatic retry on SHA conflict.
 //
+// All retryable writes are queued through a single global promise chain so
+// that no two sync operations are in flight on the same device at once. This
+// eliminates self-collisions (e.g. catch-up sync racing with a user tap) and
+// leaves retry to handle genuine cross-device collisions only.
+//
 // `mutate(content)` should modify `content` in place (or return a new object)
 // and may also return false/null to signal "no change needed". It's called
 // fresh on each retry so any sequence-dependent logic re-runs against the
@@ -109,31 +114,43 @@ export async function testConnection(pat) {
 // `messageFn()` is called AFTER a successful mutate to produce the commit
 // message — this lets callers reference state captured during mutate (e.g.
 // the new value of a flipped flag).
+
+let _syncQueue = Promise.resolve()
+
+function _enqueue(operation) {
+  // Chain so the next op waits for previous (success OR failure).
+  // The queue itself swallows errors so one bad op doesn't poison the chain.
+  const result = _syncQueue.then(operation, operation)
+  _syncQueue = result.then(() => undefined, () => undefined)
+  return result
+}
+
 async function syncWithRetry(config, mutate, messageFn, maxAttempts = 4) {
-  let lastError
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    try {
-      const { content, sha } = await fetchFile(config)
-      const result = await mutate(content)
-      if (result === false || result === null) return false // mutate signaled no-op
-      const finalContent = (result && typeof result === 'object') ? result : content
-      await writeFile(config, finalContent, sha, messageFn())
-      return true
-    } catch (e) {
-      lastError = e
-      const isConflict =
-        /does not match/i.test(e.message || '') ||
-        /409/.test(e.message || '') ||
-        /conflict/i.test(e.message || '')
-      if (isConflict && attempt < maxAttempts - 1) {
-        // Brief backoff so the racing write can finish, then retry the whole cycle
-        await new Promise(r => setTimeout(r, 250 * (attempt + 1)))
-        continue
+  return _enqueue(async () => {
+    let lastError
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        const { content, sha } = await fetchFile(config)
+        const result = await mutate(content)
+        if (result === false || result === null) return false // mutate signaled no-op
+        const finalContent = (result && typeof result === 'object') ? result : content
+        await writeFile(config, finalContent, sha, messageFn())
+        return true
+      } catch (e) {
+        lastError = e
+        const isConflict =
+          /does not match/i.test(e.message || '') ||
+          /409/.test(e.message || '') ||
+          /conflict/i.test(e.message || '')
+        if (isConflict && attempt < maxAttempts - 1) {
+          await new Promise(r => setTimeout(r, 250 * (attempt + 1)))
+          continue
+        }
+        throw e
       }
-      throw e
     }
-  }
-  throw lastError
+    throw lastError
+  })
 }
 
 // High-level: add a chemical to wash-plan.json and commit
