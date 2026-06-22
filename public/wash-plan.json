@@ -6,20 +6,6 @@
     "lastUpdated": "2026-06-11",
     "version": "3.0.6",
     "changelog": [
-<<<<<<< Updated upstream
-      "v3.0.5 (2026-06-21) - Fixed write loop: catch-up sync was using [data] as its useEffect dependency, so every successful commit (which triggers a JSON rebuild + re-fetch) would fire the sync again against a stale SHA. Changed to [] â runs exactly once on mount.",
-      "v3.0.4 (2026-06-11) - Sync queue: all retryable sync writes now go through a single global promise chain so no two operations are in flight at once on the same device. Eliminates self-collisions where catch-up sync (useEffect) and a user tap both started writing at the same SHA. Retry still wraps each operation for the rare cross-device case (phone + desktop writing simultaneously).",
-      "v3.0.3 (2026-06-11) - Fixed SHA conflict (HTTP 409) errors when multiple upgrade syncs race. New syncWithRetry helper: on conflict, re-fetches the latest SHA, re-applies the change, and retries up to 4 times with brief backoff. Applied to toggleUpgradeDone and bulkSetUpgradesDone ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ handles the common case of catch-up sync running at the same time the user is tapping items.",
-      "v3.0.2 (2026-06-11) - Fixed PAT field-name mismatch in TabUpgrades and TabFactoryParts: code was checking config.token (and config.user in factory parts) but getConfig returns config.pat / config.owner. Sync now correctly recognizes configured credentials.",
-      "v3.0.1 (2026-06-11) - Upgrade sync hardening: completion state now persists to localStorage AND GitHub, so taps survive reload even when sync fails. Failed syncs are now visible in the UI ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ red border + 'Not synced' badge with the error message inline. Catch-up sync runs every mount: any local-only completions get pushed to GitHub the next time the PAT is reachable.",
-      "v3.0 (2026-06-11) - Fixed cross-device sync for upgrade completion. Upgrades now read 'done' state from JSON (synced via GitHub) instead of localStorage. Toggling a complete writes to GitHub immediately with optimistic UI and inline syncing spinner. One-shot migration on first load pulls existing localStorage state into the JSON in a single commit so nothing is lost.",
-      "v2.9 (2026-06-11) - Added Pressol Pro-Series 500ml and 750ml spray bottles to Tools (new Spray bottles category) and to Dilution Calculator presets. Renamed Marolex preset to 'Marolex 3k'. Preset grid relayout: 3 columns x 2 rows to fit six containers.",
-      "v2.8 (2026-06-11) - Visual polish pass: FloatingTimer redesigned with rounded card, backdrop blur, tabular numerals, larger ring, +30s/+1m extend buttons, dedicated done-state banner with pulse animation. Dilution Calculator redesigned with quick-pick container presets (IK Foam Pro 2 1.25L, Marolex 3000 3L, IK E Foam Pro 12 6L, Bucket 2 4gal), hero result number at 36px with tabular numerals, mix-ratio visualization bar showing product:water proportion, cleaner header hierarchy. New extend(seconds) action on useTimer hook.",
-      "v2.7 (2026-06-11) - Weather banner on Wash tab: Open-Meteo API (no key) fetches conditions for Greeley CO. Triggers detail-relevant alerts for incoming rain (next 48h), high UV (ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¥8 ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ flash-dry risk), high heat (ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¥90ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°F), and high wind (ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¥20mph ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ dust contamination). Dismissible per-session, 30min cache. Future TODO: dilution calculator + floating timer visual polish.",
-      "v2.6 (2026-06-11) - OEM+ Reversibility Tracker: new sub-section under Upgrades tab to log factory parts removed during modifications. Tracks component name, storage location, part number, condition, removal date, hardware status, replaced-by mod, and notes. Items group by replacement mod for easy reinstall lookup.",
-      "v2.5 (2026-06-11) - Polish bundle: bottom navigation bar (thumb-reach friendly, replaces top tabs), Screen Wake Lock API keeps phone awake during timers, haptic feedback audit (20ms step toggles, 40ms timer start, 8ms nav clicks). Removed duplicate wake lock in useTimer; useWakeLock hook is single source of truth.",
-      "v2.4 (2026-06-10) - UX simplification: 12 tabs consolidated to 5 with sub-navigation (Wash, Inventory, Care, Upgrades, More). Step cards collapse by default ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ tap number to complete, tap body to expand. Expand all/collapse all toggle. Progressive disclosure on add/edit chemical forms. Chemical ID propagation ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ step chem tags now resolve live from chemicals inventory.",
-=======
       "v3.0.6 (2026-06-21) - Smarter conflict retry: escalating backoff (500ms/1s/2s/3s instead of 250ms), 5 attempts instead of 4, and SHA-loop detection — if the fetched SHA is the same as the one that just failed, waits an extra 1.5s before retrying rather than immediately hitting the same conflict again.",
       "v3.0.5 (2026-06-21) - Fixed write loop: catch-up sync was using [data] as its useEffect dependency, so every successful commit (which triggers a JSON rebuild + re-fetch) would fire the sync again against a stale SHA. Changed to [] — runs exactly once on mount.",
       "v3.0.4 (2026-06-11) - Sync queue: all retryable sync writes now go through a single global promise chain so no two operations are in flight at once on the same device. Eliminates self-collisions where catch-up sync (useEffect) and a user tap both started writing at the same SHA. Retry still wraps each operation for the rare cross-device case (phone + desktop writing simultaneously).",
@@ -33,7 +19,6 @@
       "v2.6 (2026-06-11) - OEM+ Reversibility Tracker: new sub-section under Upgrades tab to log factory parts removed during modifications. Tracks component name, storage location, part number, condition, removal date, hardware status, replaced-by mod, and notes. Items group by replacement mod for easy reinstall lookup.",
       "v2.5 (2026-06-11) - Polish bundle: bottom navigation bar (thumb-reach friendly, replaces top tabs), Screen Wake Lock API keeps phone awake during timers, haptic feedback audit (20ms step toggles, 40ms timer start, 8ms nav clicks). Removed duplicate wake lock in useTimer; useWakeLock hook is single source of truth.",
       "v2.4 (2026-06-10) - UX simplification: 12 tabs consolidated to 5 with sub-navigation (Wash, Inventory, Care, Upgrades, More). Step cards collapse by default — tap number to complete, tap body to expand. Expand all/collapse all toggle. Progressive disclosure on add/edit chemical forms. Chemical ID propagation — step chem tags now resolve live from chemicals inventory.",
->>>>>>> Stashed changes
       "v2.1 (2026-05-17) - Phase grouping on steps, dwell/time estimates, between-wash maintenance section, seasonal notes (Colorado Front Range), product shelf life tracking, 303 Aerospace Protectant, Gaps tab removed, ShortList dwell times, version history in UI.",
       "v2.0 (2026-05-16) - Full redesign: BMW automotive theme, light mode, 5 tabs, interior detail tab, engine bay tab. All CarPro specs verified from carpro-us.com. All BH specs from bilthamber.com. Koch Chemie + Colourlock from kcxusa.com. Koch Chemie Glass Cleaner from autofinesse.com. 23 chemicals, 34 tools, mode-aware chemicals tab with wash sequence sort order. HydrO2 Lite replaced with Reload 2.0. All IK sprayer names corrected. nextzett Cockpit Premium brand fixed. Koch Chemie Allround Surface Cleaner confirmed as iDrive screen cleaner.",
       "v1.0 (initial) - Basic wash plan with steps, chemicals, tools, gaps checklist."
@@ -919,11 +904,7 @@
         "tools": [],
         "chems": [],
         "phase": "Wheels & Tires",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂµ",
-=======
         "phaseIcon": "🔵",
->>>>>>> Stashed changes
         "estMins": 2
       },
       {
@@ -935,11 +916,7 @@
         ],
         "chems": [],
         "phase": "Wheels & Tires",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂµ",
-=======
         "phaseIcon": "🔵",
->>>>>>> Stashed changes
         "estMins": 3
       },
       {
@@ -964,11 +941,7 @@
           }
         ],
         "phase": "Wheels & Tires",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂµ",
-=======
         "phaseIcon": "🔵",
->>>>>>> Stashed changes
         "estMins": 8,
         "dwellMins": "2-5",
         "dwellMin": 120,
@@ -989,11 +962,7 @@
           }
         ],
         "phase": "Wheels & Tires",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂµ",
-=======
         "phaseIcon": "🔵",
->>>>>>> Stashed changes
         "estMins": 4,
         "dwellMins": "0.5",
         "dwellMin": 30,
@@ -1010,11 +979,7 @@
         "chems": [
           {
             "chemId": "diy-detail-allclean-apc",
-<<<<<<< Updated upstream
-            "usage": "5:1ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ10:1"
-=======
             "usage": "5:1–10:1"
->>>>>>> Stashed changes
           },
           {
             "chemId": "carpro-multix-apc-option",
@@ -1022,11 +987,7 @@
           }
         ],
         "phase": "Wheels & Tires",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂµ",
-=======
         "phaseIcon": "🔵",
->>>>>>> Stashed changes
         "estMins": 4
       },
       {
@@ -1043,11 +1004,7 @@
         "chems": [
           {
             "chemId": "diy-detail-allclean-apc",
-<<<<<<< Updated upstream
-            "usage": "3:1ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ5:1"
-=======
             "usage": "3:1–5:1"
->>>>>>> Stashed changes
           },
           {
             "chemId": "carpro-multix-apc-option",
@@ -1055,21 +1012,13 @@
           },
           {
             "chemId": "303-products-aerospace-protectant",
-<<<<<<< Updated upstream
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ seals"
-=======
             "usage": "RTU — seals"
->>>>>>> Stashed changes
           }
         ],
         "optional": true,
         "normalOnly": true,
         "phase": "Wheels & Tires",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂµ",
-=======
         "phaseIcon": "🔵",
->>>>>>> Stashed changes
         "estMins": 10
       },
       {
@@ -1087,11 +1036,7 @@
           }
         ],
         "phase": "Pre-treatment",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ´",
-=======
         "phaseIcon": "🔴",
->>>>>>> Stashed changes
         "estMins": 3,
         "dwellMins": "0.5-2",
         "dwellMin": 30,
@@ -1112,11 +1057,7 @@
           }
         ],
         "phase": "Pre-treatment",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ´",
-=======
         "phaseIcon": "🔴",
->>>>>>> Stashed changes
         "estMins": 3,
         "dwellMins": "2-3",
         "dwellMin": 120,
@@ -1131,11 +1072,7 @@
         ],
         "chems": [],
         "phase": "Prewash",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ£",
-=======
         "phaseIcon": "🟣",
->>>>>>> Stashed changes
         "estMins": 3
       },
       {
@@ -1148,20 +1085,12 @@
         "chems": [
           {
             "chemId": "carpro-reset",
-<<<<<<< Updated upstream
-            "usage": "12ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ15ml per 6L fill in IK E Foam Pro 12 (400ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ500:1)"
-=======
             "usage": "12–15ml per 6L fill in IK E Foam Pro 12 (400–500:1)"
->>>>>>> Stashed changes
           }
         ],
         "normalOnly": true,
         "phase": "Prewash",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ£",
-=======
         "phaseIcon": "🟣",
->>>>>>> Stashed changes
         "estMins": 6,
         "dwellMins": "5",
         "dwellMin": 300,
@@ -1181,11 +1110,7 @@
           }
         ],
         "phase": "Prewash",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ£",
-=======
         "phaseIcon": "🟣",
->>>>>>> Stashed changes
         "estMins": 7,
         "dwellMins": "3-5",
         "dwellMin": 180,
@@ -1207,11 +1132,7 @@
         ],
         "normalOnly": true,
         "phase": "2-Bucket Method Wash",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡",
-=======
         "phaseIcon": "🟡",
->>>>>>> Stashed changes
         "estMins": 15
       },
       {
@@ -1223,11 +1144,7 @@
         ],
         "chems": [],
         "phase": "2-Bucket Method Wash",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡",
-=======
         "phaseIcon": "🟡",
->>>>>>> Stashed changes
         "estMins": 3
       },
       {
@@ -1239,11 +1156,7 @@
         ],
         "chems": [],
         "phase": "Dry & Protect",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢",
-=======
         "phaseIcon": "🟢",
->>>>>>> Stashed changes
         "estMins": 8
       },
       {
@@ -1251,28 +1164,16 @@
         "title": "Apply CarPro Reload 2.0 - paint sealant",
         "desc": "Apply after paint is fully blower-dried. Work one panel at a time. Shake well. Spray 3-4 sprays onto a dedicated MF towel (or 1-2 sprays directly on panel). Spread evenly immediately. Wait 30-60 sec until almost flashed. Flip towel and buff in. Switch to a second clean dry MF towel and buff off completely. Do NOT apply in direct sunlight. Do NOT apply to glass. If uneven or hazy after buffing, wipe off with IPA and re-apply.",
         "tools": [
-<<<<<<< Updated upstream
-          "2ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ dedicated MF towels (spread + buff off)"
-=======
           "2× dedicated MF towels (spread + buff off)"
->>>>>>> Stashed changes
         ],
         "chems": [
           {
             "chemId": "carpro-reload-2-0",
-<<<<<<< Updated upstream
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ 3ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ4 sprays per section onto towel"
-          }
-        ],
-        "phase": "Dry & Protect",
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢",
-=======
             "usage": "RTU — 3–4 sprays per section onto towel"
           }
         ],
         "phase": "Dry & Protect",
         "phaseIcon": "🟢",
->>>>>>> Stashed changes
         "estMins": 10
       },
       {
@@ -1289,11 +1190,7 @@
           }
         ],
         "phase": "Finish",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂª",
-=======
         "phaseIcon": "⚪",
->>>>>>> Stashed changes
         "estMins": 4
       },
       {
@@ -1306,11 +1203,7 @@
         "chems": [
           {
             "chemId": "bilt-hamber-trace-less",
-<<<<<<< Updated upstream
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ shake well"
-=======
             "usage": "RTU — shake well"
->>>>>>> Stashed changes
           },
           {
             "chemId": "koch-chemie-glass-cleaner",
@@ -1318,11 +1211,7 @@
           }
         ],
         "phase": "Finish",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂª",
-=======
         "phaseIcon": "⚪",
->>>>>>> Stashed changes
         "estMins": 4
       },
       {
@@ -1336,17 +1225,6 @@
         "chems": [
           {
             "chemId": "bilt-hamber-trace-less",
-<<<<<<< Updated upstream
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ onto tool head"
-          },
-          {
-            "chemId": "koch-chemie-glass-cleaner",
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ onto tool head (alt.)"
-          }
-        ],
-        "phase": "Finish",
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂª",
-=======
             "usage": "RTU — onto tool head"
           },
           {
@@ -1356,7 +1234,6 @@
         ],
         "phase": "Finish",
         "phaseIcon": "⚪",
->>>>>>> Stashed changes
         "estMins": 5
       },
       {
@@ -1369,19 +1246,11 @@
         "chems": [
           {
             "chemId": "carpro-darkside",
-<<<<<<< Updated upstream
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ squirt onto applicator. Min 1ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ2 hrs dry before driving."
-          }
-        ],
-        "phase": "Finish",
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂª",
-=======
             "usage": "RTU — squirt onto applicator. Min 1–2 hrs dry before driving."
           }
         ],
         "phase": "Finish",
         "phaseIcon": "⚪",
->>>>>>> Stashed changes
         "estMins": 5
       },
       {
@@ -1394,19 +1263,11 @@
         "chems": [
           {
             "chemId": "303-products-aerospace-protectant",
-<<<<<<< Updated upstream
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ wipe completely dry. Reapply every 3ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ5 weeks."
-          }
-        ],
-        "phase": "Finish",
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂª",
-=======
             "usage": "RTU — wipe completely dry. Reapply every 3–5 weeks."
           }
         ],
         "phase": "Finish",
         "phaseIcon": "⚪",
->>>>>>> Stashed changes
         "estMins": 4
       },
       {
@@ -1420,19 +1281,11 @@
         "chems": [
           {
             "chemId": "mckee-s-37-n-914-rinseless-wash-v2",
-<<<<<<< Updated upstream
-            "usage": "60ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ90ml per 950ml water in spray bottle"
-          }
-        ],
-        "phase": "Finish",
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂª",
-=======
             "usage": "60–90ml per 950ml water in spray bottle"
           }
         ],
         "phase": "Finish",
         "phaseIcon": "⚪",
->>>>>>> Stashed changes
         "estMins": 5
       }
     ],
@@ -1452,11 +1305,7 @@
         ],
         "insertAfter": "n075",
         "phase": "Prewash",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ£",
-=======
         "phaseIcon": "🟣",
->>>>>>> Stashed changes
         "estMins": 8,
         "dwellMins": "1-5",
         "dwellMin": 60,
@@ -1478,11 +1327,7 @@
         ],
         "insertAfter": "n08",
         "phase": "2-Bucket Method Wash",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡",
-=======
         "phaseIcon": "🟡",
->>>>>>> Stashed changes
         "estMins": 20,
         "dwellMins": "max per panel"
       },
@@ -1500,11 +1345,7 @@
         "chems": [
           {
             "chemId": "diy-detail-allclean-apc",
-<<<<<<< Updated upstream
-            "usage": "3:1ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ5:1"
-=======
             "usage": "3:1–5:1"
->>>>>>> Stashed changes
           },
           {
             "chemId": "carpro-multix-apc-option",
@@ -1512,20 +1353,12 @@
           },
           {
             "chemId": "303-products-aerospace-protectant",
-<<<<<<< Updated upstream
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ seals"
-=======
             "usage": "RTU — seals"
->>>>>>> Stashed changes
           }
         ],
         "insertAfter": "n07",
         "phase": "Wheels & Tires",
-<<<<<<< Updated upstream
-        "phaseIcon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂµ",
-=======
         "phaseIcon": "🔵",
->>>>>>> Stashed changes
         "estMins": 10
       }
     ]
@@ -1589,11 +1422,7 @@
         "chems": [
           {
             "chemId": "diy-detail-allclean-apc",
-<<<<<<< Updated upstream
-            "usage": "5:1ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ10:1 (3:1 heavy deposits)"
-=======
             "usage": "5:1–10:1 (3:1 heavy deposits)"
->>>>>>> Stashed changes
           },
           {
             "chemId": "carpro-multix-apc-option",
@@ -1643,11 +1472,7 @@
         "chems": [
           {
             "chemId": null,
-<<<<<<< Updated upstream
-            "usage": "Trim dressing ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ RTU"
-=======
             "usage": "Trim dressing — RTU"
->>>>>>> Stashed changes
           }
         ],
         "warn": false
@@ -1826,11 +1651,7 @@
         "id": "c03",
         "priority": "recommended",
         "name": "Between-wash Deep Clean spray",
-<<<<<<< Updated upstream
-        "why": "For ION Green between bi-weekly washes - bird drops, tree sap, light road film. Gyeon QÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ²M Cure or CarPro ELIXIR.",
-=======
         "why": "For ION Green between bi-weekly washes - bird drops, tree sap, light road film. Gyeon Q²M Cure or CarPro ELIXIR.",
->>>>>>> Stashed changes
         "washTypes": [
           "normal",
           "maint"
@@ -2040,11 +1861,7 @@
         "chems": [
           {
             "chemId": "bilt-hamber-surfex-hd",
-<<<<<<< Updated upstream
-            "usage": "2ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ3%"
-=======
             "usage": "2–3%"
->>>>>>> Stashed changes
           },
           {
             "chemId": "diy-detail-allclean-apc",
@@ -2077,11 +1894,7 @@
         "chems": [
           {
             "chemId": "bilt-hamber-surfex-hd",
-<<<<<<< Updated upstream
-            "usage": "1ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ2% on cloth ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ not sprayed direct"
-=======
             "usage": "1–2% on cloth — not sprayed direct"
->>>>>>> Stashed changes
           }
         ]
       },
@@ -2095,11 +1908,7 @@
         "chems": [
           {
             "chemId": "koch-chemie-allround-surface-cleaner-asc",
-<<<<<<< Updated upstream
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ onto cloth only. NEVER spray direct on screen."
-=======
             "usage": "RTU — onto cloth only. NEVER spray direct on screen."
->>>>>>> Stashed changes
           }
         ]
       },
@@ -2115,11 +1924,7 @@
         "chems": [
           {
             "chemId": "bilt-hamber-surfex-hd",
-<<<<<<< Updated upstream
-            "usage": "2ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ3% on cloth"
-=======
             "usage": "2–3% on cloth"
->>>>>>> Stashed changes
           },
           {
             "chemId": null,
@@ -2143,11 +1948,7 @@
           },
           {
             "chemId": null,
-<<<<<<< Updated upstream
-            "usage": "Gtechniq C6 or CarPro Carbon C2 ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ RTU (gloss CF only)"
-=======
             "usage": "Gtechniq C6 or CarPro Carbon C2 — RTU (gloss CF only)"
->>>>>>> Stashed changes
           }
         ]
       },
@@ -2177,11 +1978,7 @@
         "chems": [
           {
             "chemId": null,
-<<<<<<< Updated upstream
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ thin coat"
-=======
             "usage": "RTU — thin coat"
->>>>>>> Stashed changes
           }
         ]
       },
@@ -2196,19 +1993,11 @@
         "chems": [
           {
             "chemId": "bilt-hamber-trace-less",
-<<<<<<< Updated upstream
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ onto tool head"
-          },
-          {
-            "chemId": "koch-chemie-glass-cleaner",
-            "usage": "RTU ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ onto tool head (alt.)"
-=======
             "usage": "RTU — onto tool head"
           },
           {
             "chemId": "koch-chemie-glass-cleaner",
             "usage": "RTU — onto tool head (alt.)"
->>>>>>> Stashed changes
           }
         ]
       },
@@ -2222,11 +2011,7 @@
         "chems": [
           {
             "chemId": null,
-<<<<<<< Updated upstream
-            "usage": "Cockpit Premium or interior trim dressing ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ RTU on cloth"
-=======
             "usage": "Cockpit Premium or interior trim dressing — RTU on cloth"
->>>>>>> Stashed changes
           }
         ],
         "optional": true
@@ -2251,20 +2036,12 @@
         "desc": "Bird droppings and tree sap are the most damaging contaminants on a ceramic coating - do not leave them. Saturate with McKee's 37 N-914 (60-90ml per 950ml spray bottle) and allow to dwell 30-60 sec to soften. Gently wipe with a clean damp MF towel using zero pressure. Do not rub dry - re-wet if needed. Follow with a second clean MF towel.",
         "tools": [
           "Labeled spray bottle (N-914 QD mix)",
-<<<<<<< Updated upstream
-          "2ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ clean MF towels"
-=======
           "2× clean MF towels"
->>>>>>> Stashed changes
         ],
         "chems": [
           {
             "chemId": "mckee-s-37-n-914-rinseless-wash-v2",
-<<<<<<< Updated upstream
-            "usage": "60ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ90ml per 950ml water"
-=======
             "usage": "60–90ml per 950ml water"
->>>>>>> Stashed changes
           }
         ]
       },
@@ -2278,11 +2055,7 @@
         "chems": [
           {
             "chemId": "mckee-s-37-n-914-rinseless-wash-v2",
-<<<<<<< Updated upstream
-            "usage": "60ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ90ml per 950ml water in spray bottle"
-=======
             "usage": "60–90ml per 950ml water in spray bottle"
->>>>>>> Stashed changes
           }
         ]
       },
@@ -2316,11 +2089,7 @@
     "seasons": [
       {
         "season": "Winter (Nov-Mar)",
-<<<<<<< Updated upstream
-        "icon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¸ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ",
-=======
         "icon": "❄️",
->>>>>>> Stashed changes
         "notes": [
           "Road salt and mag chloride are extremely aggressive on ceramic coatings - rinse or wash more frequently, ideally within 48 hours of driving on treated roads.",
           "Do not wash in below-freezing temps - water in gaps, door seals, and locks will freeze. Minimum ambient temp for a wet wash is 40 degF.",
@@ -2332,11 +2101,7 @@
       },
       {
         "season": "Spring (Mar-May)",
-<<<<<<< Updated upstream
-        "icon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±",
-=======
         "icon": "🌱",
->>>>>>> Stashed changes
         "notes": [
           "Spring is the ideal time for a full Deep Clean wash - decon the coating from winter salt, fallout, and road film buildup.",
           "Run a full Korrosol + Iron X decon pass - spring fallout (tree pollen, industrial) embeds fast in ceramic coatings.",
@@ -2347,11 +2112,7 @@
       },
       {
         "season": "Summer (Jun-Sep)",
-<<<<<<< Updated upstream
-        "icon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¸ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ",
-=======
         "icon": "☀️",
->>>>>>> Stashed changes
         "notes": [
           "Never wash or apply chemicals in direct sunlight - ION Green metallic and ceramic coatings flash-dry in minutes in Colorado summer heat and altitude UV.",
           "Early morning (before 9am) or evening washes only in summer.",
@@ -2363,11 +2124,7 @@
       },
       {
         "season": "Fall (Sep-Nov)",
-<<<<<<< Updated upstream
-        "icon": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ",
-=======
         "icon": "🍂",
->>>>>>> Stashed changes
         "notes": [
           "Tree sap and falling leaves accelerate - park away from trees where possible.",
           "Good window to apply Reload 2.0 before winter - temperatures are ideal (50-75 degF) and coating will cure properly.",
@@ -2432,14 +2189,8 @@
         "priority": 6,
         "item": "Goldenwrench Blackline Performance Cap Covers",
         "source": "Self",
-<<<<<<< Updated upstream
-        "done": true,
-        "notes": "Engine bay cosmetic upgrade; snap/twist-on over OEM caps, fully reversible.",
-        "completedDate": "2026-06-22"
-=======
         "done": false,
         "notes": "Engine bay cosmetic upgrade; snap/twist-on over OEM caps, fully reversible."
->>>>>>> Stashed changes
       },
       {
         "id": "u07",
