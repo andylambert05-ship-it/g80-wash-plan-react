@@ -4,8 +4,9 @@
     "car": "Isle of Man Green BMW M3 G80 - S58",
     "coating": "Ceramic coated",
     "lastUpdated": "2026-06-11",
-    "version": "3.0.4",
+    "version": "3.0.5",
     "changelog": [
+      "v3.0.5 (2026-06-21) - Fixed write loop: catch-up sync was using [data] as its useEffect dependency, so every successful commit (which triggers a JSON rebuild + re-fetch) would fire the sync again against a stale SHA. Changed to [] — runs exactly once on mount.",
       "v3.0.4 (2026-06-11) - Sync queue: all retryable sync writes now go through a single global promise chain so no two operations are in flight at once on the same device. Eliminates self-collisions where catch-up sync (useEffect) and a user tap both started writing at the same SHA. Retry still wraps each operation for the rare cross-device case (phone + desktop writing simultaneously).",
       "v3.0.3 (2026-06-11) - Fixed SHA conflict (HTTP 409) errors when multiple upgrade syncs race. New syncWithRetry helper: on conflict, re-fetches the latest SHA, re-applies the change, and retries up to 4 times with brief backoff. Applied to toggleUpgradeDone and bulkSetUpgradesDone ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ handles the common case of catch-up sync running at the same time the user is tapping items.",
       "v3.0.2 (2026-06-11) - Fixed PAT field-name mismatch in TabUpgrades and TabFactoryParts: code was checking config.token (and config.user in factory parts) but getConfig returns config.pat / config.owner. Sync now correctly recognizes configured credentials.",

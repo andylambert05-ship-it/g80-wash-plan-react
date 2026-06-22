@@ -35,9 +35,9 @@ export default function TabUpgrades({ data }) {
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ phase: '', customPhase: '', item: '', source: 'Self', notes: '' })
 
-  // On mount (and whenever data changes), push any local-only completion state
-  // up to GitHub. This catches up devices where sync failed previously, and
-  // handles the migration from the old localStorage-only behaviour.
+  // Run catch-up sync exactly once on mount — push any local-only completion
+  // state up to GitHub. Using [] not [data] so this never re-fires when the
+  // JSON refreshes (which would create a write loop).
   useEffect(() => {
     if (!data?.upgrades?.items) return
     let cache
@@ -56,7 +56,6 @@ export default function TabUpgrades({ data }) {
       }
     }
     if (Object.keys(diff).length === 0) {
-      // JSON already reflects all cached entries — clean them out
       if (matchedIds.length) {
         const next = { ...cache }
         matchedIds.forEach(id => delete next[id])
@@ -64,9 +63,10 @@ export default function TabUpgrades({ data }) {
       }
       return
     }
+
+    setCatchUpPending(true)
     bulkSetUpgradesDone(config, diff)
       .then(() => {
-        // Clear pushed entries from local cache
         try {
           const fresh = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}')
           Object.keys(diff).forEach(id => delete fresh[id])
@@ -75,14 +75,14 @@ export default function TabUpgrades({ data }) {
       })
       .catch(e => {
         console.warn('Bulk upgrade sync failed:', e)
-        // Surface on each affected item so the user sees something is wrong
         setSyncErrors(prev => {
           const next = { ...prev }
           Object.keys(diff).forEach(id => { next[id] = e.message || 'Sync failed' })
           return next
         })
       })
-  }, [data])
+      .finally(() => setCatchUpPending(false))
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!data.upgrades) return (
     <div className="panel">
