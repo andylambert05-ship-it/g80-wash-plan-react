@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import TabFactoryParts from './TabFactoryParts'
-import { getConfig, toggleUpgradeDone, bulkSetUpgradesDone } from '../utils/GitHubSync'
+import { getConfig, bulkSetUpgradesDone } from '../utils/GitHubSync'
 
 const PHOTO_KEY = 'gwp_upgrade_photos'
+const DONE_KEY = 'gwp_upgrades'
+const REMINDER_MINS = 15
 
 function loadPhotos() {
   try { return JSON.parse(localStorage.getItem(PHOTO_KEY) || '{}') } catch { return {} }
@@ -10,12 +12,19 @@ function loadPhotos() {
 function savePhotos(photos) {
   try { localStorage.setItem(PHOTO_KEY, JSON.stringify(photos)) } catch {}
 }
-
 function loadCustomUpgrades() {
   try { return JSON.parse(localStorage.getItem('gwp_custom_upgrades') || '[]') } catch { return [] }
 }
 function saveCustomUpgrades(items) {
   try { localStorage.setItem('gwp_custom_upgrades', JSON.stringify(items)) } catch {}
+}
+
+// Local done cache — keyed by upgrade id, value is true/false
+function loadDoneCache() {
+  try { return JSON.parse(localStorage.getItem(DONE_KEY) || '{}') } catch { return {} }
+}
+function saveDoneCache(cache) {
+  try { localStorage.setItem(DONE_KEY, JSON.stringify(cache)) } catch {}
 }
 
 const SOURCE_COLORS = { Self: '#0066b1', Shop: '#cc1e1e' }
@@ -24,65 +33,119 @@ const SOURCE_BD = { Self: '#0d2040', Shop: '#2a0000' }
 
 export default function TabUpgrades({ data }) {
   const [section, setSection] = useState(() => localStorage.getItem('gwp_upgrades_section') || 'mods')
-  // Optimistic local overrides for instant UI: { id: true/false }
-  // Cleared when the page re-fetches fresh JSON.
-  const [doneOverrides, setDoneOverrides] = useState({})
-  const [syncing, setSyncing] = useState({}) // { id: true } while a toggle is in-flight
-  const [syncErrors, setSyncErrors] = useState({}) // { id: errorMessage } if a sync fails
+  // Local done overrides — instantly written to localStorage on every tap
+  const [doneCache, setDoneCache] = useState(loadDoneCache)
+  // Tracks which ids have unsaved local changes vs the JSON
+  const [unsaved, setUnsaved] = useState({})
+  const [saving, setSaving] = useState(false)
+  const [saveResult, setSaveResult] = useState(null) // { ok, message }
   const [photos, setPhotos] = useState(loadPhotos)
-  const [lightbox, setLightbox] = useState(null) // { src, label }
+  const [lightbox, setLightbox] = useState(null)
   const [custom, setCustom] = useState(loadCustomUpgrades)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ phase: '', customPhase: '', item: '', source: 'Self', notes: '' })
+  const reminderRef = useRef(null)
 
-  // Run catch-up sync exactly once on mount — push any local-only completion
-  // state up to GitHub. Using [] not [data] so this never re-fires when the
-  // JSON refreshes (which would create a write loop).
+  // Compute effective done state: local cache wins over JSON
+  const isItemDone = useCallback((item) => {
+    if (item.id in doneCache) return !!doneCache[item.id]
+    return !!item.done
+  }, [doneCache])
+
+  // Detect unsaved changes vs the JSON on mount and when data changes
   useEffect(() => {
     if (!data?.upgrades?.items) return
-    let cache
-    try { cache = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}') } catch { cache = {} }
-    if (!cache || Object.keys(cache).length === 0) return
-
-    const config = getConfig()
-    if (!config.pat) return
-
+    const cache = loadDoneCache()
     const diff = {}
-    const matchedIds = []
     for (const item of data.upgrades.items) {
-      if (item.id in cache) {
-        matchedIds.push(item.id)
-        if (!!cache[item.id] !== !!item.done) diff[item.id] = !!cache[item.id]
+      if (item.id in cache && !!cache[item.id] !== !!item.done) {
+        diff[item.id] = true
       }
     }
-    if (Object.keys(diff).length === 0) {
-      if (matchedIds.length) {
-        const next = { ...cache }
-        matchedIds.forEach(id => delete next[id])
-        localStorage.setItem('gwp_upgrades', JSON.stringify(next))
-      }
+    setUnsaved(diff)
+  }, [data])
+
+  // 15-minute reminder timer — starts when first unsaved change appears
+  useEffect(() => {
+    const hasUnsaved = Object.keys(unsaved).length > 0
+    if (hasUnsaved && !reminderRef.current) {
+      reminderRef.current = setTimeout(() => {
+        setSaveResult({ ok: null, message: `You have unsaved upgrade changes. Save now to sync across devices.` })
+        reminderRef.current = null
+      }, REMINDER_MINS * 60 * 1000)
+    }
+    if (!hasUnsaved) {
+      if (reminderRef.current) { clearTimeout(reminderRef.current); reminderRef.current = null }
+      setSaveResult(null)
+    }
+    return () => {}
+  }, [unsaved])
+
+  // Toggle: instant local write only
+  const toggle = (id) => {
+    const item = [...(data.upgrades?.items || []), ...custom].find(i => i.id === id)
+    if (!item) return
+    if (item.custom) {
+      const next = custom.map(c => c.id === id ? { ...c, done: !c.done } : c)
+      setCustom(next); saveCustomUpgrades(next)
+      try { navigator.vibrate && navigator.vibrate(20) } catch (e) {}
       return
     }
+    const currentDone = isItemDone(item)
+    const newDone = !currentDone
+    const nextCache = { ...doneCache, [id]: newDone }
+    setDoneCache(nextCache)
+    saveDoneCache(nextCache)
+    try { navigator.vibrate && navigator.vibrate(20) } catch (e) {}
 
-    setCatchUpPending(true)
-    bulkSetUpgradesDone(config, diff)
-      .then(() => {
-        try {
-          const fresh = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}')
-          Object.keys(diff).forEach(id => delete fresh[id])
-          localStorage.setItem('gwp_upgrades', JSON.stringify(fresh))
-        } catch {}
-      })
-      .catch(e => {
-        console.warn('Bulk upgrade sync failed:', e)
-        setSyncErrors(prev => {
-          const next = { ...prev }
-          Object.keys(diff).forEach(id => { next[id] = e.message || 'Sync failed' })
-          return next
-        })
-      })
-      .finally(() => setCatchUpPending(false))
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    // Mark as unsaved if different from JSON, clear if matches JSON
+    setUnsaved(prev => {
+      const next = { ...prev }
+      if (newDone !== !!item.done) next[id] = true
+      else delete next[id]
+      return next
+    })
+  }
+
+  // Save: push all local changes to GitHub in one commit
+  const saveToGitHub = async () => {
+    const config = getConfig()
+    if (!config.pat) {
+      setSaveResult({ ok: false, message: 'No GitHub token — check Settings.' })
+      return
+    }
+    if (Object.keys(unsaved).length === 0) {
+      setSaveResult({ ok: true, message: 'Nothing to save — already up to date.' })
+      return
+    }
+    setSaving(true)
+    setSaveResult(null)
+    try {
+      // Build the full diff map from local cache vs JSON
+      const cache = loadDoneCache()
+      const diff = {}
+      for (const item of (data.upgrades?.items || [])) {
+        if (item.id in cache && !!cache[item.id] !== !!item.done) {
+          diff[item.id] = !!cache[item.id]
+        }
+      }
+      await bulkSetUpgradesDone(config, diff)
+      // Clear saved entries from local cache
+      const fresh = loadDoneCache()
+      Object.keys(diff).forEach(id => delete fresh[id])
+      saveDoneCache(fresh)
+      setDoneCache(fresh)
+      setUnsaved({})
+      setSaveResult({ ok: true, message: `Saved ${Object.keys(diff).length} change${Object.keys(diff).length !== 1 ? 's' : ''} — syncing to all devices in ~60s.` })
+      try { navigator.vibrate && navigator.vibrate([30, 50, 30]) } catch (e) {}
+    } catch (e) {
+      setSaveResult({ ok: false, message: `Save failed: ${e.message}` })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const unsavedCount = Object.keys(unsaved).length
 
   if (!data.upgrades) return (
     <div className="panel">
@@ -95,68 +158,6 @@ export default function TabUpgrades({ data }) {
 
   const baseItems = data.upgrades.items || []
   const allItems = [...baseItems, ...custom]
-
-  // Effective done state: optimistic override wins, then localStorage cache, then the JSON
-  const isItemDone = (item) => {
-    if (item.id in doneOverrides) return doneOverrides[item.id]
-    // localStorage cache survives reload until JSON catches up
-    try {
-      const cache = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}')
-      if (item.id in cache) return !!cache[item.id]
-    } catch {}
-    return !!item.done
-  }
-
-  const persistLocal = (id, done) => {
-    try {
-      const cache = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}')
-      cache[id] = done
-      localStorage.setItem('gwp_upgrades', JSON.stringify(cache))
-    } catch {}
-  }
-  const clearLocal = (id) => {
-    try {
-      const cache = JSON.parse(localStorage.getItem('gwp_upgrades') || '{}')
-      delete cache[id]
-      localStorage.setItem('gwp_upgrades', JSON.stringify(cache))
-    } catch {}
-  }
-
-  const toggle = async (id) => {
-    const item = allItems.find(i => i.id === id)
-    if (!item) return
-    if (item.custom) {
-      // Custom items still live in localStorage — flip in place
-      const next = custom.map(c => c.id === id ? { ...c, done: !c.done } : c)
-      setCustom(next); saveCustomUpgrades(next)
-      try { navigator.vibrate && navigator.vibrate(20) } catch (e) {}
-      return
-    }
-    // Synced items: optimistic flip + persistent local cache + GitHub write
-    const newDone = !isItemDone(item)
-    setDoneOverrides(d => ({ ...d, [id]: newDone }))
-    persistLocal(id, newDone)
-    setSyncErrors(e => { const n = { ...e }; delete n[id]; return n })
-    try { navigator.vibrate && navigator.vibrate(20) } catch (e) {}
-
-    const config = getConfig()
-    if (!config.pat) {
-      setSyncErrors(e => ({ ...e, [id]: 'No GitHub token — open Settings to enable sync' }))
-      return
-    }
-    setSyncing(s => ({ ...s, [id]: true }))
-    try {
-      await toggleUpgradeDone(config, id)
-      // Sync succeeded — local cache no longer needed for this item; JSON will reflect it on next fetch
-      clearLocal(id)
-    } catch (e) {
-      // Don't revert the visual state — keep what the user tapped. Surface the error.
-      setSyncErrors(err => ({ ...err, [id]: e.message || 'Sync failed' }))
-      console.warn('Upgrade sync failed:', e)
-    } finally {
-      setSyncing(s => { const n = { ...s }; delete n[id]; return n })
-    }
-  }
 
   const addItem = () => {
     const phase = form.phase === '__custom__' ? form.customPhase.trim() : form.phase
@@ -296,6 +297,26 @@ export default function TabUpgrades({ data }) {
         </div>
       </div>
 
+      {/* Save bar — shows when there are unsaved local changes */}
+      {(unsavedCount > 0 || saveResult) && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: saveResult?.ok === false ? '#1a0000' : saveResult?.ok === true ? 'var(--green-bg)' : '#0d1a2e', border: `1px solid ${saveResult?.ok === false ? '#5a1a1a' : saveResult?.ok === true ? 'var(--iom-bd)' : '#0d2040'}`, marginBottom: 14 }}>
+          <div style={{ flex: 1, fontSize: 11, color: saveResult?.ok === false ? '#cc1e1e' : saveResult?.ok === true ? 'var(--iom)' : '#4d8fce', lineHeight: 1.4 }}>
+            {saveResult?.message || `${unsavedCount} unsaved change${unsavedCount !== 1 ? 's' : ''} — local only until saved`}
+          </div>
+          {unsavedCount > 0 && (
+            <button
+              onClick={saveToGitHub}
+              disabled={saving}
+              style={{ padding: '6px 14px', background: '#0066b1', border: 'none', color: '#fff', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: saving ? 'not-allowed' : 'pointer', fontFamily: 'Inter, sans-serif', opacity: saving ? 0.6 : 1, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 5 }}
+            >
+              {saving
+                ? <><i className="ti ti-loader-2" style={{ fontSize: 11, animation: 'spin 0.8s linear infinite' }} aria-hidden="true" /> Saving…</>
+                : <><i className="ti ti-cloud-upload" style={{ fontSize: 11 }} aria-hidden="true" /> Save</>}
+            </button>
+          )}
+        </div>
+      )}
+
       <button className="rbtn" onClick={() => setShowForm(s => !s)} style={{ marginBottom: 16 }}>
         <i className="ti ti-plus" aria-hidden="true" /> {showForm ? 'Cancel' : 'Add upgrade'}
       </button>
@@ -378,16 +399,13 @@ export default function TabUpgrades({ data }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
               {items.map(item => {
                 const isDone = isItemDone(item)
-                const isSyncing = !!syncing[item.id]
-                const syncErr = syncErrors[item.id]
+                const hasUnsavedChange = !!unsaved[item.id]
                 return (
                   <div key={item.id} onClick={() => toggle(item.id)}
-                    style={{ background: 'var(--card)', border: `1px solid ${syncErr ? '#5a1a1a' : 'var(--bd)'}`, padding: '12px 14px', display: 'flex', alignItems: 'flex-start', gap: 12, cursor: 'pointer', opacity: isDone ? 0.4 : 1, position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 1, background: syncErr ? '#cc1e1e' : '#0066b1' }} />
+                    style={{ background: 'var(--card)', border: `1px solid var(--bd)`, padding: '12px 14px', display: 'flex', alignItems: 'flex-start', gap: 12, cursor: 'pointer', opacity: isDone ? 0.4 : 1, position: 'relative', overflow: 'hidden' }}>
+                    <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 1, background: '#0066b1' }} />
                     <div style={{ width: 20, height: 20, border: `1px solid ${isDone ? '#0066b1' : 'var(--bd2)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, background: isDone ? '#0066b1' : 'transparent', marginTop: 1 }}>
-                      {isSyncing
-                        ? <i className="ti ti-loader-2" style={{ fontSize: 11, color: isDone ? '#fff' : '#0066b1', animation: 'spin 0.8s linear infinite' }} aria-hidden="true" />
-                        : isDone && <i className="ti ti-check" style={{ fontSize: 11, color: '#fff' }} aria-hidden="true" />}
+                      {isDone && <i className="ti ti-check" style={{ fontSize: 11, color: '#fff' }} aria-hidden="true" />}
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--t1)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 3, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
@@ -398,18 +416,12 @@ export default function TabUpgrades({ data }) {
                         {item.custom && (
                           <span style={{ fontSize: 9, padding: '2px 7px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--card2)', color: 'var(--t3)', border: '1px solid var(--bd2)' }}>Custom</span>
                         )}
-                        {syncErr && (
-                          <span title={syncErr} style={{ fontSize: 9, padding: '2px 7px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: '#1a0000', color: '#cc1e1e', border: '1px solid #5a1a1a', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                            <i className="ti ti-alert-triangle" style={{ fontSize: 10 }} aria-hidden="true" />
-                            Not synced
+                        {hasUnsavedChange && (
+                          <span style={{ fontSize: 9, padding: '2px 7px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: '#0d1a2e', color: '#4d8fce', border: '1px solid #0d2040' }}>
+                            Unsaved
                           </span>
                         )}
                       </div>
-                      {syncErr && (
-                        <div style={{ fontSize: 11, color: '#cc1e1e', lineHeight: 1.4, fontWeight: 400, marginBottom: 4 }}>
-                          Sync error: {syncErr}
-                        </div>
-                      )}
                       {item.notes && <div style={{ fontSize: 12, color: 'var(--t2)', lineHeight: 1.6, fontWeight: 300 }}>{item.notes}</div>}
                       {/* Photo thumbnails */}
                       {photos[item.id] && photos[item.id].length > 0 && (
