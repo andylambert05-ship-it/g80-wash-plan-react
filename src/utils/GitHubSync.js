@@ -257,12 +257,25 @@ export async function toggleUpgradeDone(config, id) {
   )
 }
 
-// Bulk update — used for one-shot migration from localStorage. Single commit, retries on conflict.
-export async function bulkSetUpgradesDone(config, idDoneMap) {
+// Bulk update — applies done-state changes AND field edits/deletions. Single commit, retries on conflict.
+export async function bulkSetUpgradesDone(config, idDoneMap, idEditMap = {}) {
   let changedCount = 0
   return syncWithRetry(
     config,
     (content) => {
+      // Apply deletions first
+      const deletedIds = Object.keys(idEditMap).filter(id => idEditMap[id]?._deleted)
+      if (deletedIds.length) {
+        content.upgrades.items = content.upgrades.items.filter(u => !deletedIds.includes(u.id))
+      }
+      // Apply field edits
+      content.upgrades.items = content.upgrades.items.map(u => {
+        const edit = idEditMap[u.id]
+        if (!edit || edit._deleted) return u
+        const { _deleted, ...fields } = edit
+        return { ...u, ...fields }
+      })
+      // Apply done-state changes
       const changed = []
       content.upgrades.items = content.upgrades.items.map(u => {
         if (!(u.id in idDoneMap)) return u
@@ -270,10 +283,15 @@ export async function bulkSetUpgradesDone(config, idDoneMap) {
         changed.push(u.id)
         return { ...u, done: idDoneMap[u.id], completedDate: idDoneMap[u.id] ? new Date().toISOString().slice(0, 10) : null }
       })
-      changedCount = changed.length
-      if (changedCount === 0) return false // no-op
+      changedCount = changed.length + Object.keys(idEditMap).length
+      if (changedCount === 0) return false
     },
-    () => `Sync ${changedCount} upgrade completion(s) from device`
+    () => {
+      const parts = []
+      if (Object.keys(idDoneMap).length) parts.push(`${Object.keys(idDoneMap).length} completion(s)`)
+      if (Object.keys(idEditMap).length) parts.push(`${Object.keys(idEditMap).length} edit(s)`)
+      return `Save upgrades: ${parts.join(', ')}`
+    }
   )
 }
 
