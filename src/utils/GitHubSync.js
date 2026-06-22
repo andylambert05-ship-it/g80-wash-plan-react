@@ -125,14 +125,20 @@ function _enqueue(operation) {
   return result
 }
 
-async function syncWithRetry(config, mutate, messageFn, maxAttempts = 4) {
+async function syncWithRetry(config, mutate, messageFn, maxAttempts = 5) {
   return _enqueue(async () => {
     let lastError
+    let lastFailedSha = null
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       try {
         const { content, sha } = await fetchFile(config)
+        // If we're retrying and the SHA hasn't changed yet, wait longer
+        if (lastFailedSha && sha === lastFailedSha) {
+          await new Promise(r => setTimeout(r, 1500))
+          continue
+        }
         const result = await mutate(content)
-        if (result === false || result === null) return false // mutate signaled no-op
+        if (result === false || result === null) return false
         const finalContent = (result && typeof result === 'object') ? result : content
         await writeFile(config, finalContent, sha, messageFn())
         return true
@@ -143,7 +149,12 @@ async function syncWithRetry(config, mutate, messageFn, maxAttempts = 4) {
           /409/.test(e.message || '') ||
           /conflict/i.test(e.message || '')
         if (isConflict && attempt < maxAttempts - 1) {
-          await new Promise(r => setTimeout(r, 250 * (attempt + 1)))
+          // Extract the SHA from the error message if present so we can
+          // detect stale-SHA loops on the next attempt
+          const shaMatch = (e.message || '').match(/[0-9a-f]{40}/)
+          if (shaMatch) lastFailedSha = shaMatch[0]
+          // Escalating backoff: 500ms, 1s, 2s, 3s
+          await new Promise(r => setTimeout(r, Math.min(500 * Math.pow(2, attempt), 3000)))
           continue
         }
         throw e
