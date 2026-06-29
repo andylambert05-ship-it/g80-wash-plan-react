@@ -73,6 +73,48 @@ export async function fetchFile(config) {
   return { content, sha: data.sha }
 }
 
+// Poll GitHub Contents API until the JSON reflects expected done/edit state,
+// or until maxAttempts is exhausted (3s between each). Returns true if verified.
+export async function verifyUpgradeSync(config, doneDiff, editMap, maxAttempts = 8) {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    await new Promise(r => setTimeout(r, 3000))
+    try {
+      const { content } = await fetchFile(config)
+      const items = content.upgrades?.items || []
+      let allMatch = true
+      // Check done-state
+      for (const [id, expectedDone] of Object.entries(doneDiff)) {
+        const item = items.find(i => i.id === id)
+        if (!item || !!item.done !== expectedDone) { allMatch = false; break }
+      }
+      // Check deletions
+      if (allMatch) {
+        for (const [id, edit] of Object.entries(editMap)) {
+          if (edit._deleted) {
+            const item = items.find(i => i.id === id)
+            if (item) { allMatch = false; break }
+          }
+        }
+      }
+      // Check field edits
+      if (allMatch) {
+        for (const [id, edit] of Object.entries(editMap)) {
+          if (edit._deleted) continue
+          const item = items.find(i => i.id === id)
+          if (!item) { allMatch = false; break }
+          if (edit.item && item.item !== edit.item) { allMatch = false; break }
+          if (edit.notes !== undefined && item.notes !== edit.notes) { allMatch = false; break }
+        }
+      }
+      if (allMatch) return true
+    } catch (e) {
+      // Network blip — keep trying
+      console.warn('verifyUpgradeSync poll failed:', e.message)
+    }
+  }
+  return false
+}
+
 // Write updated content back to GitHub
 export async function writeFile(config, content, sha, message) {
   const { owner, repo, pat, branch } = config

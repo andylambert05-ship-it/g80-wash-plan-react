@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import TabFactoryParts from './TabFactoryParts'
-import { getConfig, bulkSetUpgradesDone } from '../utils/GitHubSync'
+import { getConfig, bulkSetUpgradesDone, verifyUpgradeSync } from '../utils/GitHubSync'
 
 const PHOTO_KEY = 'gwp_upgrade_photos'
 const DONE_KEY = 'gwp_upgrades'
@@ -44,6 +44,7 @@ export default function TabUpgrades({ data }) {
   }
   const [unsaved, setUnsaved] = useState({})
   const [saving, setSaving] = useState(false)
+  const [verifying, setVerifying] = useState(false)
   const [saveResult, setSaveResult] = useState(null)
   const [photos, setPhotos] = useState(loadPhotos)
   const [lightbox, setLightbox] = useState(null)
@@ -119,7 +120,7 @@ export default function TabUpgrades({ data }) {
     })
   }
 
-  // Save: push all local changes to GitHub in one commit
+  // Save: push all local changes to GitHub in one commit, then verify
   const saveToGitHub = async () => {
     const config = getConfig()
     if (!config.pat) {
@@ -127,35 +128,53 @@ export default function TabUpgrades({ data }) {
       return
     }
     if (Object.keys(unsaved).length === 0) {
-      setSaveResult({ ok: true, message: 'Nothing to save — already up to date.' })
+      setSaveResult({ ok: true, verified: true, message: 'Nothing to save — already up to date.' })
       return
     }
     setSaving(true)
     setSaveResult(null)
+
+    // Snapshot what we're about to push (needed for verification)
+    const cache = loadDoneCache()
+    const doneDiff = {}
+    for (const item of (data.upgrades?.items || [])) {
+      if (item.id in cache && !!cache[item.id] !== !!item.done) doneDiff[item.id] = !!cache[item.id]
+    }
+    const editSnapshot = { ...editCache }
+
     try {
-      const cache = loadDoneCache()
-      const doneDiff = {}
-      for (const item of (data.upgrades?.items || [])) {
-        if (item.id in cache && !!cache[item.id] !== !!item.done) doneDiff[item.id] = !!cache[item.id]
-      }
-      // Build a single mutator that applies both done-state and field edits
-      await bulkSetUpgradesDone(config, doneDiff, editCache)
-      // Clear saved entries
+      await bulkSetUpgradesDone(config, doneDiff, editSnapshot)
+
+      // Clear local caches now that commit succeeded
       const fresh = loadDoneCache()
       Object.keys(doneDiff).forEach(id => delete fresh[id])
       saveDoneCache(fresh)
       setDoneCache(fresh)
-      const freshEdits = {}
-      saveEditCache(freshEdits)
-      setEditCache(freshEdits)
+      saveEditCache({})
+      setEditCache({})
       setUnsaved({})
-      const changeCount = Object.keys(doneDiff).length + Object.keys(editCache).length
-      setSaveResult({ ok: true, message: `Saved ${changeCount} change${changeCount !== 1 ? 's' : ''} — syncing to all devices in ~60s.` })
+
+      const changeCount = Object.keys(doneDiff).length + Object.keys(editSnapshot).length
+      setSaving(false)
+
+      // Verify phase — poll GitHub API until changes appear in the JSON
+      setVerifying(true)
+      setSaveResult({ ok: true, verified: false, message: `${changeCount} change${changeCount !== 1 ? 's' : ''} committed — verifying…` })
+
+      const verified = await verifyUpgradeSync(config, doneDiff, editSnapshot)
+      setVerifying(false)
+      setSaveResult({
+        ok: true,
+        verified,
+        message: verified
+          ? 'Changes synchronized ✓'
+          : `Committed but couldn't verify in time — changes will appear after next reload.`
+      })
       try { navigator.vibrate && navigator.vibrate([30, 50, 30]) } catch (e) {}
     } catch (e) {
-      setSaveResult({ ok: false, message: `Save failed: ${e.message}` })
-    } finally {
       setSaving(false)
+      setVerifying(false)
+      setSaveResult({ ok: false, verified: false, message: `Save failed: ${e.message}` })
     }
   }
 
@@ -355,11 +374,13 @@ export default function TabUpgrades({ data }) {
 
       {/* Save bar — shows when there are unsaved local changes */}
       {(unsavedCount > 0 || saveResult) && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: saveResult?.ok === false ? '#1a0000' : saveResult?.ok === true ? 'var(--green-bg)' : '#0d1a2e', border: `1px solid ${saveResult?.ok === false ? '#5a1a1a' : saveResult?.ok === true ? 'var(--iom-bd)' : '#0d2040'}`, marginBottom: 14 }}>
-          <div style={{ flex: 1, fontSize: 11, color: saveResult?.ok === false ? '#cc1e1e' : saveResult?.ok === true ? 'var(--iom)' : '#4d8fce', lineHeight: 1.4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: saveResult?.ok === false ? '#1a0000' : saveResult?.verified ? '#0a1f12' : '#0d1a2e', border: `1px solid ${saveResult?.ok === false ? '#5a1a1a' : saveResult?.verified ? 'var(--iom-bd)' : '#0d2040'}`, marginBottom: 14 }}>
+          <div style={{ flex: 1, fontSize: 11, color: saveResult?.ok === false ? '#cc1e1e' : saveResult?.verified ? 'var(--iom)' : '#4d8fce', lineHeight: 1.4, display: 'flex', alignItems: 'center', gap: 6 }}>
+            {verifying && <i className="ti ti-loader-2" style={{ fontSize: 12, animation: 'spin 0.8s linear infinite', flexShrink: 0 }} aria-hidden="true" />}
+            {saveResult?.verified && <i className="ti ti-circle-check" style={{ fontSize: 13, flexShrink: 0 }} aria-hidden="true" />}
             {saveResult?.message || `${unsavedCount} unsaved change${unsavedCount !== 1 ? 's' : ''} — local only until saved`}
           </div>
-          {unsavedCount > 0 && (
+          {unsavedCount > 0 && !verifying && (
             <button
               onClick={saveToGitHub}
               disabled={saving}
