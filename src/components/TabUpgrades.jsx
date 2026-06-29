@@ -161,7 +161,7 @@ export default function TabUpgrades({ data }) {
       setVerifying(true)
       setSaveResult({ ok: true, verified: false, message: `${changeCount} change${changeCount !== 1 ? 's' : ''} committed — checking GitHub…` })
 
-      const verified = await verifyUpgradeSync(config, doneDiff, editSnapshot, 12, (attempt, total) => {
+      const verified = await verifyUpgradeSync(config, doneDiff, editSnapshot, 6, (attempt, total) => {
         setSaveResult({ ok: true, verified: false, message: `Checking GitHub… (${attempt}/${total})` })
       })
       setVerifying(false)

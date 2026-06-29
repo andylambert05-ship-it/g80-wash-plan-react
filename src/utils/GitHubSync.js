@@ -75,9 +75,9 @@ export async function fetchFile(config) {
 
 // Poll GitHub Contents API until the JSON reflects expected done/edit state,
 // or until maxAttempts is exhausted (3s between each). Returns true if verified.
-export async function verifyUpgradeSync(config, doneDiff, editMap, maxAttempts = 12, onProgress = null) {
+export async function verifyUpgradeSync(config, doneDiff, editMap, maxAttempts = 6, onProgress = null) {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    await new Promise(r => setTimeout(r, 4000))
+    await new Promise(r => setTimeout(r, 10000))
     if (onProgress) onProgress(attempt + 1, maxAttempts)
     try {
       const { content } = await fetchFile(config)
