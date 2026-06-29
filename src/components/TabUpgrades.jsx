@@ -159,9 +159,11 @@ export default function TabUpgrades({ data }) {
 
       // Verify phase — poll GitHub API until changes appear in the JSON
       setVerifying(true)
-      setSaveResult({ ok: true, verified: false, message: `${changeCount} change${changeCount !== 1 ? 's' : ''} committed — verifying…` })
+      setSaveResult({ ok: true, verified: false, message: `${changeCount} change${changeCount !== 1 ? 's' : ''} committed — checking GitHub…` })
 
-      const verified = await verifyUpgradeSync(config, doneDiff, editSnapshot)
+      const verified = await verifyUpgradeSync(config, doneDiff, editSnapshot, 12, (attempt, total) => {
+        setSaveResult({ ok: true, verified: false, message: `Checking GitHub… (${attempt}/${total})` })
+      })
       setVerifying(false)
       setSaveResult({
         ok: true,
@@ -373,7 +375,7 @@ export default function TabUpgrades({ data }) {
       </div>
 
       {/* Save bar — shows when there are unsaved local changes */}
-      {(unsavedCount > 0 || saveResult) && (
+      {(unsavedCount > 0 || saveResult || verifying) && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: saveResult?.ok === false ? '#1a0000' : saveResult?.verified ? '#0a1f12' : '#0d1a2e', border: `1px solid ${saveResult?.ok === false ? '#5a1a1a' : saveResult?.verified ? 'var(--iom-bd)' : '#0d2040'}`, marginBottom: 14 }}>
           <div style={{ flex: 1, fontSize: 11, color: saveResult?.ok === false ? '#cc1e1e' : saveResult?.verified ? 'var(--iom)' : '#4d8fce', lineHeight: 1.4, display: 'flex', alignItems: 'center', gap: 6 }}>
             {verifying && <i className="ti ti-loader-2" style={{ fontSize: 12, animation: 'spin 0.8s linear infinite', flexShrink: 0 }} aria-hidden="true" />}

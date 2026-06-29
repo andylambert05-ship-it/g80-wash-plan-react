@@ -75,9 +75,10 @@ export async function fetchFile(config) {
 
 // Poll GitHub Contents API until the JSON reflects expected done/edit state,
 // or until maxAttempts is exhausted (3s between each). Returns true if verified.
-export async function verifyUpgradeSync(config, doneDiff, editMap, maxAttempts = 8) {
+export async function verifyUpgradeSync(config, doneDiff, editMap, maxAttempts = 12, onProgress = null) {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    await new Promise(r => setTimeout(r, 3000))
+    await new Promise(r => setTimeout(r, 4000))
+    if (onProgress) onProgress(attempt + 1, maxAttempts)
     try {
       const { content } = await fetchFile(config)
       const items = content.upgrades?.items || []
@@ -102,8 +103,9 @@ export async function verifyUpgradeSync(config, doneDiff, editMap, maxAttempts =
           if (edit._deleted) continue
           const item = items.find(i => i.id === id)
           if (!item) { allMatch = false; break }
-          if (edit.item && item.item !== edit.item) { allMatch = false; break }
-          if (edit.notes !== undefined && item.notes !== edit.notes) { allMatch = false; break }
+          // Trim both sides — JSON might have trailing whitespace
+          if (edit.item && item.item.trim() !== edit.item.trim()) { allMatch = false; break }
+          if (edit.notes !== undefined && (item.notes || '').trim() !== (edit.notes || '').trim()) { allMatch = false; break }
         }
       }
       if (allMatch) return true
