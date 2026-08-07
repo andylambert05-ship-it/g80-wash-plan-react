@@ -2,6 +2,18 @@ name = "m3care-anthropic-proxy"
 main = "worker.js"
 compatibility_date = "2026-08-07"
 
+# Explicitly pinned to match what was configured in the dashboard before this
+# Worker was version-controlled. Anything omitted here silently reverts to a
+# default on deploy, which is how preview_urls got switched on and Workers Logs
+# got switched off the first time.
+preview_urls = false
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+
 # Secrets (set with `wrangler secret put <NAME>`, never committed):
 #   ANTHROPIC_API_KEY  - Anthropic API key for the Chemical Lookup proxy
 #   PLAN_TOKEN         - shared token required for PUT /api/plan
