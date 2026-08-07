@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import TabFactoryParts from './TabFactoryParts'
 import { getConfig, bulkSetUpgradesDone, verifyUpgradeSync } from '../utils/GitHubSync'
+import { sortPhaseNames } from '../utils/phases'
 
 const PHOTO_KEY = 'gwp_upgrade_photos'
 const DONE_KEY = 'gwp_upgrades'
@@ -18,6 +19,7 @@ function loadCustomUpgrades() {
 function saveCustomUpgrades(items) {
   try { localStorage.setItem('gwp_custom_upgrades', JSON.stringify(items)) } catch {}
 }
+
 
 // Local done cache — keyed by upgrade id, value is true/false
 function loadDoneCache() {
@@ -313,21 +315,12 @@ export default function TabUpgrades({ data }) {
   Object.values(phases).forEach(list =>
     list.sort((a, b) => (Number(a.priority) || 0) - (Number(b.priority) || 0))
   )
-  const phaseNum = name => {
-    const m = /^\s*phase\s+(\d+(?:\.\d+)?)/i.exec(String(name))
-    return m ? parseFloat(m[1]) : Number.POSITIVE_INFINITY
-  }
-  const firstSeen = new Map(seenOrder.map((name, i) => [name, i]))
-  const phaseOrder = [...seenOrder].sort((a, b) => {
-    const na = phaseNum(a), nb = phaseNum(b)
-    if (na !== nb) return na - nb
-    return firstSeen.get(a) - firstSeen.get(b)
-  })
+  const phaseOrder = sortPhaseNames(seenOrder)
 
   const totalDone = allItems.filter(i => isItemDone(i)).length
   const total = allItems.length
   const pct = total > 0 ? Math.round((totalDone / total) * 100) : 0
-  const existingPhases = [...new Set(baseItems.map(i => i.phase))]
+  const existingPhases = sortPhaseNames([...new Set(baseItems.map(i => i.phase))])
   const canSubmit = form.item.trim() && (form.phase !== '' && form.phase !== '__custom__' || form.customPhase.trim())
 
   return (

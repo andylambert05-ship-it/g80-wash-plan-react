@@ -1,6 +1,7 @@
 // Reusable sync status indicator for GitHub write-back forms
 import { useState } from 'react'
 import { getConfig, addChemical, addTool, addUpgrade, editChemical, editTool, editReminder, deleteChemical, deleteTool, deleteUpgrade, deleteReminder } from '../utils/GitHubSync'
+import { sortPhaseNames } from '../utils/phases'
 
 export function SyncStatus({ status }) {
   if (!status) return null
@@ -357,7 +358,7 @@ export function AddToolForm({ data, onClose }) {
 // Add Upgrade Form
 export function AddUpgradeForm({ data, onClose }) {
   const { syncStatus, sync } = useGitHubSync()
-  const existingPhases = [...new Set((data?.upgrades?.items || []).map(i => i.phase))]
+  const existingPhases = sortPhaseNames([...new Set((data?.upgrades?.items || []).map(i => i.phase))])
   const [form, setForm] = useState({ item: '', phase: '', customPhase: '', source: 'Self', notes: '' })
   const f = (key, val) => setForm(p => ({ ...p, [key]: val }))
 
