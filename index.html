@@ -67,11 +67,56 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
 
-    <!-- Service worker registration -->
+    <!-- Service worker registration + automatic updates -->
     <script>
+      // Three things are needed for a deploy to reach an open PWA:
+      //
+      //  1. updateViaCache:'none' - GitHub Pages serves sw.js with
+      //     cache-control: max-age=600, so without this the browser can keep
+      //     handing back a stale sw.js for 10 minutes and never notice a new one.
+      //  2. An explicit reg.update() - browsers only check for a new worker on
+      //     navigation, and an installed PWA left open may never navigate.
+      //  3. A reload - skipWaiting()/clients.claim() swap the worker, but the
+      //     page keeps running the JS bundle it already loaded.
+      //
+      // The reload is deferred until the tab is hidden or has just been
+      // refocused, so an update never interrupts what you're doing.
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('sw.js').catch(() => {})
+        window.addEventListener('load', async () => {
+          // If there is no controller yet this is a first install, and the
+          // controllerchange that follows is not an update - don't reload for it.
+          const hadController = !!navigator.serviceWorker.controller
+
+          let reg
+          try {
+            reg = await navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+          } catch { return }
+
+          const checkForUpdate = () => { reg.update().catch(() => {}) }
+          setInterval(checkForUpdate, 60000)
+
+          let updateReady = false
+          let reloading = false
+          const reloadIfSafe = () => {
+            if (!updateReady || reloading) return
+            reloading = true
+            location.reload()
+          }
+
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!hadController) return
+            updateReady = true
+            if (document.hidden) reloadIfSafe()
+          })
+
+          document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+              reloadIfSafe()
+            } else {
+              checkForUpdate()
+              reloadIfSafe()
+            }
+          })
         })
       }
     </script>
