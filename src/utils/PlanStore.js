@@ -88,6 +88,10 @@ async function mutate(config, fn) {
   if (result === false || result === null) return false
   const final = (result && typeof result === 'object') ? result : content
   await writeFile(config, final, sha)
+  // Every mutation funnels through here, so this one event keeps the UI in sync
+  // with the database for all of them. The new document is carried in `detail`,
+  // so listeners update instantly with no extra round trip.
+  try { window.dispatchEvent(new CustomEvent('plan-saved', { detail: final })) } catch {}
   return true
 }
 
