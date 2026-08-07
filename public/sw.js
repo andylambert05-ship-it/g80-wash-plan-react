@@ -7,7 +7,6 @@ const BASE = '/g80-wash-plan-react/'
 const PRECACHE = [
   BASE,
   BASE + 'index.html',
-  BASE + 'wash-plan.json',
   BASE + 'manifest.webmanifest',
   BASE + 'icon-192.png',
   BASE + 'icon-512.png',
@@ -15,7 +14,12 @@ const PRECACHE = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(PRECACHE)).then(() => self.skipWaiting())
+    // addAll() rejects atomically, so one missing asset would fail the whole
+    // install and silently kill offline support. Cache entries individually and
+    // tolerate misses instead.
+    caches.open(CACHE)
+      .then((cache) => Promise.all(PRECACHE.map((u) => cache.add(u).catch(() => {}))))
+      .then(() => self.skipWaiting())
   )
 })
 
@@ -33,9 +37,10 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url)
 
-  // Network-first for HTML and wash-plan.json so updates show immediately.
-  // Falls back to cache when offline.
-  if (request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('wash-plan.json')) {
+  // Network-first for HTML so a new build is picked up immediately; falls back
+  // to cache when offline. Plan data is no longer a file - it comes from the
+  // Worker on a different origin and is never cached here.
+  if (request.mode === 'navigate' || url.pathname.endsWith('.html')) {
     event.respondWith(
       fetch(request)
         .then((res) => {
