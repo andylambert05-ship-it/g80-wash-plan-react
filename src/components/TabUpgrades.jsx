@@ -298,12 +298,30 @@ export default function TabUpgrades({ data }) {
     savePhotos(next)
   }
 
-  // Group by phase preserving order
-  const phaseOrder = []
+  // Group by phase. Phases render in numeric label order ("Phase 3 - ..." -> 3)
+  // with unnumbered/custom phases after them in first-seen order. Items inside a
+  // phase sort by `priority`, which is the field the data actually uses for
+  // sequencing (including fractional inserts like 8.5). Raw array position is
+  // deliberately NOT used - appended items would otherwise surface under
+  // whichever phase header happened to appear first.
+  const seenOrder = []
   const phases = {}
   allItems.forEach(item => {
-    if (!phases[item.phase]) { phases[item.phase] = []; phaseOrder.push(item.phase) }
+    if (!phases[item.phase]) { phases[item.phase] = []; seenOrder.push(item.phase) }
     phases[item.phase].push(item)
+  })
+  Object.values(phases).forEach(list =>
+    list.sort((a, b) => (Number(a.priority) || 0) - (Number(b.priority) || 0))
+  )
+  const phaseNum = name => {
+    const m = /^\s*phase\s+(\d+(?:\.\d+)?)/i.exec(String(name))
+    return m ? parseFloat(m[1]) : Number.POSITIVE_INFINITY
+  }
+  const firstSeen = new Map(seenOrder.map((name, i) => [name, i]))
+  const phaseOrder = [...seenOrder].sort((a, b) => {
+    const na = phaseNum(a), nb = phaseNum(b)
+    if (na !== nb) return na - nb
+    return firstSeen.get(a) - firstSeen.get(b)
   })
 
   const totalDone = allItems.filter(i => isItemDone(i)).length
