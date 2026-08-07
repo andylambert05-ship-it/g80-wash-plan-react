@@ -34,6 +34,38 @@ const json = (request, body, status = 200, extra = {}) =>
 
 // ── /api/plan ────────────────────────────────────────────────────────────────
 
+// Structural validation. The forms guard most of this, but the API must not
+// rely on the client - an upgrade with an empty title and phase was previously
+// accepted with a 200 and rendered as a blank row.
+function validatePlan(d) {
+  const problems = []
+  for (const key of ['meta', 'upgrades', 'chemicals', 'washSteps']) {
+    if (!d[key]) problems.push(`missing top-level key: ${key}`)
+  }
+  const named = (list, label, field) => {
+    if (!Array.isArray(list)) return
+    list.forEach((x, i) => {
+      if (!x || typeof x !== 'object') { problems.push(`${label}[${i}] is not an object`); return }
+      if (!String(x[field] || '').trim()) problems.push(`${label}[${i}] has an empty ${field}`)
+    })
+    const ids = list.map(x => x && x.id).filter(Boolean)
+    const dupes = ids.filter((id, i) => ids.indexOf(id) !== i)
+    if (dupes.length) problems.push(`${label} has duplicate ids: ${[...new Set(dupes)].join(', ')}`)
+  }
+  named(d.upgrades?.items, 'upgrades', 'item')
+  named(d.chemicals, 'chemicals', 'name')
+  named(d.tools, 'tools', 'name')
+  named(d.reminders, 'reminders', 'name')
+  named(d.factoryParts?.items, 'factoryParts', 'component')
+  if (Array.isArray(d.upgrades?.items)) {
+    d.upgrades.items.forEach((u, i) => {
+      if (!String(u?.phase || '').trim()) problems.push(`upgrades[${i}] has an empty phase`)
+      if (!String(u?.id || '').trim()) problems.push(`upgrades[${i}] has no id`)
+    })
+  }
+  return problems
+}
+
 async function getPlan(request, env) {
   const row = await env.DB.prepare('SELECT data, updated_at FROM plan WHERE id = 1').first()
   if (!row) return json(request, { error: 'Plan not found' }, 404)
@@ -54,6 +86,11 @@ async function putPlan(request, env) {
   }
   if (!payload || typeof payload.data !== 'object' || payload.data === null) {
     return json(request, { error: 'Expected { data: <object> }' }, 400)
+  }
+
+  const problems = validatePlan(payload.data)
+  if (problems.length) {
+    return json(request, { error: 'Invalid plan', problems: problems.slice(0, 10) }, 400)
   }
 
   const next = JSON.stringify(payload.data)
@@ -87,6 +124,15 @@ async function putPlan(request, env) {
 // ── Anthropic proxy (unchanged behaviour) ────────────────────────────────────
 
 async function anthropicProxy(request, env) {
+  // The Anthropic key is billed to us, so this must not be an open relay.
+  // Previously ANY POST to ANY path reached api.anthropic.com with our
+  // credentials attached - a request with no headers at all came back with
+  // 'invalid_request_error' rather than 'authentication_error', i.e. the key
+  // had already been accepted. Same token as writes, so the app is unaffected.
+  if (!env.PLAN_TOKEN) return json(request, { error: 'Server missing PLAN_TOKEN' }, 500)
+  const auth = request.headers.get('Authorization') || ''
+  if (auth !== `Bearer ${env.PLAN_TOKEN}`) return json(request, { error: 'Unauthorized' }, 401)
+
   const body = await request.text()
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
