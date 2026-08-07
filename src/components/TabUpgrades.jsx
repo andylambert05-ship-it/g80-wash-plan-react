@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import TabFactoryParts from './TabFactoryParts'
-import { getConfig, bulkSetUpgradesDone, verifyUpgradeSync } from '../utils/PlanStore'
+import { getConfig, bulkSetUpgradesDone } from '../utils/PlanStore'
 import { sortPhaseNames } from '../utils/phases'
 
 const PHOTO_KEY = 'gwp_upgrade_photos'
@@ -122,11 +122,11 @@ export default function TabUpgrades({ data }) {
     })
   }
 
-  // Save: push all local changes to GitHub in one commit, then verify
-  const saveToGitHub = async () => {
+  // Save: write all pending local changes to D1 in one request
+  const savePlan = async () => {
     const config = getConfig()
-    if (!config.pat) {
-      setSaveResult({ ok: false, message: 'No GitHub token — check Settings.' })
+    if (!config.token) {
+      setSaveResult({ ok: false, message: 'No plan token — check Settings.' })
       return
     }
     if (Object.keys(unsaved).length === 0) {
@@ -159,20 +159,14 @@ export default function TabUpgrades({ data }) {
       const changeCount = Object.keys(doneDiff).length + Object.keys(editSnapshot).length
       setSaving(false)
 
-      // Verify phase — poll GitHub API until changes appear in the JSON
-      setVerifying(true)
-      setSaveResult({ ok: true, verified: false, message: `${changeCount} change${changeCount !== 1 ? 's' : ''} committed — checking GitHub…` })
-
-      const verified = await verifyUpgradeSync(config, doneDiff, editSnapshot, 6, (attempt, total) => {
-        setSaveResult({ ok: true, verified: false, message: `Checking GitHub… (${attempt}/${total})` })
-      })
+      // No verify phase needed: the write goes straight to D1 and reads are
+      // consistent immediately after. This used to poll the GitHub API for up
+      // to 60s waiting for a commit to propagate through CI.
       setVerifying(false)
       setSaveResult({
         ok: true,
-        verified,
-        message: verified
-          ? 'Changes synchronized ✓'
-          : `Committed but couldn't verify in time — changes will appear after next reload.`
+        verified: true,
+        message: `${changeCount} change${changeCount !== 1 ? 's' : ''} saved ✓`,
       })
       try { navigator.vibrate && navigator.vibrate([30, 50, 30]) } catch (e) {}
     } catch (e) {
@@ -395,7 +389,7 @@ export default function TabUpgrades({ data }) {
           </div>
           {unsavedCount > 0 && !verifying && (
             <button
-              onClick={saveToGitHub}
+              onClick={savePlan}
               disabled={saving}
               style={{ padding: '6px 14px', background: '#0066b1', border: 'none', color: '#fff', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: saving ? 'not-allowed' : 'pointer', fontFamily: 'Inter, sans-serif', opacity: saving ? 0.6 : 1, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 5 }}
             >

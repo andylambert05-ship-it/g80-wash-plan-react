@@ -118,7 +118,7 @@ export default function TabReminders({ data }) {
   const handleDelete = async (id) => {
     if (confirmDelete === id) {
       const config = getConfig()
-      if (config.pat) {
+      if (config.token) {
         setDelStatus(s => ({ ...s, [id]: { type: 'saving' } }))
         try {
           await deleteReminder(config, id)

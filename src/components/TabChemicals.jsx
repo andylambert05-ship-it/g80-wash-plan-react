@@ -262,7 +262,7 @@ function ChemCard({ chem, onSelectDil, onToggleStatus, onCycleMode }) {
   const handleDelete = async () => {
     if (!confirmDel) { setConfirmDel(true); setTimeout(() => setConfirmDel(false), 3000); return }
     const config = getConfig()
-    if (!config.pat) { setDelStatus({ type: 'nopat' }); return }
+    if (!config.token) { setDelStatus({ type: 'nopat' }); return }
     setDelStatus({ type: 'saving' })
     try {
       await deleteChemical(config, chem.name)
@@ -357,7 +357,7 @@ export default function TabChemicals({ data, mode }) {
     const updated = { ...(localData || data), chemicals: (localData || data).chemicals.map(c => c.name === name ? { ...c, status: c.status === 'active' ? 'inactive' : 'active' } : c) }
     setLocalData(updated)
     const config = getConfig()
-    if (config.pat) {
+    if (config.token) {
       try { await toggleChemicalStatus(config, name) } catch(e) { setLocalData(null) }
     }
     setToggling(false)
@@ -376,7 +376,7 @@ export default function TabChemicals({ data, mode }) {
     })}
     setLocalData(updated)
     const config = getConfig()
-    if (config.pat) {
+    if (config.token) {
       try { await cycleChemicalMode(config, name) } catch(e) { setLocalData(null) }
     }
     setCycling(false)

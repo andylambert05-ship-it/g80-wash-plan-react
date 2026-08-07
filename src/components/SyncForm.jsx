@@ -1,4 +1,4 @@
-// Reusable sync status indicator for GitHub write-back forms
+// Reusable sync status indicator for plan write-back forms
 import { useState } from 'react'
 import { getConfig, addChemical, addTool, addUpgrade, editChemical, editTool, editReminder, deleteChemical, deleteTool, deleteUpgrade, deleteReminder } from '../utils/PlanStore'
 import { sortPhaseNames } from '../utils/phases'
@@ -6,10 +6,10 @@ import { sortPhaseNames } from '../utils/phases'
 export function SyncStatus({ status }) {
   if (!status) return null
   const map = {
-    saving: { color: '#0066b1', bg: 'var(--blue-bg)', bd: 'var(--blue-bd)', icon: 'ti-loader-2', spin: true, text: 'Saving to GitHub…' },
-    success: { color: '#1a9e62', bg: 'var(--green-bg)', bd: 'var(--iom-bd)', icon: 'ti-circle-check', text: 'Saved! Deploying in ~60 seconds.' },
+    saving: { color: '#0066b1', bg: 'var(--blue-bg)', bd: 'var(--blue-bd)', icon: 'ti-loader-2', spin: true, text: 'Saving…' },
+    success: { color: '#1a9e62', bg: 'var(--green-bg)', bd: 'var(--iom-bd)', icon: 'ti-circle-check', text: 'Saved.' },
     error: { color: '#cc1e1e', bg: 'var(--red-bg)', bd: 'var(--red-bd)', icon: 'ti-alert-circle', text: null },
-    nopat: { color: '#c8860a', bg: 'var(--amber-bg)', bd: 'var(--amber-bd)', icon: 'ti-alert-triangle', text: 'No GitHub token configured. Go to Settings tab to set up.' },
+    nopat: { color: '#c8860a', bg: 'var(--amber-bg)', bd: 'var(--amber-bd)', icon: 'ti-alert-triangle', text: 'No plan token configured. Go to Settings tab to set up.' },
   }
   const s = map[status.type]
   if (!s) return null
@@ -21,13 +21,13 @@ export function SyncStatus({ status }) {
   )
 }
 
-// Hook for GitHub sync operations
+// Hook for plan save operations
 export function useGitHubSync() {
   const [syncStatus, setSyncStatus] = useState(null)
 
   const sync = async (operation, ...args) => {
     const config = getConfig()
-    if (!config.pat) {
+    if (!config.token) {
       setSyncStatus({ type: 'nopat' })
       return false
     }
@@ -292,7 +292,7 @@ export function AddChemicalForm({ data, onClose }) {
       <div style={{ marginTop: 12 }}>
         <button onClick={handleSave} disabled={!canSave}
           style={{ padding: '8px 20px', background: '#0066b1', color: '#fff', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: canSave ? 'pointer' : 'default', fontFamily: 'Inter, sans-serif', opacity: canSave ? 1 : 0.4 }}>
-          Save to GitHub
+          Save
         </button>
       </div>
     </div>
@@ -348,7 +348,7 @@ export function AddToolForm({ data, onClose }) {
       <div style={{ marginTop: 12 }}>
         <button onClick={handleSave} disabled={!canSave}
           style={{ padding: '8px 20px', background: '#0066b1', color: '#fff', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: canSave ? 'pointer' : 'default', fontFamily: 'Inter, sans-serif', opacity: canSave ? 1 : 0.4 }}>
-          Save to GitHub
+          Save
         </button>
       </div>
     </div>
@@ -424,7 +424,7 @@ export function AddUpgradeForm({ data, onClose }) {
       <div style={{ marginTop: 12 }}>
         <button onClick={handleSave} disabled={!canSave}
           style={{ padding: '8px 20px', background: '#0066b1', color: '#fff', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: canSave ? 'pointer' : 'default', fontFamily: 'Inter, sans-serif', opacity: canSave ? 1 : 0.4 }}>
-          Save to GitHub
+          Save
         </button>
       </div>
     </div>
