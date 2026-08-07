@@ -266,11 +266,21 @@ export async function addTool(config, tool) {
 export async function addUpgrade(config, upgrade) {
   const { content, sha } = await fetchFile(config)
   const items = content.upgrades?.items || []
-  // Auto-assign priority at end of phase
-  const samePhasePriorities = items.filter(i => i.phase === upgrade.phase).map(i => i.priority)
-  const maxP = samePhasePriorities.length > 0 ? Math.max(...samePhasePriorities) : (items.length > 0 ? Math.max(...items.map(i => i.priority)) : 0)
-  upgrade.priority = maxP + 1
-  items.push(upgrade)
+  // Slot the new item in just after the last entry of the same phase. Using
+  // max+1 could collide with (or leapfrog) the next phase's first item - that's
+  // how a Phase 8 add ended up sharing priority 19 with a Phase 9 item - so if
+  // the next priority up is already taken we take the midpoint instead.
+  const nums = items.map(i => Number(i.priority) || 0)
+  const samePhase = items.filter(i => i.phase === upgrade.phase).map(i => Number(i.priority) || 0)
+  const after = samePhase.length ? Math.max(...samePhase) : (nums.length ? Math.max(...nums) : 0)
+  const next = nums.filter(p => p > after).sort((a, b) => a - b)[0]
+  upgrade.priority = next === undefined ? after + 1 : (after + next) / 2
+
+  // Keep array position consistent with the phase grouping so the raw JSON
+  // stays readable; rendering sorts by priority regardless.
+  const lastOfPhase = items.map(i => i.phase).lastIndexOf(upgrade.phase)
+  if (lastOfPhase === -1) items.push(upgrade)
+  else items.splice(lastOfPhase + 1, 0, upgrade)
   content.upgrades.items = items
   await writeFile(config, content, sha, `Add upgrade: ${upgrade.item}`)
 }
