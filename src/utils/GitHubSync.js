@@ -46,6 +46,30 @@ export function hasGithubConfig() {
 
 const FILE_PATH = 'public/wash-plan.json'
 
+// ── Base64 <-> UTF-8 ─────────────────────────────────────────────────────────
+// atob/btoa operate on latin1 (one char per byte). Decoding with bare atob()
+// leaves each UTF-8 byte as a separate char; re-encoding then double-encodes
+// it, so every non-ASCII char grows on each save round-trip. These helpers keep
+// read and write symmetric via TextDecoder/TextEncoder.
+
+function decodeBase64Utf8(b64) {
+  const bin = atob((b64 || '').replace(/\s/g, ''))
+  const bytes = Uint8Array.from(bin, c => c.charCodeAt(0))
+  return new TextDecoder('utf-8').decode(bytes)
+}
+
+function encodeBase64Utf8(str) {
+  const bytes = new TextEncoder().encode(str)
+  // Chunked to avoid blowing the argument limit on large files
+  let bin = ''
+  const CHUNK = 0x8000
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK))
+  }
+  return btoa(bin)
+}
+
+
 async function apiRequest(url, method, pat, body) {
   const res = await fetch(url, {
     method,
@@ -69,7 +93,17 @@ export async function fetchFile(config) {
   const { owner, repo, pat, branch } = config
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${FILE_PATH}?ref=${branch}`
   const data = await apiRequest(url, 'GET', pat)
-  const content = JSON.parse(atob(data.content.replace(/\n/g, '')))
+  // The Contents API omits inline content for blobs over 1 MiB, returning
+  // content:'' with encoding:'none'. Fall back to the Blob API (100 MB limit)
+  // so a large plan file doesn't break every read.
+  let b64 = data.content
+  if (!b64 || data.encoding === 'none') {
+    const blob = await apiRequest(data.git_url, 'GET', pat)
+    b64 = blob.content
+  }
+  const text = decodeBase64Utf8(b64)
+  if (!text.trim()) throw new Error('GitHub returned an empty plan file - refusing to overwrite')
+  const content = JSON.parse(text)
   return { content, sha: data.sha }
 }
 
@@ -121,7 +155,7 @@ export async function verifyUpgradeSync(config, doneDiff, editMap, maxAttempts =
 export async function writeFile(config, content, sha, message) {
   const { owner, repo, pat, branch } = config
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${FILE_PATH}`
-  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2))))
+  const encoded = encodeBase64Utf8(JSON.stringify(content, null, 2))
   await apiRequest(url, 'PUT', pat, {
     message,
     content: encoded,
