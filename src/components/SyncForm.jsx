@@ -1,4 +1,4 @@
-// Reusable sync status indicator for plan write-back forms
+// Reusable save-status indicator for the plan write-back forms
 import { useState } from 'react'
 import { getConfig, addChemical, addTool, addUpgrade, editChemical, editTool, editReminder, deleteChemical, deleteTool, deleteUpgrade, deleteReminder } from '../utils/PlanStore'
 import { sortPhaseNames } from '../utils/phases'
@@ -9,7 +9,7 @@ export function SyncStatus({ status }) {
     saving: { color: '#0066b1', bg: 'var(--blue-bg)', bd: 'var(--blue-bd)', icon: 'ti-loader-2', spin: true, text: 'Saving…' },
     success: { color: '#1a9e62', bg: 'var(--green-bg)', bd: 'var(--iom-bd)', icon: 'ti-circle-check', text: 'Saved.' },
     error: { color: '#cc1e1e', bg: 'var(--red-bg)', bd: 'var(--red-bd)', icon: 'ti-alert-circle', text: null },
-    nopat: { color: '#c8860a', bg: 'var(--amber-bg)', bd: 'var(--amber-bd)', icon: 'ti-alert-triangle', text: 'No plan token configured. Go to Settings tab to set up.' },
+    notoken: { color: '#c8860a', bg: 'var(--amber-bg)', bd: 'var(--amber-bd)', icon: 'ti-alert-triangle', text: 'No plan token configured. Go to Settings tab to set up.' },
   }
   const s = map[status.type]
   if (!s) return null
@@ -22,13 +22,13 @@ export function SyncStatus({ status }) {
 }
 
 // Hook for plan save operations
-export function useGitHubSync() {
+export function usePlanSync() {
   const [syncStatus, setSyncStatus] = useState(null)
 
   const sync = async (operation, ...args) => {
     const config = getConfig()
     if (!config.token) {
-      setSyncStatus({ type: 'nopat' })
+      setSyncStatus({ type: 'notoken' })
       return false
     }
     setSyncStatus({ type: 'saving' })
@@ -136,7 +136,7 @@ export function ChemicalLookup({ onResult }) {
 
 // Add Chemical Form
 export function AddChemicalForm({ data, onClose }) {
-  const { syncStatus, sync } = useGitHubSync()
+  const { syncStatus, sync } = usePlanSync()
   const [showLookup, setShowLookup] = useState(true)
   const [showDetails, setShowDetails] = useState(false)
   const [form, setForm] = useState({
@@ -306,7 +306,7 @@ export function AddChemicalForm({ data, onClose }) {
 
 // Add Tool Form
 export function AddToolForm({ data, onClose }) {
-  const { syncStatus, sync } = useGitHubSync()
+  const { syncStatus, sync } = usePlanSync()
   const [form, setForm] = useState({ name: '', category: '', qty: '1', usedFor: '' })
 
   const categories = [...new Set((data?.tools || []).map(t => t.category))].sort()
@@ -362,7 +362,7 @@ export function AddToolForm({ data, onClose }) {
 
 // Add Upgrade Form
 export function AddUpgradeForm({ data, onClose }) {
-  const { syncStatus, sync } = useGitHubSync()
+  const { syncStatus, sync } = usePlanSync()
   const existingPhases = sortPhaseNames([...new Set((data?.upgrades?.items || []).map(i => i.phase))])
   const [form, setForm] = useState({ item: '', phase: '', customPhase: '', source: 'Self', notes: '' })
   const f = (key, val) => setForm(p => ({ ...p, [key]: val }))
@@ -438,7 +438,7 @@ export function AddUpgradeForm({ data, onClose }) {
 
 // ── Edit Chemical Form ────────────────────────────────────────────────────────
 export function EditChemicalForm({ chem, onClose }) {
-  const { syncStatus, sync } = useGitHubSync()
+  const { syncStatus, sync } = usePlanSync()
   const [showDetails, setShowDetails] = useState(false)
   const [form, setForm] = useState({
     name: chem.name,
@@ -541,7 +541,7 @@ export function EditChemicalForm({ chem, onClose }) {
 
 // ── Edit Tool Form ────────────────────────────────────────────────────────────
 export function EditToolForm({ tool, data, onClose }) {
-  const { syncStatus, sync } = useGitHubSync()
+  const { syncStatus, sync } = usePlanSync()
   const [form, setForm] = useState({ name: tool.name, category: tool.category, qty: tool.qty || '1', usedFor: tool.usedFor || '' })
   const f = (key, val) => setForm(p => ({ ...p, [key]: val }))
   const canSave = form.name.trim() && form.category.trim() && syncStatus?.type !== 'saving'
@@ -594,7 +594,7 @@ export function EditToolForm({ tool, data, onClose }) {
 
 // ── Edit Reminder Form ────────────────────────────────────────────────────────
 export function EditReminderForm({ reminder, onClose }) {
-  const { syncStatus, sync } = useGitHubSync()
+  const { syncStatus, sync } = usePlanSync()
   const [form, setForm] = useState({ name: reminder.name, interval: reminder.interval, intervalLabel: reminder.intervalLabel || '', notes: reminder.notes || '' })
   const f = (key, val) => setForm(p => ({ ...p, [key]: val }))
   const canSave = form.name.trim() && form.interval && syncStatus?.type !== 'saving'

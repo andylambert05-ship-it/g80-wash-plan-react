@@ -86,7 +86,7 @@ export function TabTools({ data }) {
   const handleDeleteTool = async (name) => {
     if (confirmDel !== name) { setConfirmDel(name); setTimeout(() => setConfirmDel(null), 3000); return }
     const config = getConfig()
-    if (!config.token) { setDelStatus(s => ({ ...s, [name]: { type: 'nopat' } })); return }
+    if (!config.token) { setDelStatus(s => ({ ...s, [name]: { type: 'notoken' } })); return }
     setDelStatus(s => ({ ...s, [name]: { type: 'saving' } }))
     try {
       await deleteTool(config, name)

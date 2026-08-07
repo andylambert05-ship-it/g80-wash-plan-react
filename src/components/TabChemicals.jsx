@@ -262,7 +262,7 @@ function ChemCard({ chem, onSelectDil, onToggleStatus, onCycleMode }) {
   const handleDelete = async () => {
     if (!confirmDel) { setConfirmDel(true); setTimeout(() => setConfirmDel(false), 3000); return }
     const config = getConfig()
-    if (!config.token) { setDelStatus({ type: 'nopat' }); return }
+    if (!config.token) { setDelStatus({ type: 'notoken' }); return }
     setDelStatus({ type: 'saving' })
     try {
       await deleteChemical(config, chem.name)

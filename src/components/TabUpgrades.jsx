@@ -147,7 +147,7 @@ export default function TabUpgrades({ data }) {
     try {
       await bulkSetUpgradesDone(config, doneDiff, editSnapshot)
 
-      // Clear local caches now that commit succeeded
+      // Clear local caches now that the save succeeded
       const fresh = loadDoneCache()
       Object.keys(doneDiff).forEach(id => delete fresh[id])
       saveDoneCache(fresh)
