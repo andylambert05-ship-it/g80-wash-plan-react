@@ -115,8 +115,19 @@ async function putPlan(request, env) {
   }
 
   const updatedAt = new Date().toISOString()
-  await env.DB.prepare('UPDATE plan SET data = ?, updated_at = ? WHERE id = 1')
-    .bind(next, updatedAt).run()
+  // UPSERT rather than UPDATE. A bare `UPDATE ... WHERE id = 1` against a database
+  // where row 1 does not yet exist affects zero rows and does NOT error, so the
+  // handler would return {ok:true} having written nothing, and the next GET would
+  // 404. Reachable on a fresh, recreated, or local/staging database.
+  const res = await env.DB.prepare(
+    `INSERT INTO plan (id, data, updated_at) VALUES (1, ?, ?)
+     ON CONFLICT(id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at`
+  ).bind(next, updatedAt).run()
+
+  // Belt and braces: never report success for a write that touched nothing.
+  if (res?.meta && res.meta.changes === 0) {
+    return json(request, { error: 'Write affected zero rows' }, 500)
+  }
 
   return json(request, { ok: true, updated_at: updatedAt, bytes: next.length })
 }
