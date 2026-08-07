@@ -3,6 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'backups/**'   # backup commits must not trigger a site rebuild
 
 permissions:
   contents: write

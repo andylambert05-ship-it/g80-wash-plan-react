@@ -1,0 +1,73 @@
+name: Backup plan from D1
+
+# The plan now lives in Cloudflare D1, not in git, so git is no longer a backup.
+# This snapshots it weekly. GET /api/plan needs no auth, so this workflow holds
+# no secrets.
+
+on:
+  schedule:
+    - cron: '0 12 * * 0'      # Sundays, 12:00 UTC
+  workflow_dispatch:           # and on demand
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backup-plan
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Fetch plan
+        run: |
+          set -euo pipefail
+          curl -fsS --retry 3 --retry-delay 5 --max-time 30 \
+            https://m3care-anthropic-proxy.andy-lambert05.workers.dev/api/plan \
+            -o response.json
+          echo "fetched $(wc -c < response.json) bytes"
+
+      - name: Validate before writing
+        run: |
+          set -euo pipefail
+          # Never commit a truncated or error response over a good backup.
+          node -e '
+            const fs = require("fs");
+            const body = JSON.parse(fs.readFileSync("response.json", "utf8"));
+            const d = body.data;
+            if (!d || typeof d !== "object") throw new Error("no data object in response");
+            for (const key of ["meta", "upgrades", "chemicals", "washSteps"]) {
+              if (!d[key]) throw new Error(`missing expected key: ${key}`);
+            }
+            const items = d.upgrades?.items;
+            if (!Array.isArray(items) || items.length === 0) throw new Error("upgrades.items empty");
+            const out = JSON.stringify(d, null, 2);
+            if (out.length < 10000) throw new Error(`suspiciously small: ${out.length} bytes`);
+            fs.mkdirSync("backups", { recursive: true });
+            fs.writeFileSync("backups/wash-plan.json", out);
+            console.log(`ok: ${out.length} bytes, ${items.length} upgrades, updated_at ${body.updated_at}`);
+          '
+
+      - name: Snapshot and prune
+        run: |
+          set -euo pipefail
+          cp backups/wash-plan.json "backups/wash-plan-$(date -u +%F).json"
+          # keep the 12 most recent dated snapshots
+          ls -1 backups/wash-plan-*.json | sort -r | tail -n +13 | xargs -r rm --
+          ls -1 backups/
+
+      - name: Commit if changed
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add backups/
+          if git diff --staged --quiet; then
+            echo "No change since last backup."
+          else
+            git commit -m "chore: weekly plan backup $(date -u +%F)"
+            git push
+          fi
