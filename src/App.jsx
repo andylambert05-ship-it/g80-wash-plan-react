@@ -119,6 +119,14 @@ export default function App() {
   // Re-read the plan whenever the app regains focus, so an edit made on another
   // device shows up without a pull-to-refresh. Only touches `data` - unsaved
   // local edits live in their own localStorage cache and are unaffected.
+  // Any successful write anywhere in the app updates the view immediately.
+  // PlanStore hands us the document it just wrote, so there is nothing to fetch.
+  useEffect(() => {
+    const onSaved = (e) => { if (e.detail) { setData(e.detail); setError(null) } }
+    window.addEventListener('plan-saved', onSaved)
+    return () => window.removeEventListener('plan-saved', onSaved)
+  }, [])
+
   useEffect(() => {
     const onVisible = () => { if (!document.hidden) refreshData() }
     document.addEventListener('visibilitychange', onVisible)
