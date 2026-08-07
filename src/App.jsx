@@ -68,8 +68,16 @@ const SUBTABS = {
 export default function App() {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
-  const [activeTab, setActiveTab] = useState('wash')
-  const [sub, setSub] = useState({ wash: 'steps', inventory: 'chems', care: 'reminders', more: 'history' })
+  // Tab position is persisted so a reload - including the automatic one after a
+  // deploy - puts you back where you were instead of on the landing tab.
+  const DEFAULT_SUB = { wash: 'steps', inventory: 'chems', care: 'reminders', more: 'history' }
+  const [activeTab, setActiveTab] = useState(() => {
+    try { return localStorage.getItem('gwp_tab') || 'wash' } catch { return 'wash' }
+  })
+  const [sub, setSub] = useState(() => {
+    try { return { ...DEFAULT_SUB, ...JSON.parse(localStorage.getItem('gwp_sub') || '{}') } }
+    catch { return DEFAULT_SUB }
+  })
   const { mode, setMode, done, toggleStep, resetSteps, engDone, toggleEng, resetEng, intDone, toggleInt, resetInt } = useWashState()
   const [theme, setTheme] = useState(() => localStorage.getItem('gwp_theme') || 'dark')
   const [addForm, setAddForm] = useState(null) // 'chemical' | 'tool' | 'upgrade'
@@ -98,8 +106,28 @@ export default function App() {
   const pullState = usePullToRefresh(refreshData)
 
   useEffect(() => {
+    try {
+      localStorage.setItem('gwp_tab', activeTab)
+      localStorage.setItem('gwp_sub', JSON.stringify(sub))
+    } catch {}
+  }, [activeTab, sub])
+
+  useEffect(() => {
     window.scrollTo(0, 0)
   }, [panelKey])
+
+  // Re-read the plan whenever the app regains focus, so an edit made on another
+  // device shows up without a pull-to-refresh. Only touches `data` - unsaved
+  // local edits live in their own localStorage cache and are unaffected.
+  useEffect(() => {
+    const onVisible = () => { if (!document.hidden) refreshData() }
+    document.addEventListener('visibilitychange', onVisible)
+    window.addEventListener('focus', onVisible)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible)
+      window.removeEventListener('focus', onVisible)
+    }
+  }, [refreshData])
 
   useEffect(() => {
     fetchFile()
