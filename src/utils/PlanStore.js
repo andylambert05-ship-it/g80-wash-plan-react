@@ -1,14 +1,14 @@
 // Plan storage via the m3care Cloudflare Worker (D1-backed).
 //
-// Replaces the old GitHub Contents API layer. That approach base64-encoded the
+// Plan reads and writes go through the m3care Worker, which owns the D1 binding.
+// (Historical note: this replaced a GitHub Contents API layer that base64-encoded the
 // whole plan on every save, which silently corrupted it (asymmetric atob/btoa
 // doubled every non-ASCII char per round-trip), capped out at GitHub's 1 MiB
 // inline limit, needed SHA-conflict retries, and triggered a full CI deploy per
 // checkbox. None of that applies here: the Worker holds the D1 binding, the
 // browser just sends JSON, and reads are consistent immediately after write.
 //
-// The export surface intentionally matches the old GitHubSync module so no
-// component had to change.
+// Export names were kept stable during that migration so no component changed.
 
 const API = 'https://m3care-anthropic-proxy.andy-lambert05.workers.dev/api/plan'
 const TOKEN_KEY = 'gwp_plan_token'
@@ -34,12 +34,10 @@ export function saveConfig(config) {
   return { ok: failed.length === 0, failed }
 }
 
-export function hasPlanToken() {
+function hasPlanToken() {
   try { return !!localStorage.getItem(TOKEN_KEY) } catch { return false }
 }
 
-// Kept for the global banner that used to check for a GitHub PAT.
-export const hasGithubConfig = hasPlanToken
 
 export async function testConnection(token) {
   const res = await fetch(API, { headers: { Authorization: `Bearer ${token || ''}` } })
@@ -62,7 +60,7 @@ export async function fetchFile() {
   return { content: body.data, sha: body.updated_at }
 }
 
-export async function writeFile(config, content, sha) {
+async function writeFile(config, content, sha) {
   const { token } = config && config.token ? config : getConfig()
   const res = await fetch(API, {
     method: 'PUT',
@@ -95,9 +93,6 @@ async function mutate(config, fn) {
   return true
 }
 
-// Reads are consistent immediately after a write, so there is nothing to poll.
-export async function verifyUpgradeSync() { return true }
-
 // ── Upgrades ─────────────────────────────────────────────────────────────────
 
 export async function addUpgrade(config, upgrade) {
@@ -116,24 +111,9 @@ export async function addUpgrade(config, upgrade) {
   })
 }
 
-export async function editUpgrade(config, updated) {
-  return mutate(config, content => {
-    content.upgrades.items = content.upgrades.items.map(u => u.id === updated.id ? updated : u)
-  })
-}
-
 export async function deleteUpgrade(config, id) {
   return mutate(config, content => {
     content.upgrades.items = content.upgrades.items.filter(u => u.id !== id)
-  })
-}
-
-export async function toggleUpgradeDone(config, id) {
-  return mutate(config, content => {
-    content.upgrades.items = content.upgrades.items.map(u => {
-      if (u.id !== id) return u
-      return { ...u, done: !u.done, completedDate: !u.done ? new Date().toISOString().slice(0, 10) : null }
-    })
   })
 }
 
