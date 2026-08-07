@@ -2313,7 +2313,7 @@
         "id": "u16",
         "phase": "Phase 8 - Shop: Front-End Batch",
         "priority": 16,
-        "item": "MHC Black BMW M3/M4 Performance Style Front Splitter In Gloss Black",
+        "item": "MHC Black BMW M3/M4 Performance Style Front Splitter In Gloss Black - INSTALL",
         "source": "Shop",
         "done": false,
         "notes": "Bumper-off install. Transfer plate to Sto N Sho before/after install."
@@ -2331,10 +2331,10 @@
         "id": "u18",
         "phase": "Phase 8 - Shop: Front-End Batch",
         "priority": 18,
-        "item": "Inlets",
+        "item": "MHC Black BMW M3/M4 Performance Style Front Ducts In Gloss Black - INSTALL",
         "source": "Shop",
         "done": false,
-        "notes": "Front-end access - keep in the same shop visit."
+        "notes": "MHC Black BMW M3/M4 Performance Style Front Ducts In Gloss Black"
       },
       {
         "id": "u19",
