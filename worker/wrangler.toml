@@ -1,0 +1,12 @@
+name = "m3care-anthropic-proxy"
+main = "worker.js"
+compatibility_date = "2026-08-07"
+
+# Secrets (set with `wrangler secret put <NAME>`, never committed):
+#   ANTHROPIC_API_KEY  - Anthropic API key for the Chemical Lookup proxy
+#   PLAN_TOKEN         - shared token required for PUT /api/plan
+
+[[d1_databases]]
+binding       = "DB"
+database_name = "m3care"
+database_id   = "REPLACE_WITH_D1_DATABASE_ID"
