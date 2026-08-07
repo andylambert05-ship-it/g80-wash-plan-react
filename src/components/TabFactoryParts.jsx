@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { SyncStatus } from './SyncForm'
-import { getConfig, addFactoryPart, editFactoryPart, deleteFactoryPart } from '../utils/GitHubSync'
+import { getConfig, addFactoryPart, editFactoryPart, deleteFactoryPart } from '../utils/PlanStore'
 
 const CONDITIONS = ['Mint', 'Excellent', 'Good', 'Fair', 'Damaged']
 const CONDITION_COLORS = {

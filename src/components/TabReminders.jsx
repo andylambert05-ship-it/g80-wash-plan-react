@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { EditReminderForm, SyncStatus } from './SyncForm'
-import { getConfig, deleteReminder } from '../utils/GitHubSync'
+import { getConfig, deleteReminder } from '../utils/PlanStore'
 
 const STORAGE_KEY = 'gwp_reminders'
 

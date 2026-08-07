@@ -3,7 +3,7 @@ import StepCard, { ExpandToggle } from './StepCard'
 import ResetButton from './ResetButton'
 import { useState } from 'react'
 import { EditToolForm, SyncStatus } from './SyncForm'
-import { getConfig, deleteTool } from '../utils/GitHubSync'
+import { getConfig, deleteTool } from '../utils/PlanStore'
 
 // Resolve a chem entry — supports both legacy strings and new { chemId, usage } objects
 function resolveChemLabel(chem, chemicals) {

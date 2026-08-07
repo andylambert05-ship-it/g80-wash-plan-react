@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { getBrand, getShortName, CAT_ORDER } from '../constants'
 import { EditChemicalForm, SyncStatus } from './SyncForm'
-import { getConfig, deleteChemical, toggleChemicalStatus, cycleChemicalMode } from '../utils/GitHubSync'
+import { getConfig, deleteChemical, toggleChemicalStatus, cycleChemicalMode } from '../utils/PlanStore'
 
 // ── Ratio parser ─────────────────────────────────────────────────────────────
 function parseRatio(ratio) {

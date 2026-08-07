@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getConfig, saveConfig, testConnection } from '../utils/GitHubSync'
+import { getConfig, saveConfig, testConnection } from '../utils/PlanStore'
 
 export default function TabSettings() {
   const [config, setConfig] = useState(getConfig)
@@ -15,12 +15,12 @@ export default function TabSettings() {
   }
 
   const handleTest = async () => {
-    if (!config.pat) return
+    if (!config.token) return
     setTesting(true)
     setTestResult(null)
     try {
-      const login = await testConnection(config.pat)
-      setTestResult({ ok: true, message: `Connected as @${login}` })
+      await testConnection(config.token)
+      setTestResult({ ok: true, message: 'Connected — plan loaded from the Worker' })
     } catch (e) {
       setTestResult({ ok: false, message: e.message })
     } finally {
@@ -33,7 +33,7 @@ export default function TabSettings() {
       <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t3)', display: 'block', marginBottom: 5 }}>{label}</label>
       <input
         type={opts.type || 'text'}
-        value={config[key]}
+        value={config[key] || ''}
         onChange={e => setConfig(c => ({ ...c, [key]: e.target.value }))}
         placeholder={opts.placeholder}
         style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '8px 10px', fontSize: 13, fontFamily: 'Inter, sans-serif', outline: 'none' }}
@@ -46,22 +46,19 @@ export default function TabSettings() {
     <div className="panel">
       <div className="notice info" style={{ marginBottom: 20 }}>
         <i className="ti ti-info-circle" aria-hidden="true" />
-        <span>Configure your GitHub Personal Access Token to enable adding chemicals, tools, and upgrades directly from the app. Changes commit to your repo and deploy automatically via GitHub Actions (~60 sec).</span>
+        <span>Enter your plan API token to enable adding and editing chemicals, tools, and upgrades from the app. Saves write straight to the database and apply instantly — no commit, no deploy.</span>
       </div>
 
       <div style={{ background: 'var(--card)', border: '1px solid var(--bd2)', padding: 20, marginBottom: 16 }}>
         <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t1)', marginBottom: 16, paddingBottom: 10, borderBottom: '1px solid var(--bd)' }}>
-          GitHub Configuration
+          Plan API
         </div>
 
-        {field('Personal Access Token', 'pat', {
+        {field('Plan API token', 'token', {
           type: 'password',
-          placeholder: 'ghp_...',
-          hint: 'Scopes required: Contents (read + write) on this repo only. Settings → Developer settings → Personal access tokens → Fine-grained tokens.',
+          placeholder: '••••••••',
+          hint: 'Required for saving. Reading the plan works without it. Set on the Worker with: wrangler secret put PLAN_TOKEN',
         })}
-        {field('Repository Owner', 'owner', { placeholder: 'andylambert05-ship-it' })}
-        {field('Repository Name', 'repo', { placeholder: 'g80-wash-plan-react' })}
-        {field('Branch', 'branch', { placeholder: 'main' })}
 
         <div style={{ display: 'flex', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
           <button
@@ -72,8 +69,8 @@ export default function TabSettings() {
           </button>
           <button
             onClick={handleTest}
-            disabled={!config.pat || testing}
-            style={{ padding: '8px 20px', background: 'transparent', color: !config.pat ? 'var(--t3)' : 'var(--t1)', border: '1px solid var(--bd2)', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: config.pat ? 'pointer' : 'default', fontFamily: 'Inter, sans-serif', opacity: !config.pat ? 0.5 : 1 }}
+            disabled={!config.token || testing}
+            style={{ padding: '8px 20px', background: 'transparent', color: !config.token ? 'var(--t3)' : 'var(--t1)', border: '1px solid var(--bd2)', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: config.token ? 'pointer' : 'default', fontFamily: 'Inter, sans-serif', opacity: !config.token ? 0.5 : 1 }}
           >
             {testing ? 'Testing…' : 'Test connection'}
           </button>
@@ -87,15 +84,12 @@ export default function TabSettings() {
       </div>
 
       <div style={{ background: 'var(--card)', border: '1px solid var(--bd2)', padding: 20 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t1)', marginBottom: 12 }}>How to create a PAT</div>
+        <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t1)', marginBottom: 12 }}>Where the data lives</div>
         {[
-          'Go to GitHub.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens',
-          'Click "Generate new token"',
-          'Set Token name: "M3 Care Plan App"',
-          'Set Expiration: No expiration (or 1 year)',
-          'Under Repository access: select "Only select repositories" → g80-wash-plan-react',
-          'Under Repository permissions → Contents: set to "Read and write"',
-          'Click "Generate token" and paste it above',
+          'The plan is stored in Cloudflare D1 and served by the m3care Worker.',
+          'Reads are open. Writes require the token above, checked by the Worker.',
+          'To set or rotate it: wrangler secret put PLAN_TOKEN, then re-enter it here.',
+          'Saves apply immediately \u2014 no GitHub commit and no Pages deploy.',
         ].map((step, i) => (
           <div key={i} style={{ display: 'flex', gap: 12, marginBottom: 8 }}>
             <div style={{ width: 20, height: 20, background: '#0066b1', color: '#fff', fontSize: 10, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{i + 1}</div>

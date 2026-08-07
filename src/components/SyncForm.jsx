@@ -1,6 +1,6 @@
 // Reusable sync status indicator for GitHub write-back forms
 import { useState } from 'react'
-import { getConfig, addChemical, addTool, addUpgrade, editChemical, editTool, editReminder, deleteChemical, deleteTool, deleteUpgrade, deleteReminder } from '../utils/GitHubSync'
+import { getConfig, addChemical, addTool, addUpgrade, editChemical, editTool, editReminder, deleteChemical, deleteTool, deleteUpgrade, deleteReminder } from '../utils/PlanStore'
 import { sortPhaseNames } from '../utils/phases'
 
 export function SyncStatus({ status }) {

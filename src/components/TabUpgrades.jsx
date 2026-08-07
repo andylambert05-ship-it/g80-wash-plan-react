@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import TabFactoryParts from './TabFactoryParts'
-import { getConfig, bulkSetUpgradesDone, verifyUpgradeSync } from '../utils/GitHubSync'
+import { getConfig, bulkSetUpgradesDone, verifyUpgradeSync } from '../utils/PlanStore'
 import { sortPhaseNames } from '../utils/phases'
 
 const PHOTO_KEY = 'gwp_upgrade_photos'
