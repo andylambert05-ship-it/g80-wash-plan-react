@@ -32,6 +32,7 @@ import TabReminders from './components/TabReminders'
 import TabSettings from './components/TabSettings'
 import { AddChemicalForm, AddToolForm, AddUpgradeForm } from './components/SyncForm'
 import WeatherBanner from './components/WeatherBanner'
+import { fetchFile } from './utils/PlanStore'
 
 // ── 5 top-level tabs with sub-navigation ────────────────────────────────────
 const TABS = [
@@ -88,11 +89,10 @@ export default function App() {
   // Screen Wake Lock — keep phone screen alive while a timer is running
   useWakeLock(!!timer)
 
-  // Pull-to-refresh — re-fetches wash-plan.json
+  // Pull-to-refresh — re-reads the plan from the Worker
   const refreshData = useCallback(() => {
-    return fetch('wash-plan.json?' + Date.now())
-      .then(r => r.json())
-      .then(d => { setData(d); setError(null) })
+    return fetchFile()
+      .then(({ content }) => { setData(content); setError(null) })
       .catch(() => {})
   }, [])
   const pullState = usePullToRefresh(refreshData)
@@ -102,9 +102,8 @@ export default function App() {
   }, [panelKey])
 
   useEffect(() => {
-    fetch('wash-plan.json')
-      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
-      .then(setData)
+    fetchFile()
+      .then(({ content }) => setData(content))
       .catch(err => setError(err.message))
   }, [])
 
@@ -112,7 +111,7 @@ export default function App() {
     <div className="app">
       <div className="panel" style={{ textAlign: 'center', paddingTop: 48 }}>
         <i className="ti ti-alert-triangle" style={{ fontSize: 32, color: 'var(--red)', marginBottom: 12, display: 'block' }} aria-hidden="true" />
-        <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--t1)', marginBottom: 8 }}>Could not load wash-plan.json</div>
+        <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--t1)', marginBottom: 8 }}>Could not load plan</div>
         <div style={{ fontSize: 12, color: 'var(--t3)' }}>{error}</div>
       </div>
     </div>
