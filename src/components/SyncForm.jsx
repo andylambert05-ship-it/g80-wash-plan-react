@@ -60,9 +60,13 @@ export function ChemicalLookup({ onResult }) {
     setError(null)
     setPreview(null)
     try {
+      // The proxy now requires the plan token - it was previously an open relay
+      // to Anthropic on our API key.
+      const { token } = getConfig()
+      if (!token) { setError('No plan token — add one on the Settings tab to use lookup.'); setLoading(false); return }
       const response = await fetch('https://m3care-anthropic-proxy.andy-lambert05.workers.dev', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           model: 'claude-sonnet-4-6',
           max_tokens: 1000,
@@ -71,6 +75,7 @@ export function ChemicalLookup({ onResult }) {
           messages: [{ role: 'user', content: `Look up detailing product: ${query}` }]
         })
       })
+      if (response.status === 401) { setError('Lookup rejected — check the plan token on the Settings tab.'); setLoading(false); return }
       const data = await response.json()
       const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim()
       const result = JSON.parse(text.replace(/```json|```/g, '').trim())
