@@ -5,7 +5,7 @@ import { sortPhaseNames, groupItems, groupNamesForPhase, UNGROUPED } from '../ut
 
 const PHOTO_KEY = 'gwp_upgrade_photos'
 const DONE_KEY = 'gwp_upgrades'
-const COLLAPSED_KEY = 'gwp_upgrade_collapsed_groups'
+const EXPANDED_KEY = 'gwp_upgrade_expanded_groups'
 const REMINDER_MINS = 15
 
 function loadPhotos() {
@@ -21,13 +21,15 @@ function saveCustomUpgrades(items) {
   try { localStorage.setItem('gwp_custom_upgrades', JSON.stringify(items)) } catch {}
 }
 
-// Collapsed group sub-headers, keyed "phase||group". Groups start expanded, so
-// only the collapsed ones are stored.
-function loadCollapsed() {
-  try { return JSON.parse(localStorage.getItem(COLLAPSED_KEY) || '{}') } catch { return {} }
+// Expanded group sub-headers, keyed "phase||group". Groups start collapsed, so
+// only the ones the user has opened are stored. (The key is deliberately not the
+// old gwp_upgrade_collapsed_groups: reusing it would invert the meaning of any
+// state already sitting in a browser.)
+function loadExpanded() {
+  try { return JSON.parse(localStorage.getItem(EXPANDED_KEY) || '{}') } catch { return {} }
 }
-function saveCollapsed(map) {
-  try { localStorage.setItem(COLLAPSED_KEY, JSON.stringify(map)) } catch {}
+function saveExpanded(map) {
+  try { localStorage.setItem(EXPANDED_KEY, JSON.stringify(map)) } catch {}
 }
 
 
@@ -100,16 +102,16 @@ export default function TabUpgrades({ data }) {
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState(null) // id of item being edited
   const [form, setForm] = useState({ phase: '', customPhase: '', group: '', customGroup: '', item: '', source: 'Self', notes: '' })
-  const [collapsed, setCollapsed] = useState(loadCollapsed)
+  const [expanded, setExpanded] = useState(loadExpanded)
   const reminderRef = useRef(null)
 
   const toggleGroup = (phase, group) => {
     const key = `${phase}||${group}`
-    const next = { ...collapsed }
+    const next = { ...expanded }
     if (next[key]) delete next[key]
     else next[key] = true
-    setCollapsed(next)
-    saveCollapsed(next)
+    setExpanded(next)
+    saveExpanded(next)
     try { navigator.vibrate && navigator.vibrate(8) } catch (e) {}
   }
 
@@ -560,7 +562,8 @@ export default function TabUpgrades({ data }) {
                 ungrouped block, i.e. exactly the old flat list. */}
             {groupItems(items.map(getEffectiveItem)).map(({ group, items: groupedItems }) => {
               const isUngrouped = group === UNGROUPED
-              const isCollapsed = !isUngrouped && !!collapsed[`${phase}||${group}`]
+              // Groups are collapsed until tapped; ungrouped items always show.
+              const isCollapsed = !isUngrouped && !expanded[`${phase}||${group}`]
               const groupDone = groupedItems.filter(i => isItemDone(i)).length
               return (
                 <div key={group} style={{ marginBottom: isUngrouped ? 3 : 6 }}>
