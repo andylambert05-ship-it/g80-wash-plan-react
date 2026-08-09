@@ -12,6 +12,15 @@ dist
 dist-ssr
 *.local
 
+# Wrangler local cache
+.wrangler/
+
+# Vite config compile artifacts
+vite.config.js.timestamp-*.mjs
+
+# Vite dep cache
+.vite/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
