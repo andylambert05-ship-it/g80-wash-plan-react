@@ -238,7 +238,7 @@ export default function App() {
                 <i className="ti ti-plus" aria-hidden="true" />
               </button>
             )}
-            <div className="ver">v{meta.version}</div>
+            <div className="ver" title={`Plan v${meta.version} · build ${__COMMIT__}`}>{__COMMIT__}</div>
           </div>
         </div>
 
