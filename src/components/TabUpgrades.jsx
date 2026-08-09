@@ -21,10 +21,10 @@ function saveCustomUpgrades(items) {
   try { localStorage.setItem('gwp_custom_upgrades', JSON.stringify(items)) } catch {}
 }
 
-// Expanded group sub-headers, keyed "phase||group". Groups start collapsed, so
-// only the ones the user has opened are stored. (The key is deliberately not the
-// old gwp_upgrade_collapsed_groups: reusing it would invert the meaning of any
-// state already sitting in a browser.)
+// Open phase headers ("Phase 8 - ...") and group sub-headers ("phase||group").
+// Both start collapsed, so only what the user has opened is stored. (The key is
+// deliberately not the old gwp_upgrade_collapsed_groups: reusing it would invert
+// the meaning of any state already sitting in a browser.)
 function loadExpanded() {
   try { return JSON.parse(localStorage.getItem(EXPANDED_KEY) || '{}') } catch { return {} }
 }
@@ -105,8 +105,9 @@ export default function TabUpgrades({ data }) {
   const [expanded, setExpanded] = useState(loadExpanded)
   const reminderRef = useRef(null)
 
-  const toggleGroup = (phase, group) => {
-    const key = `${phase}||${group}`
+  // One map holds both levels: a phase is keyed by its name, a group inside it
+  // by "phase||group".
+  const toggleOpen = (key) => {
     const next = { ...expanded }
     if (next[key]) delete next[key]
     else next[key] = true
@@ -114,6 +115,8 @@ export default function TabUpgrades({ data }) {
     saveExpanded(next)
     try { navigator.vibrate && navigator.vibrate(8) } catch (e) {}
   }
+  const togglePhase = (phase) => toggleOpen(phase)
+  const toggleGroup = (phase, group) => toggleOpen(`${phase}||${group}`)
 
   // Effective item: local edit cache wins over JSON
   const getEffectiveItem = useCallback((item) => {
@@ -551,16 +554,24 @@ export default function TabUpgrades({ data }) {
         const items = phases[phase].filter(i => !editCache[i.id]?._deleted)
         if (items.length === 0) return null
         const phaseDone = items.filter(i => isItemDone(i)).length
+        // Phases are collapsed until tapped, same as the groups inside them.
+        const phaseOpen = !!expanded[phase]
         return (
-          <div key={phase} style={{ marginBottom: 20 }}>
-            <div className="phase-hdr" style={{ borderLeftColor: '#0066b1', color: '#ffffff', fontSize: 13 }}>
+          <div key={phase} style={{ marginBottom: phaseOpen ? 20 : 3 }}>
+            <button
+              className="phase-hdr"
+              onClick={() => togglePhase(phase)}
+              style={{ width: '100%', borderLeftColor: '#0066b1', color: '#ffffff', fontSize: 13, border: 'none', borderLeft: '2px solid #0066b1', cursor: 'pointer', fontFamily: 'Inter, sans-serif', textAlign: 'left' }}
+              aria-expanded={phaseOpen}
+            >
+              <i className={`ti ti-chevron-${phaseOpen ? 'down' : 'right'}`} style={{ fontSize: 13, flexShrink: 0 }} aria-hidden="true" />
               <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: '#ffffff', flexShrink: 0 }} />
-              {phase}
-              <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--t3)', marginLeft: 4 }}>({phaseDone}/{items.length})</span>
-            </div>
+              <span style={{ flex: 1, minWidth: 0 }}>{phase}</span>
+              <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--t3)', flexShrink: 0 }}>({phaseDone}/{items.length})</span>
+            </button>
             {/* Optional sub-groups. Phases with no grouped items render a single
                 ungrouped block, i.e. exactly the old flat list. */}
-            {groupItems(items.map(getEffectiveItem)).map(({ group, items: groupedItems }) => {
+            {phaseOpen && groupItems(items.map(getEffectiveItem)).map(({ group, items: groupedItems }) => {
               const isUngrouped = group === UNGROUPED
               // Groups are collapsed until tapped; ungrouped items always show.
               const isCollapsed = !isUngrouped && !expanded[`${phase}||${group}`]
