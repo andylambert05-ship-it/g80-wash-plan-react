@@ -21,3 +21,65 @@ export function phaseNum(name) {
 export function sortPhaseNames(names) {
   return [...names].sort((a, b) => phaseNum(a) - phaseNum(b))
 }
+
+// ── Groups within a phase ────────────────────────────────────────────────────
+//
+// A phase can optionally split its items into named groups via an item-level
+// `group` field ("Front Grille", "Front Splitter", ...). Grouping is opt-in per
+// item, so any phase can use it and phases that don't set `group` render exactly
+// as before.
+//
+// Ordering rules, mirroring the phase rules above:
+//   - ungrouped items come first, directly under the phase header
+//   - groups follow, ordered by the lowest `priority` in each group, so a group
+//     sits where its earliest item would have sat in the flat list
+//   - items inside a group keep priority order
+
+export const UNGROUPED = '__ungrouped__'
+
+// Normalise: missing / blank / whitespace-only group means "no group".
+export function groupKey(item) {
+  const g = item && item.group
+  if (typeof g !== 'string') return UNGROUPED
+  const trimmed = g.trim()
+  return trimmed === '' ? UNGROUPED : trimmed
+}
+
+function minPriority(items) {
+  return items.reduce((min, i) => {
+    const p = Number(i.priority)
+    return Number.isFinite(p) && p < min ? p : min
+  }, Number.POSITIVE_INFINITY)
+}
+
+// items -> [{ group, items }], ungrouped bucket first (omitted when empty).
+export function groupItems(items) {
+  const buckets = new Map()
+  items.forEach(item => {
+    const key = groupKey(item)
+    if (!buckets.has(key)) buckets.set(key, [])
+    buckets.get(key).push(item)
+  })
+  buckets.forEach(list =>
+    list.sort((a, b) => (Number(a.priority) || 0) - (Number(b.priority) || 0))
+  )
+
+  const ungrouped = buckets.get(UNGROUPED) || []
+  buckets.delete(UNGROUPED)
+
+  // Stable: equal minimums keep first-seen order (ES2019 sort).
+  const named = [...buckets.entries()]
+    .map(([group, list]) => ({ group, items: list }))
+    .sort((a, b) => minPriority(a.items) - minPriority(b.items))
+
+  return ungrouped.length
+    ? [{ group: UNGROUPED, items: ungrouped }, ...named]
+    : named
+}
+
+// Distinct group names already used in a phase, in display order.
+export function groupNamesForPhase(items, phase) {
+  return groupItems(items.filter(i => i.phase === phase))
+    .map(g => g.group)
+    .filter(g => g !== UNGROUPED)
+}

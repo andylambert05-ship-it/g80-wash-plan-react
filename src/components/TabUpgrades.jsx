@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import TabFactoryParts from './TabFactoryParts'
 import { getConfig, bulkSetUpgradesDone } from '../utils/PlanStore'
-import { sortPhaseNames } from '../utils/phases'
+import { sortPhaseNames, groupItems, groupNamesForPhase, UNGROUPED } from '../utils/phases'
 
 const PHOTO_KEY = 'gwp_upgrade_photos'
 const DONE_KEY = 'gwp_upgrades'
+const COLLAPSED_KEY = 'gwp_upgrade_collapsed_groups'
 const REMINDER_MINS = 15
 
 function loadPhotos() {
@@ -20,6 +21,15 @@ function saveCustomUpgrades(items) {
   try { localStorage.setItem('gwp_custom_upgrades', JSON.stringify(items)) } catch {}
 }
 
+// Collapsed group sub-headers, keyed "phase||group". Groups start expanded, so
+// only the collapsed ones are stored.
+function loadCollapsed() {
+  try { return JSON.parse(localStorage.getItem(COLLAPSED_KEY) || '{}') } catch { return {} }
+}
+function saveCollapsed(map) {
+  try { localStorage.setItem(COLLAPSED_KEY, JSON.stringify(map)) } catch {}
+}
+
 
 // Local done cache — keyed by upgrade id, value is true/false
 function loadDoneCache() {
@@ -27,6 +37,42 @@ function loadDoneCache() {
 }
 function saveDoneCache(cache) {
   try { localStorage.setItem(DONE_KEY, JSON.stringify(cache)) } catch {}
+}
+
+// Optional sub-grouping inside a phase (e.g. "Front Grille", "Front Splitter"
+// under Phase 8). Shared by the add form and the edit modal so both offer the
+// same choices: no group, a group already used in this phase, or a new one.
+function GroupField({ form, setForm, groups }) {
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>
+        Group <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>(optional)</span>
+      </label>
+      <select
+        value={form.group}
+        onChange={e => setForm(f => ({ ...f, group: e.target.value }))}
+        style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif' }}
+      >
+        <option value="">— No group —</option>
+        {groups.map(g => <option key={g} value={g}>{g}</option>)}
+        {/* An edit may point at a group that no longer exists elsewhere in the
+            phase (last item in it) - keep it selectable rather than silently
+            dropping the item out of its group. */}
+        {form.group && form.group !== '__custom__' && !groups.includes(form.group) && (
+          <option value={form.group}>{form.group}</option>
+        )}
+        <option value="__custom__">New group...</option>
+      </select>
+      {form.group === '__custom__' && (
+        <input
+          value={form.customGroup}
+          onChange={e => setForm(f => ({ ...f, customGroup: e.target.value }))}
+          placeholder="New group name"
+          style={{ width: '100%', marginTop: 6, background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif' }}
+        />
+      )}
+    </div>
+  )
 }
 
 const SOURCE_COLORS = { Self: '#0066b1', Shop: '#cc1e1e' }
@@ -53,8 +99,19 @@ export default function TabUpgrades({ data }) {
   const [custom, setCustom] = useState(loadCustomUpgrades)
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState(null) // id of item being edited
-  const [form, setForm] = useState({ phase: '', customPhase: '', item: '', source: 'Self', notes: '' })
+  const [form, setForm] = useState({ phase: '', customPhase: '', group: '', customGroup: '', item: '', source: 'Self', notes: '' })
+  const [collapsed, setCollapsed] = useState(loadCollapsed)
   const reminderRef = useRef(null)
+
+  const toggleGroup = (phase, group) => {
+    const key = `${phase}||${group}`
+    const next = { ...collapsed }
+    if (next[key]) delete next[key]
+    else next[key] = true
+    setCollapsed(next)
+    saveCollapsed(next)
+    try { navigator.vibrate && navigator.vibrate(8) } catch (e) {}
+  }
 
   // Effective item: local edit cache wins over JSON
   const getEffectiveItem = useCallback((item) => {
@@ -205,7 +262,11 @@ export default function TabUpgrades({ data }) {
 
   const openEdit = (item) => {
     const eff = getEffectiveItem(item)
-    setForm({ phase: eff.phase, customPhase: '', item: eff.item, source: eff.source || 'Self', notes: eff.notes || '' })
+    setForm({
+      phase: eff.phase, customPhase: '',
+      group: (eff.group || '').trim(), customGroup: '',
+      item: eff.item, source: eff.source || 'Self', notes: eff.notes || '',
+    })
     setEditingId(item.id)
     setShowForm(false)
   }
@@ -213,9 +274,10 @@ export default function TabUpgrades({ data }) {
   const saveEdit = () => {
     if (!form.item.trim()) return
     const phase = form.phase === '__custom__' ? form.customPhase.trim() : form.phase
-    editItem(editingId, { item: form.item.trim(), phase, source: form.source, notes: form.notes.trim() })
+    const group = form.group === '__custom__' ? form.customGroup.trim() : form.group
+    editItem(editingId, { item: form.item.trim(), phase, group, source: form.source, notes: form.notes.trim() })
     setEditingId(null)
-    setForm({ phase: '', customPhase: '', item: '', source: 'Self', notes: '' })
+    setForm({ phase: '', customPhase: '', group: '', customGroup: '', item: '', source: 'Self', notes: '' })
   }
 
   const unsavedCount = Object.keys(unsaved).length
@@ -234,10 +296,12 @@ export default function TabUpgrades({ data }) {
 
   const addItem = () => {
     const phase = form.phase === '__custom__' ? form.customPhase.trim() : form.phase
+    const group = form.group === '__custom__' ? form.customGroup.trim() : form.group
     if (!form.item.trim() || !phase) return
     const newItem = {
       id: 'custom-' + Date.now(),
       phase,
+      group,
       item: form.item.trim(),
       source: form.source,
       notes: form.notes.trim(),
@@ -246,7 +310,7 @@ export default function TabUpgrades({ data }) {
     const next = [...custom, newItem]
     setCustom(next)
     saveCustomUpgrades(next)
-    setForm({ phase: '', customPhase: '', item: '', source: 'Self', notes: '' })
+    setForm({ phase: '', customPhase: '', group: '', customGroup: '', item: '', source: 'Self', notes: '' })
     setShowForm(false)
   }
 
@@ -300,11 +364,14 @@ export default function TabUpgrades({ data }) {
   // sequencing (including fractional inserts like 8.5). Raw array position is
   // deliberately NOT used - appended items would otherwise surface under
   // whichever phase header happened to appear first.
+  // Bucketing uses the *effective* phase/group so a queued edit re-homes the
+  // card immediately, rather than only after the next Save.
   const seenOrder = []
   const phases = {}
   allItems.forEach(item => {
-    if (!phases[item.phase]) { phases[item.phase] = []; seenOrder.push(item.phase) }
-    phases[item.phase].push(item)
+    const phase = getEffectiveItem(item).phase
+    if (!phases[phase]) { phases[phase] = []; seenOrder.push(phase) }
+    phases[phase].push(item)
   })
   Object.values(phases).forEach(list =>
     list.sort((a, b) => (Number(a.priority) || 0) - (Number(b.priority) || 0))
@@ -315,6 +382,12 @@ export default function TabUpgrades({ data }) {
   const total = allItems.length
   const pct = total > 0 ? Math.round((totalDone / total) * 100) : 0
   const existingPhases = sortPhaseNames([...new Set(baseItems.map(i => i.phase))])
+  // Groups offered in the forms are the ones already used in the phase the form
+  // currently points at — picking a different phase re-populates the list.
+  const formPhase = form.phase === '__custom__' ? form.customPhase.trim() : form.phase
+  const existingGroups = formPhase
+    ? groupNamesForPhase(allItems.map(getEffectiveItem), formPhase)
+    : []
   const canSubmit = form.item.trim() && (form.phase !== '' && form.phase !== '__custom__' || form.customPhase.trim())
 
   return (
@@ -413,7 +486,7 @@ export default function TabUpgrades({ data }) {
             <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>Phase</label>
             <select
               value={form.phase}
-              onChange={e => setForm(f => ({ ...f, phase: e.target.value }))}
+              onChange={e => setForm(f => ({ ...f, phase: e.target.value, group: '', customGroup: '' }))}
               style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif' }}
             >
               <option value="">— Select phase —</option>
@@ -429,6 +502,8 @@ export default function TabUpgrades({ data }) {
               />
             )}
           </div>
+
+          <GroupField form={form} setForm={setForm} groups={existingGroups} />
 
           <div style={{ marginBottom: 10 }}>
             <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>Item *</label>
@@ -481,67 +556,93 @@ export default function TabUpgrades({ data }) {
               {phase}
               <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--t3)', marginLeft: 4 }}>({phaseDone}/{items.length})</span>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-              {items.map(item => {
-                const eff = getEffectiveItem(item)
-                const isDone = isItemDone(item)
-                const hasUnsavedChange = !!unsaved[item.id]
-                return (
-                  <div key={item.id}
-                    style={{ background: 'var(--card)', border: `1px solid var(--bd)`, padding: '12px 14px', display: 'flex', alignItems: 'flex-start', gap: 12, position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 1, background: '#0066b1' }} />
-                    {/* Checkbox — toggle done */}
-                    <div onClick={() => toggle(item.id)}
-                      style={{ width: 20, height: 20, border: `1px solid ${isDone ? '#0066b1' : 'var(--bd2)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, background: isDone ? '#0066b1' : 'transparent', marginTop: 1, cursor: 'pointer' }}>
-                      {isDone && <i className="ti ti-check" style={{ fontSize: 11, color: '#fff' }} aria-hidden="true" />}
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0, opacity: isDone ? 0.4 : 1 }}>
-                      <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--t1)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 3, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                        {eff.item}
-                        <span style={{ fontSize: 9, padding: '2px 7px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: SOURCE_BG[eff.source] || 'var(--card2)', color: SOURCE_COLORS[eff.source] || 'var(--t3)', border: `1px solid ${SOURCE_BD[eff.source] || 'var(--bd2)'}` }}>
-                          {eff.source}
-                        </span>
-                        {item.custom && (
-                          <span style={{ fontSize: 9, padding: '2px 7px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--card2)', color: 'var(--t3)', border: '1px solid var(--bd2)' }}>Custom</span>
-                        )}
-                        {hasUnsavedChange && (
-                          <span style={{ fontSize: 9, padding: '2px 7px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: '#0d1a2e', color: '#4d8fce', border: '1px solid #0d2040' }}>Unsaved</span>
-                        )}
-                        <button
-                          onClick={e => { e.stopPropagation(); openEdit(item) }}
-                          style={{ marginLeft: 'auto', fontSize: 9, padding: '2px 8px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'transparent', border: '1px solid var(--bd2)', color: 'var(--t3)', cursor: 'pointer', fontFamily: 'Inter, sans-serif', flexShrink: 0 }}
-                        >Edit</button>
-                      </div>
-                      {eff.notes && <div style={{ fontSize: 12, color: 'var(--t2)', lineHeight: 1.6, fontWeight: 300 }}>{eff.notes}</div>}
-                      {/* Photo thumbnails */}
-                      {photos[item.id] && photos[item.id].length > 0 && (
-                        <div onClick={e => e.stopPropagation()} style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
-                          {photos[item.id].map((p, idx) => (
-                            <div key={idx} style={{ position: 'relative' }}>
-                              <img src={p.src} alt={p.label} onClick={() => setLightbox(p)}
-                                style={{ width: 56, height: 56, objectFit: 'cover', cursor: 'pointer', border: '1px solid var(--bd2)' }} />
-                              <button onClick={e => { e.stopPropagation(); removePhoto(item.id, idx) }}
-                                style={{ position: 'absolute', top: -6, right: -6, width: 16, height: 16, borderRadius: '50%', background: '#cc1e1e', border: 'none', color: '#fff', fontSize: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
+            {/* Optional sub-groups. Phases with no grouped items render a single
+                ungrouped block, i.e. exactly the old flat list. */}
+            {groupItems(items.map(getEffectiveItem)).map(({ group, items: groupedItems }) => {
+              const isUngrouped = group === UNGROUPED
+              const isCollapsed = !isUngrouped && !!collapsed[`${phase}||${group}`]
+              const groupDone = groupedItems.filter(i => isItemDone(i)).length
+              return (
+                <div key={group} style={{ marginBottom: isUngrouped ? 3 : 6 }}>
+                  {!isUngrouped && (
+                    <button
+                      onClick={() => toggleGroup(phase, group)}
+                      style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 7, padding: '7px 12px', marginBottom: 3, background: 'var(--card2)', border: '1px solid var(--bd)', borderLeft: '2px solid #0066b1', color: 'var(--t2)', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', cursor: 'pointer', textAlign: 'left' }}
+                      aria-expanded={!isCollapsed}
+                    >
+                      <i className={`ti ti-chevron-${isCollapsed ? 'right' : 'down'}`} style={{ fontSize: 12, flexShrink: 0 }} aria-hidden="true" />
+                      <span style={{ flex: 1, minWidth: 0 }}>{group}</span>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--t3)', flexShrink: 0 }}>
+                        ({groupDone}/{groupedItems.length})
+                      </span>
+                    </button>
+                  )}
+                  {!isCollapsed && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 3, paddingLeft: isUngrouped ? 0 : 10 }}>
+                      {groupedItems.map(eff => {
+                      const item = eff
+                      const isDone = isItemDone(item)
+                      const hasUnsavedChange = !!unsaved[item.id]
+                      return (
+                        <div key={item.id}
+                          style={{ background: 'var(--card)', border: `1px solid var(--bd)`, padding: '12px 14px', display: 'flex', alignItems: 'flex-start', gap: 12, position: 'relative', overflow: 'hidden' }}>
+                          <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 1, background: '#0066b1' }} />
+                          {/* Checkbox — toggle done */}
+                          <div onClick={() => toggle(item.id)}
+                            style={{ width: 20, height: 20, border: `1px solid ${isDone ? '#0066b1' : 'var(--bd2)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, background: isDone ? '#0066b1' : 'transparent', marginTop: 1, cursor: 'pointer' }}>
+                            {isDone && <i className="ti ti-check" style={{ fontSize: 11, color: '#fff' }} aria-hidden="true" />}
+                          </div>
+                          <div style={{ flex: 1, minWidth: 0, opacity: isDone ? 0.4 : 1 }}>
+                            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--t1)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 3, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                              {eff.item}
+                              <span style={{ fontSize: 9, padding: '2px 7px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: SOURCE_BG[eff.source] || 'var(--card2)', color: SOURCE_COLORS[eff.source] || 'var(--t3)', border: `1px solid ${SOURCE_BD[eff.source] || 'var(--bd2)'}` }}>
+                                {eff.source}
+                              </span>
+                              {item.custom && (
+                                <span style={{ fontSize: 9, padding: '2px 7px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--card2)', color: 'var(--t3)', border: '1px solid var(--bd2)' }}>Custom</span>
+                              )}
+                              {hasUnsavedChange && (
+                                <span style={{ fontSize: 9, padding: '2px 7px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: '#0d1a2e', color: '#4d8fce', border: '1px solid #0d2040' }}>Unsaved</span>
+                              )}
+                              <button
+                                onClick={e => { e.stopPropagation(); openEdit(item) }}
+                                style={{ marginLeft: 'auto', fontSize: 9, padding: '2px 8px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'transparent', border: '1px solid var(--bd2)', color: 'var(--t3)', cursor: 'pointer', fontFamily: 'Inter, sans-serif', flexShrink: 0 }}
+                              >Edit</button>
                             </div>
-                          ))}
-                          <button onClick={e => { e.stopPropagation(); addPhoto(item.id, eff.item) }}
-                            style={{ width: 56, height: 56, border: '1px dashed var(--bd2)', background: 'transparent', color: 'var(--t3)', cursor: 'pointer', fontSize: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                            title="Add photo">+</button>
+                            {eff.notes && <div style={{ fontSize: 12, color: 'var(--t2)', lineHeight: 1.6, fontWeight: 300 }}>{eff.notes}</div>}
+                            {/* Photo thumbnails */}
+                            {photos[item.id] && photos[item.id].length > 0 && (
+                              <div onClick={e => e.stopPropagation()} style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
+                                {photos[item.id].map((p, idx) => (
+                                  <div key={idx} style={{ position: 'relative' }}>
+                                    <img src={p.src} alt={p.label} onClick={() => setLightbox(p)}
+                                      style={{ width: 56, height: 56, objectFit: 'cover', cursor: 'pointer', border: '1px solid var(--bd2)' }} />
+                                    <button onClick={e => { e.stopPropagation(); removePhoto(item.id, idx) }}
+                                      style={{ position: 'absolute', top: -6, right: -6, width: 16, height: 16, borderRadius: '50%', background: '#cc1e1e', border: 'none', color: '#fff', fontSize: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
+                                  </div>
+                                ))}
+                                <button onClick={e => { e.stopPropagation(); addPhoto(item.id, eff.item) }}
+                                  style={{ width: 56, height: 56, border: '1px dashed var(--bd2)', background: 'transparent', color: 'var(--t3)', cursor: 'pointer', fontSize: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                  title="Add photo">+</button>
+                              </div>
+                            )}
+                            {(!photos[item.id] || photos[item.id].length === 0) && (
+                              <div onClick={e => e.stopPropagation()} style={{ marginTop: 6 }}>
+                                <button onClick={() => addPhoto(item.id, eff.item)}
+                                  style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', background: 'transparent', border: '1px solid var(--bd2)', padding: '3px 8px', cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
+                                  <i className="ti ti-camera" style={{ fontSize: 11 }} aria-hidden="true" /> Add photo
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      )}
-                      {(!photos[item.id] || photos[item.id].length === 0) && (
-                        <div onClick={e => e.stopPropagation()} style={{ marginTop: 6 }}>
-                          <button onClick={() => addPhoto(item.id, eff.item)}
-                            style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', background: 'transparent', border: '1px solid var(--bd2)', padding: '3px 8px', cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
-                            <i className="ti ti-camera" style={{ fontSize: 11 }} aria-hidden="true" /> Add photo
-                          </button>
-                        </div>
-                      )}
+                      )
+                      })}
                     </div>
-                  </div>
-                )
-              })}
-            </div>
+                  )}
+                </div>
+              )
+            })}
           </div>
         )
       })}
@@ -563,7 +664,7 @@ export default function TabUpgrades({ data }) {
               key === 'phase' ? (
                 <div key={key} style={{ marginBottom: 10 }}>
                   <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--t3)', display: 'block', marginBottom: 4 }}>{label}</label>
-                  <select value={form.phase} onChange={e => setForm(f => ({ ...f, phase: e.target.value }))}
+                  <select value={form.phase} onChange={e => setForm(f => ({ ...f, phase: e.target.value, group: '', customGroup: '' }))}
                     style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif' }}>
                     {existingPhases.map(p => <option key={p} value={p}>{p}</option>)}
                     <option value="__custom__">New phase...</option>
@@ -573,6 +674,9 @@ export default function TabUpgrades({ data }) {
                       placeholder="New phase name"
                       style={{ width: '100%', marginTop: 6, background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '7px 10px', fontSize: 12, fontFamily: 'Inter, sans-serif' }} />
                   )}
+                  <div style={{ marginTop: 10 }}>
+                    <GroupField form={form} setForm={setForm} groups={existingGroups} />
+                  </div>
                 </div>
               ) : (
                 <div key={key} style={{ marginBottom: 10 }}>

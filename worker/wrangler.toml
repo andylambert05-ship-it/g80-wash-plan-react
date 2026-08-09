@@ -21,4 +21,4 @@ enabled = true
 [[d1_databases]]
 binding       = "DB"
 database_name = "m3care"
-database_id   = "REPLACE_WITH_D1_DATABASE_ID"
+database_id   = "a7fafca6-8392-4665-9cc1-6ac9dcdd6ea9"
