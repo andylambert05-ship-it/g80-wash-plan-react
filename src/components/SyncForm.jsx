@@ -8,6 +8,7 @@ export function SyncStatus({ status }) {
   const map = {
     saving: { color: '#0066b1', bg: 'var(--blue-bg)', bd: 'var(--blue-bd)', icon: 'ti-loader-2', spin: true, text: 'Saving…' },
     success: { color: '#1a9e62', bg: 'var(--green-bg)', bd: 'var(--iom-bd)', icon: 'ti-circle-check', text: 'Saved.' },
+    queued: { color: '#c8860a', bg: 'var(--amber-bg)', bd: 'var(--amber-bd)', icon: 'ti-cloud-off', text: 'No connection — saved locally, will sync automatically.' },
     error: { color: '#cc1e1e', bg: 'var(--red-bg)', bd: 'var(--red-bd)', icon: 'ti-alert-circle', text: null },
     notoken: { color: '#c8860a', bg: 'var(--amber-bg)', bd: 'var(--amber-bd)', icon: 'ti-alert-triangle', text: 'No plan token configured. Go to Settings tab to set up.' },
   }
@@ -33,8 +34,8 @@ export function usePlanSync() {
     }
     setSyncStatus({ type: 'saving' })
     try {
-      await operation(config, ...args)
-      setSyncStatus({ type: 'success' })
+      const result = await operation(config, ...args)
+      setSyncStatus({ type: result === 'queued' ? 'queued' : 'success' })
       setTimeout(() => setSyncStatus(null), 5000)
       return true
     } catch (e) {

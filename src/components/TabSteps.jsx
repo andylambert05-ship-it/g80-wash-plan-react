@@ -1,11 +1,18 @@
 import { useState } from 'react'
 import StepCard, { PhaseHeader, ExpandToggle } from './StepCard'
 import ResetButton from './ResetButton'
+import FocusMode from './FocusMode'
 import { getVisibleSteps } from '../constants'
+import { useWakeLock } from '../hooks/useWakeLock'
 
 export default function TabSteps({ data, mode, done, activeId, onToggle, onReset, onStartTimer }) {
   const [expandAll, setExpandAll] = useState(false)
+  const [focusOpen, setFocusOpen] = useState(false)
   const steps = getVisibleSteps(data, mode)
+
+  // Keep the screen awake for the whole wash while focus mode is up,
+  // not just while a dwell timer runs.
+  useWakeLock(focusOpen)
   const n = steps.filter(s => done.has(s.id)).length
   const t = steps.length
   const pct = t > 0 ? Math.round((n / t) * 100) : 0
@@ -35,6 +42,10 @@ export default function TabSteps({ data, mode, done, activeId, onToggle, onReset
       </div>
 
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <button className="focus-btn" onClick={() => setFocusOpen(true)}>
+          <i className="ti ti-focus-2" aria-hidden="true" />
+          Focus mode
+        </button>
         <ResetButton onReset={onReset} label="Reset all" />
         <ExpandToggle expanded={expandAll} onToggle={() => setExpandAll(x => !x)} />
       </div>
@@ -61,6 +72,17 @@ export default function TabSteps({ data, mode, done, activeId, onToggle, onReset
           )
         })}
       </div>
+
+      {focusOpen && (
+        <FocusMode
+          steps={steps}
+          done={done}
+          onToggle={onToggle}
+          onStartTimer={onStartTimer}
+          chemicals={data.chemicals}
+          onClose={() => setFocusOpen(false)}
+        />
+      )}
     </div>
   )
 }

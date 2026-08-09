@@ -1,11 +1,39 @@
 import { useState } from 'react'
 import { getConfig, saveConfig, testConnection } from '../utils/PlanStore'
+import { getStoredLocation, saveLocation } from '../hooks/useWeather'
 
 export default function TabSettings() {
   const [config, setConfig] = useState(getConfig)
   const [testing, setTesting] = useState(false)
   const [testResult, setTestResult] = useState(null) // { ok, message }
   const [saved, setSaved] = useState(false)
+  const [loc, setLoc] = useState(getStoredLocation)
+  const [locSaved, setLocSaved] = useState(false)
+  const [locating, setLocating] = useState(false)
+  const [locError, setLocError] = useState(null)
+
+  const handleSaveLocation = () => {
+    const lat = parseFloat(loc.lat), lon = parseFloat(loc.lon)
+    if (!isFinite(lat) || !isFinite(lon)) { setLocError('Latitude and longitude must be numbers.'); return }
+    setLocError(null)
+    saveLocation({ lat, lon, label: (loc.label || '').trim() || `${lat.toFixed(2)}, ${lon.toFixed(2)}` })
+    setLocSaved(true)
+    setTimeout(() => setLocSaved(false), 2000)
+  }
+
+  const handleUseMyLocation = () => {
+    if (!navigator.geolocation) { setLocError('Geolocation not supported on this device.'); return }
+    setLocating(true)
+    setLocError(null)
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLoc(l => ({ ...l, lat: +pos.coords.latitude.toFixed(4), lon: +pos.coords.longitude.toFixed(4), label: l.label || 'My location' }))
+        setLocating(false)
+      },
+      (err) => { setLocError(err.message || 'Could not get location.'); setLocating(false) },
+      { timeout: 10000 }
+    )
+  }
 
   const handleSave = () => {
     saveConfig(config)
@@ -79,6 +107,58 @@ export default function TabSettings() {
         {testResult && (
           <div style={{ marginTop: 12, padding: '8px 12px', background: testResult.ok ? 'var(--green-bg)' : 'var(--red-bg)', border: `1px solid ${testResult.ok ? 'var(--iom-bd)' : 'var(--red-bd)'}`, fontSize: 12, color: testResult.ok ? 'var(--iom)' : '#cc1e1e', fontWeight: 300 }}>
             {testResult.ok ? '✓ ' : '✗ '}{testResult.message}
+          </div>
+        )}
+      </div>
+
+      <div style={{ background: 'var(--card)', border: '1px solid var(--bd2)', padding: 20, marginBottom: 16 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t1)', marginBottom: 16, paddingBottom: 10, borderBottom: '1px solid var(--bd)' }}>
+          Weather location
+        </div>
+        <div style={{ fontSize: 11, color: 'var(--t3)', fontWeight: 300, marginBottom: 14, lineHeight: 1.6 }}>
+          Used for wash-day alerts and the 7-day best-day forecast. Applies next time the Wash tab loads.
+        </div>
+        <div style={{ marginBottom: 14 }}>
+          <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t3)', display: 'block', marginBottom: 5 }}>Label</label>
+          <input
+            value={loc.label || ''}
+            onChange={e => setLoc(l => ({ ...l, label: e.target.value }))}
+            placeholder="e.g. Greeley, CO"
+            style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '8px 10px', fontSize: 13, fontFamily: 'Inter, sans-serif', outline: 'none' }}
+          />
+        </div>
+        <div style={{ display: 'flex', gap: 10, marginBottom: 14 }}>
+          {['lat', 'lon'].map(k => (
+            <div key={k} style={{ flex: 1 }}>
+              <label style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--t3)', display: 'block', marginBottom: 5 }}>{k === 'lat' ? 'Latitude' : 'Longitude'}</label>
+              <input
+                type="number"
+                inputMode="decimal"
+                value={loc[k] ?? ''}
+                onChange={e => setLoc(l => ({ ...l, [k]: e.target.value }))}
+                style={{ width: '100%', background: 'var(--card2)', border: '1px solid var(--bd2)', color: 'var(--t1)', padding: '8px 10px', fontSize: 13, fontFamily: 'Inter, sans-serif', outline: 'none' }}
+              />
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <button
+            onClick={handleSaveLocation}
+            style={{ padding: '8px 20px', background: locSaved ? '#1a9e62' : '#0066b1', color: '#fff', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: 'Inter, sans-serif', transition: 'background 0.2s' }}
+          >
+            {locSaved ? '✓ Saved' : 'Save location'}
+          </button>
+          <button
+            onClick={handleUseMyLocation}
+            disabled={locating}
+            style={{ padding: '8px 20px', background: 'transparent', color: 'var(--t1)', border: '1px solid var(--bd2)', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: 'Inter, sans-serif', opacity: locating ? 0.6 : 1 }}
+          >
+            {locating ? 'Locating…' : 'Use my location'}
+          </button>
+        </div>
+        {locError && (
+          <div style={{ marginTop: 12, padding: '8px 12px', background: 'var(--red-bg)', border: '1px solid var(--red-bd)', fontSize: 12, color: '#cc1e1e', fontWeight: 300 }}>
+            ✗ {locError}
           </div>
         )}
       </div>

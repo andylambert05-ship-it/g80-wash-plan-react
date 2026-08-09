@@ -3,11 +3,26 @@ import { useState, useEffect } from 'react'
 // Open-Meteo: free, no API key, no CORS issues, no signup required.
 // Docs: https://open-meteo.com/en/docs
 
-const CACHE_KEY = 'gwp_weather_cache'
+const CACHE_KEY = 'gwp_weather_cache_v2' // v2: shape now includes 7-day forecast
 const CACHE_TTL_MS = 30 * 60 * 1000 // 30 minutes
+const LOC_KEY = 'gwp_weather_loc'
 
-// Greeley, CO coords — could be made configurable via Settings later
 const DEFAULT_LOCATION = { lat: 40.4233, lon: -104.7091, label: 'Greeley, CO' }
+
+export function getStoredLocation() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(LOC_KEY) || 'null')
+    if (stored && isFinite(stored.lat) && isFinite(stored.lon)) return stored
+  } catch {}
+  return DEFAULT_LOCATION
+}
+
+export function saveLocation(loc) {
+  try {
+    localStorage.setItem(LOC_KEY, JSON.stringify(loc))
+    localStorage.removeItem(CACHE_KEY) // stale for the new location
+  } catch {}
+}
 
 function loadCache() {
   try {
@@ -26,12 +41,15 @@ function saveCache(data) {
 }
 
 /**
- * Returns { loading, error, weather, alerts } where:
- *   weather = { tempF, uvMax, windMax, rainHours, location }
- *   alerts  = array of { id, severity, message } — empty if clear
+ * Returns { loading, error, weather, alerts, forecast, bestDay } where:
+ *   weather  = { tempF, uvMax, windMax, rainProb, hoursToRain, location }
+ *   alerts   = array of { id, severity, message } — empty if clear
+ *   forecast = 7 days of { date, dow, tempF, uv, wind, rainProb, score, rating }
+ *   bestDay  = the forecast entry with the highest score (null if all poor)
  */
-export function useWeather(location = DEFAULT_LOCATION) {
-  const [state, setState] = useState({ loading: true, error: null, weather: null, alerts: [] })
+export function useWeather() {
+  const [location] = useState(getStoredLocation)
+  const [state, setState] = useState({ loading: true, error: null, weather: null, alerts: [], forecast: [], bestDay: null })
 
   useEffect(() => {
     let cancelled = false
@@ -40,7 +58,7 @@ export function useWeather(location = DEFAULT_LOCATION) {
       // Try cache first
       const cached = loadCache()
       if (cached) {
-        if (!cancelled) setState({ loading: false, error: null, weather: cached.weather, alerts: cached.alerts })
+        if (!cancelled) setState({ loading: false, error: null, ...cached })
         return
       }
 
@@ -48,9 +66,9 @@ export function useWeather(location = DEFAULT_LOCATION) {
         const url = `https://api.open-meteo.com/v1/forecast` +
           `?latitude=${location.lat}&longitude=${location.lon}` +
           `&current=temperature_2m,wind_speed_10m` +
-          `&daily=temperature_2m_max,uv_index_max,wind_speed_10m_max,precipitation_sum,precipitation_probability_max` +
+          `&daily=temperature_2m_max,temperature_2m_min,uv_index_max,wind_speed_10m_max,precipitation_sum,precipitation_probability_max` +
           `&hourly=precipitation_probability` +
-          `&temperature_unit=fahrenheit&wind_speed_unit=mph&forecast_days=3&timezone=auto`
+          `&temperature_unit=fahrenheit&wind_speed_unit=mph&forecast_days=7&timezone=auto`
 
         const res = await fetch(url)
         if (!res.ok) throw new Error(`Weather API: HTTP ${res.status}`)
@@ -67,11 +85,14 @@ export function useWeather(location = DEFAULT_LOCATION) {
 
         const weather = { tempF, uvMax, windMax, rainProb, hoursToRain, location: location.label }
         const alerts = buildAlerts(weather)
+        const forecast = buildForecast(json.daily)
+        const bestDay = pickBestDay(forecast)
 
-        saveCache({ weather, alerts })
-        if (!cancelled) setState({ loading: false, error: null, weather, alerts })
+        const payload = { weather, alerts, forecast, bestDay }
+        saveCache(payload)
+        if (!cancelled) setState({ loading: false, error: null, ...payload })
       } catch (e) {
-        if (!cancelled) setState({ loading: false, error: e.message, weather: null, alerts: [] })
+        if (!cancelled) setState({ loading: false, error: e.message, weather: null, alerts: [], forecast: [], bestDay: null })
       }
     }
 
@@ -80,6 +101,56 @@ export function useWeather(location = DEFAULT_LOCATION) {
   }, [location.lat, location.lon])
 
   return state
+}
+
+// ── 7-day wash-day scoring ───────────────────────────────────────────────────
+//
+// A good wash day: dry that day AND the day after (a wash the day before rain
+// is wasted effort), panel temps 50–85°F, low wind (dust during dry/buff), and
+// moderate UV (flash-dry risk).
+function buildForecast(daily) {
+  const n = Math.min(7, daily.time?.length || 0)
+  const days = []
+  for (let i = 0; i < n; i++) {
+    // Parse as local date, not UTC midnight
+    const date = new Date(daily.time[i] + 'T12:00:00')
+    days.push({
+      date: daily.time[i],
+      dow: i === 0 ? 'Today' : date.toLocaleDateString('en-US', { weekday: 'short' }),
+      tempF: Math.round(daily.temperature_2m_max[i]),
+      uv: Math.round(daily.uv_index_max[i]),
+      wind: Math.round(daily.wind_speed_10m_max[i]),
+      rainProb: Math.round(daily.precipitation_probability_max?.[i] ?? 0),
+    })
+  }
+  days.forEach((d, i) => {
+    let score = 100
+    // Rain that day is the killer; rain the next day wastes the wash
+    score -= d.rainProb * 0.6
+    const next = days[i + 1]
+    if (next) score -= next.rainProb * 0.25
+    // Temperature window
+    if (d.tempF < 40) score -= 45
+    else if (d.tempF < 50) score -= 20
+    if (d.tempF > 95) score -= 30
+    else if (d.tempF > 88) score -= 10
+    // Wind
+    if (d.wind >= 25) score -= 30
+    else if (d.wind >= 20) score -= 20
+    else if (d.wind >= 15) score -= 8
+    // UV
+    if (d.uv >= 10) score -= 15
+    else if (d.uv >= 8) score -= 8
+    d.score = Math.max(0, Math.round(score))
+    d.rating = d.score >= 75 ? 'good' : d.score >= 50 ? 'ok' : 'poor'
+  })
+  return days
+}
+
+function pickBestDay(forecast) {
+  if (!forecast.length) return null
+  const best = forecast.reduce((a, b) => (b.score > a.score ? b : a))
+  return best.rating === 'poor' ? null : best
 }
 
 function buildAlerts(w) {

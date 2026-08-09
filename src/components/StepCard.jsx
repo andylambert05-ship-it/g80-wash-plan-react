@@ -15,7 +15,7 @@ export function PhaseHeader({ phase }) {
 }
 
 // Resolve a chem entry — supports both legacy strings and new { chemId, usage } objects
-function resolveChemLabel(chem, chemicals) {
+export function resolveChemLabel(chem, chemicals) {
   if (typeof chem === 'string') return chem // legacy fallback
   const { chemId, usage } = chem
   if (!chemId) return usage // no linked chemical (e.g. trim dressing, untracked products)

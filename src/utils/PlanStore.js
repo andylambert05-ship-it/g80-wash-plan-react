@@ -12,6 +12,15 @@
 
 const API = 'https://m3care-anthropic-proxy.andy-lambert05.workers.dev/api/plan'
 const TOKEN_KEY = 'gwp_plan_token'
+const CACHE_PLAN_KEY = 'gwp_plan_cache'   // last-good server copy { content, sha, ts }
+const PENDING_KEY = 'gwp_plan_pending'    // unsynced local edits   { data, ops, ts }
+
+function loadJSON(key) {
+  try { return JSON.parse(localStorage.getItem(key) || 'null') } catch { return null }
+}
+function saveJSON(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)) } catch {}
+}
 
 // ── Config ───────────────────────────────────────────────────────────────────
 
@@ -48,29 +57,61 @@ export async function testConnection(token) {
 }
 
 // ── Core read / write ────────────────────────────────────────────────────────
+//
+// Offline behaviour: every successful read caches the plan locally, so a read
+// with no network falls back to the last-good copy instead of erroring. Writes
+// that fail at the network level are queued (latest full document wins, since
+// each queued mutation builds on the previous one) and flushed automatically
+// when connectivity returns.
 
 export async function fetchFile() {
-  const res = await fetch(API, { cache: 'no-store' })
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err.error || `Plan read failed (${res.status})`)
+  // Unsynced local edits are the newest truth — serve them so the UI doesn't
+  // flicker back to the stale server copy while offline.
+  const pending = loadJSON(PENDING_KEY)
+  try {
+    const res = await fetch(API, { cache: 'no-store' })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      throw new Error(err.error || `Plan read failed (${res.status})`)
+    }
+    const body = await res.json()
+    if (pending) {
+      // Network is back — kick off a flush, but keep showing local edits until it lands.
+      flushPending()
+      return { content: pending.data, sha: body.updated_at, offline: true }
+    }
+    saveJSON(CACHE_PLAN_KEY, { content: body.data, sha: body.updated_at, ts: Date.now() })
+    // `sha` keeps the old call shape; it carries updated_at for optimistic writes.
+    return { content: body.data, sha: body.updated_at }
+  } catch (e) {
+    if (pending) return { content: pending.data, sha: null, offline: true }
+    const cached = loadJSON(CACHE_PLAN_KEY)
+    if (cached) return { content: cached.content, sha: cached.sha, offline: true }
+    throw e
   }
-  const body = await res.json()
-  // `sha` keeps the old call shape; it carries updated_at for optimistic writes.
-  return { content: body.data, sha: body.updated_at }
 }
 
 async function writeFile(config, content, sha) {
   const { token } = config && config.token ? config : getConfig()
-  const res = await fetch(API, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-      ...(sha ? { 'If-Match': sha } : {}),
-    },
-    body: JSON.stringify({ data: content }),
-  })
+  let res
+  try {
+    res = await fetch(API, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        ...(sha ? { 'If-Match': sha } : {}),
+      },
+      body: JSON.stringify({ data: content }),
+    })
+  } catch (e) {
+    // fetch() itself threw — no connectivity. Flag it so mutate() can queue
+    // instead of surfacing an error. Server rejections (4xx/5xx) fall through
+    // below and still throw normally.
+    const err = new Error('No connection — change saved locally')
+    err.network = true
+    throw err
+  }
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
     throw new Error(err.error || `Plan write failed (${res.status})`)
@@ -78,19 +119,77 @@ async function writeFile(config, content, sha) {
   return res.json()
 }
 
+// ── Offline write queue ──────────────────────────────────────────────────────
+
+export function getPendingOps() {
+  return loadJSON(PENDING_KEY)?.ops || 0
+}
+
+function notifyPending() {
+  try { window.dispatchEvent(new CustomEvent('plan-pending', { detail: { ops: getPendingOps() } })) } catch {}
+}
+
+function queuePending(data) {
+  const prev = loadJSON(PENDING_KEY)
+  saveJSON(PENDING_KEY, { data, ops: (prev?.ops || 0) + 1, ts: Date.now() })
+  notifyPending()
+}
+
+let flushing = false
+export async function flushPending() {
+  if (flushing) return false
+  const pending = loadJSON(PENDING_KEY)
+  if (!pending) return false
+  const { token } = getConfig()
+  if (!token) return false
+  flushing = true
+  try {
+    // No If-Match: the queued document is the newest truth for a single-user
+    // app, and the sha it was built on is long stale by now.
+    await writeFile({ token }, pending.data, null)
+    try { localStorage.removeItem(PENDING_KEY) } catch {}
+    saveJSON(CACHE_PLAN_KEY, { content: pending.data, sha: null, ts: Date.now() })
+    notifyPending()
+    try { window.dispatchEvent(new CustomEvent('plan-saved', { detail: pending.data })) } catch {}
+    return true
+  } catch {
+    return false
+  } finally {
+    flushing = false
+  }
+}
+
+// Flush automatically the moment connectivity returns.
+if (typeof window !== 'undefined') {
+  window.addEventListener('online', () => { flushPending() })
+}
+
 // read -> mutate -> write. `fn` edits in place or returns a replacement;
 // returning false/null means "nothing to do".
+// Returns true on a synced write, 'queued' when saved locally for later sync.
 async function mutate(config, fn) {
-  const { content, sha } = await fetchFile()
+  const { content, sha, offline } = await fetchFile()
   const result = await fn(content)
   if (result === false || result === null) return false
   const final = (result && typeof result === 'object') ? result : content
-  await writeFile(config, final, sha)
+  let queued = false
+  try {
+    await writeFile(config, final, offline ? null : sha)
+    // Write landed — anything previously queued is superseded by `final`,
+    // which was built on top of it.
+    try { localStorage.removeItem(PENDING_KEY) } catch {}
+    notifyPending()
+    saveJSON(CACHE_PLAN_KEY, { content: final, sha: null, ts: Date.now() })
+  } catch (e) {
+    if (!e.network) throw e // real server rejection (auth, validation) — surface it
+    queuePending(final)
+    queued = true
+  }
   // Every mutation funnels through here, so this one event keeps the UI in sync
   // with the database for all of them. The new document is carried in `detail`,
   // so listeners update instantly with no extra round trip.
   try { window.dispatchEvent(new CustomEvent('plan-saved', { detail: final })) } catch {}
-  return true
+  return queued ? 'queued' : true
 }
 
 // ── Upgrades ─────────────────────────────────────────────────────────────────

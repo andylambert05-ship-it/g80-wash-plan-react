@@ -32,7 +32,9 @@ import TabReminders from './components/TabReminders'
 import TabSettings from './components/TabSettings'
 import { AddChemicalForm, AddToolForm, AddUpgradeForm } from './components/SyncForm'
 import WeatherBanner from './components/WeatherBanner'
-import { fetchFile } from './utils/PlanStore'
+import WashDayPicker from './components/WashDayPicker'
+import Modal from './components/Modal'
+import { fetchFile, flushPending, getPendingOps } from './utils/PlanStore'
 
 // ── 5 top-level tabs with sub-navigation ────────────────────────────────────
 const TABS = [
@@ -81,6 +83,7 @@ export default function App() {
   const { mode, setMode, done, toggleStep, resetSteps, engDone, toggleEng, resetEng, intDone, toggleInt, resetInt } = useWashState()
   const [theme, setTheme] = useState(() => localStorage.getItem('gwp_theme') || 'dark')
   const [addForm, setAddForm] = useState(null) // 'chemical' | 'tool' | 'upgrade'
+  const [pendingOps, setPendingOps] = useState(getPendingOps)
 
   const activeSub = sub[activeTab] || null
   const setActiveSub = (id) => setSub(s => ({ ...s, [activeTab]: id }))
@@ -141,6 +144,15 @@ export default function App() {
     fetchFile()
       .then(({ content }) => setData(content))
       .catch(err => setError(err.message))
+    // Retry any writes queued while offline
+    flushPending()
+  }, [])
+
+  // Offline write queue indicator
+  useEffect(() => {
+    const onPending = (e) => setPendingOps(e.detail?.ops ?? getPendingOps())
+    window.addEventListener('plan-pending', onPending)
+    return () => window.removeEventListener('plan-pending', onPending)
   }, [])
 
   if (error) return (
@@ -250,6 +262,16 @@ export default function App() {
 
       {/* Top-level tabs moved to bottom (see .bottom-nav below) */}
 
+      {/* Offline write queue pill */}
+      {pendingOps > 0 && (
+        <div style={{ padding: '10px 20px 0' }}>
+          <button className="pending-pill" onClick={() => flushPending()} title="Tap to retry sync">
+            <i className="ti ti-cloud-off" aria-hidden="true" />
+            {pendingOps} change{pendingOps !== 1 ? 's' : ''} pending sync — tap to retry
+          </button>
+        </div>
+      )}
+
       {/* Sub-navigation */}
       {SUBTABS[activeTab] && (
         <div className="subnav">
@@ -271,6 +293,7 @@ export default function App() {
       {/* Panels — keyed div re-triggers fade on every tab/sub change */}
       <div key={panelKey} className="tab-panel">
         {activeTab === 'wash' && <WeatherBanner />}
+        {activeTab === 'wash' && activeSub === 'steps' && <WashDayPicker />}
         {activeTab === 'wash' && activeSub === 'steps' && (
           <TabSteps
             data={data} mode={mode} done={done} activeId={timer?.activeId}
@@ -311,25 +334,19 @@ export default function App() {
 
         {/* Floating add forms */}
         {addForm === 'chemical' && (
-          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
-            <div style={{ maxWidth: 600, margin: '0 auto' }}>
-              <AddChemicalForm data={data} onClose={() => setAddForm(null)} />
-            </div>
-          </div>
+          <Modal onClose={() => setAddForm(null)} label="Add chemical">
+            <AddChemicalForm data={data} onClose={() => setAddForm(null)} />
+          </Modal>
         )}
         {addForm === 'tool' && (
-          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
-            <div style={{ maxWidth: 600, margin: '0 auto' }}>
-              <AddToolForm data={data} onClose={() => setAddForm(null)} />
-            </div>
-          </div>
+          <Modal onClose={() => setAddForm(null)} label="Add tool">
+            <AddToolForm data={data} onClose={() => setAddForm(null)} />
+          </Modal>
         )}
         {addForm === 'upgrade' && (
-          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, overflowY: 'auto', padding: 16 }}>
-            <div style={{ maxWidth: 600, margin: '0 auto' }}>
-              <AddUpgradeForm data={data} onClose={() => setAddForm(null)} />
-            </div>
-          </div>
+          <Modal onClose={() => setAddForm(null)} label="Add upgrade">
+            <AddUpgradeForm data={data} onClose={() => setAddForm(null)} />
+          </Modal>
         )}
       </div>
 
