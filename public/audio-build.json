@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "vehicle": "2025 BMW M3 G80 Competition xDrive",
+    "rev": "C",
+    "updated": "2026-09-03",
+    "summary": "Fully digital handoff from the ID8 head unit to a 10-channel MATCH platform. Nine amplified channels drive a three-way active front, a discrete center, rear fill and a pair of under-seat 8s; the sub runs off a dedicated mono block.",
+    "facts": [
+      {
+        "k": "Head unit",
+        "v": "BMW ID8 · Ethernet"
+      },
+      {
+        "k": "Handoff",
+        "v": "TOSLINK S/PDIF"
+      },
+      {
+        "k": "Channels",
+        "v": "9 of 10 + 1 mono"
+      },
+      {
+        "k": "Factory amp",
+        "v": "Retained, unused"
+      },
+      {
+        "k": "Battery",
+        "v": "Lithium, trunk"
+      }
+    ]
+  },
+  "channels": [
+    {
+      "ch": "A",
+      "driver": "Front tweeter L",
+      "part": "Morel IR-BMW42 · 1.1\" dome",
+      "load": "4 Ω",
+      "avail": "65 W",
+      "band": "HP 3.2 kHz · LR24",
+      "level": "0 dB ref"
+    },
+    {
+      "ch": "B",
+      "driver": "Front tweeter R",
+      "part": "Morel IR-BMW42 · 1.1\" dome",
+      "load": "4 Ω",
+      "avail": "65 W",
+      "band": "HP 3.2 kHz · LR24",
+      "level": "0 dB ref"
+    },
+    {
+      "ch": "C",
+      "driver": "Front midrange L",
+      "part": "Morel IR-BMW42 · 4\" DPC, door",
+      "load": "4 Ω",
+      "avail": "65 W",
+      "band": "180 Hz – 3.2 kHz · LR24",
+      "level": "0 dB ref"
+    },
+    {
+      "ch": "D",
+      "driver": "Front midrange R",
+      "part": "Morel IR-BMW42 · 4\" DPC, door",
+      "load": "4 Ω",
+      "avail": "65 W",
+      "band": "180 Hz – 3.2 kHz · LR24",
+      "level": "0 dB ref"
+    },
+    {
+      "ch": "E",
+      "driver": "Center",
+      "part": "Morel IR-BMW42-CTR · point source",
+      "load": "4 Ω",
+      "avail": "65 W",
+      "band": "HP 280 Hz · LR24",
+      "level": "−4 to −6 dB"
+    },
+    {
+      "ch": "F",
+      "driver": "Spare",
+      "part": "Held for a second center or A-pillar mid",
+      "load": "—",
+      "avail": "65 W",
+      "band": "—",
+      "level": "—",
+      "spare": true
+    },
+    {
+      "ch": "G",
+      "driver": "Rear shelf wideband L",
+      "part": "Karma Inspire 3 · 15 W RMS, 85.5 dB",
+      "load": "4 Ω",
+      "avail": "65 W",
+      "band": "HP 220 Hz · LR24",
+      "level": "−10 to −12 dB",
+      "warn": true
+    },
+    {
+      "ch": "H",
+      "driver": "Rear shelf wideband R",
+      "part": "Karma Inspire 3 · 15 W RMS, 85.5 dB",
+      "load": "4 Ω",
+      "avail": "65 W",
+      "band": "HP 220 Hz · LR24",
+      "level": "−10 to −12 dB",
+      "warn": true
+    },
+    {
+      "ch": "I",
+      "driver": "Under-seat woofer L",
+      "part": "Morel IP-BMWSUB82 · 8\" — must land here",
+      "load": "2 Ω",
+      "avail": "160 W",
+      "band": "55 – 180 Hz · LR24",
+      "level": "0 dB ref",
+      "hot": true
+    },
+    {
+      "ch": "J",
+      "driver": "Under-seat woofer R",
+      "part": "Morel IP-BMWSUB82 · 8\" — must land here",
+      "load": "2 Ω",
+      "avail": "160 W",
+      "band": "55 – 180 Hz · LR24",
+      "level": "0 dB ref",
+      "hot": true
+    },
+    {
+      "ch": "1FX",
+      "driver": "Subwoofer",
+      "part": "ResoNix GUS-12 D4, coils parallel · sealed",
+      "load": "2 Ω",
+      "avail": "600 W",
+      "band": "LP 62 Hz · LR24",
+      "level": "Set by ear",
+      "amp2": true
+    }
+  ],
+  "gotchas": [
+    {
+      "title": "The 2 Ω under-seats",
+      "kind": "warn",
+      "body": "The IP-BMWSUB82 is a 2 Ω driver. Channels A–H are specified to 3 Ω minimum; only I and J are 2 Ω-rated. Audiotec Fischer designed those two around BMW under-seat woofers, so it is the intended pairing — but it means the front three-way, center and rear fill have to fit inside the remaining eight."
+    },
+    {
+      "title": "65 W into a 15 W rear",
+      "kind": "warn",
+      "body": "The Inspire 3 takes 15 W long-term on a channel that will hand it 65 W. Set the channel gain low, high-pass no lower than 220 Hz at LR24, and use the output limiter. Rear fill wants to sit 10–12 dB under the front stage anyway, so the tuning target and the survival target agree."
+    },
+    {
+      "title": "Turn-on with no high-level in",
+      "kind": "info",
+      "body": "With optical as the only input there is no speaker-level signal for the 10DSP to sense. Drive REMOTE IN from the eWay box's switched output or a fused ACC source, then chain the 10DSP's 500 mA REM OUT to the 1FX so the two amps sequence together."
+    }
+  ],
+  "power": {
+    "note": "Both amps live within a few feet of the battery, so 4 AWG on the trunk feed is genuinely adequate — the branch fusing, not the wire, is doing the work. Every branch fuse is sized above the amp's own internal fuses so the amp blows first.",
+    "warnings": [
+      {
+        "title": "The IBS is the BMW-specific trap",
+        "kind": "warn",
+        "body": "The G80's intelligent battery sensor is bolted to the negative terminal and meters everything leaving the battery. Ground an amp to that post and its current becomes invisible to the charging strategy, which then builds a wrong state-of-charge model and regulates against it. Go to a chassis stud instead. This matters more with lithium, not less."
+      },
+      {
+        "title": "Lithium under BMW's charging strategy",
+        "kind": "warn",
+        "body": "Intelligent generator regulation swings charge voltage from roughly 12.8 V to over 15 V depending on recuperation, and ISTA has no lithium battery type — register the change as AGM at the correct Ah so the aging model resets. Confirm the pack's BMS tolerates the high end of that swing, and confirm its low-temperature charge cutoff: most lithium chemistries refuse charge below freezing."
+      },
+      {
+        "title": "Verify the eWay box covers MY2025",
+        "kind": "warn",
+        "body": "The product listing enumerates 2018–2024 vehicles for ID7/ID8. This car is a 2025 G80. Almost certainly the same ID8 stack and the same tap, but confirm the harness part number against the VIN before cutting anything."
+      }
+    ]
+  },
+  "wiring": [
+    {
+      "run": "PWR-1",
+      "path": "Battery + → VFDB2",
+      "sub": "Via 150 A ANL within 18 in of the post",
+      "gauge": "4 AWG OFC",
+      "prot": "150 A ANL",
+      "note": "1/0 if the block moves forward"
+    },
+    {
+      "run": "PWR-2",
+      "path": "VFDB2 → UP 10DSP",
+      "gauge": "8 AWG OFC",
+      "prot": "60 A MIDI",
+      "note": "Amp fuses 2 × 25 A"
+    },
+    {
+      "run": "PWR-3",
+      "path": "VFDB2 → UP 1FX",
+      "gauge": "8 AWG OFC",
+      "prot": "80 A MIDI",
+      "note": "Amp fuses 2 × 30 A"
+    },
+    {
+      "run": "GND-1/2",
+      "path": "Each amp → chassis stud",
+      "sub": "Separate leads, common stud",
+      "gauge": "8 AWG OFC",
+      "prot": "—",
+      "note": "Bare metal, star washer"
+    },
+    {
+      "run": "REM",
+      "path": "eWay ACC → 10DSP → 1FX",
+      "gauge": "18 AWG",
+      "prot": "3 A inline",
+      "note": "Chain via 10DSP REM OUT"
+    },
+    {
+      "run": "OPT",
+      "path": "eWay TOSLINK → 10DSP S/PDIF",
+      "gauge": "Toslink",
+      "prot": "—",
+      "note": "Bend radius ≥ 25 mm, no tight ties"
+    },
+    {
+      "run": "RCA",
+      "path": "10DSP pre-out → 1FX input",
+      "gauge": "Shielded RCA",
+      "prot": "—",
+      "note": "Opposite side of trunk from power"
+    },
+    {
+      "run": "SPK-HF",
+      "path": "Tweeters, mids, center, rear",
+      "gauge": "16 AWG OFC",
+      "prot": "—",
+      "note": "Tweeter pair through the door boot"
+    },
+    {
+      "run": "SPK-LF",
+      "path": "Under-seat 8s (ch I / J)",
+      "gauge": "14 AWG OFC",
+      "prot": "—",
+      "note": "2 Ω load — keep the run short"
+    },
+    {
+      "run": "SPK-SUB",
+      "path": "1FX → GUS-12, coils parallel",
+      "gauge": "12 AWG OFC",
+      "prot": "—",
+      "note": "Both coils same polarity"
+    }
+  ],
+  "gain": {
+    "formula": "Vrms = √(P × R)   ·   Vpp = 2√2 × Vrms",
+    "note": "Run the numbers before you touch a knob. Every channel's unclipped output is fixed by its rating, and every driver has a voltage above which it stops being a driver. On this build the amplifier can only destroy one thing.",
+    "rows": [
+      {
+        "ch": "A · B",
+        "driver": "Morel tweeters",
+        "amp": "65 W / 4 Ω · 16.1 V",
+        "rated": "100 W set",
+        "target": "45.6 — full output",
+        "verdict": "Amp is the limit"
+      },
+      {
+        "ch": "C · D",
+        "driver": "Morel 4\" midranges",
+        "amp": "65 W / 4 Ω · 16.1 V",
+        "rated": "100 W set",
+        "target": "45.6 — full output",
+        "verdict": "Amp is the limit"
+      },
+      {
+        "ch": "E",
+        "driver": "Morel center",
+        "amp": "65 W / 4 Ω · 16.1 V",
+        "rated": "100 W RMS",
+        "target": "45.6 — full output",
+        "verdict": "Amp is the limit"
+      },
+      {
+        "ch": "G · H",
+        "driver": "Karma Inspire 3",
+        "amp": "65 W / 4 Ω · 16.1 V",
+        "rated": "15 W · 7.75 V",
+        "target": "clamp at 21.9",
+        "verdict": "Driver is the limit",
+        "hot": true
+      },
+      {
+        "ch": "I · J",
+        "driver": "Morel IP-BMWSUB82",
+        "amp": "160 W / 2 Ω · 17.9 V",
+        "rated": "180 W @ 2 Ω",
+        "target": "50.6 — full output",
+        "verdict": "Amp is the limit"
+      },
+      {
+        "ch": "1FX",
+        "driver": "ResoNix GUS-12",
+        "amp": "600 W / 2 Ω · 34.6 V",
+        "rated": "800 W RMS",
+        "target": "98.0 — full output",
+        "verdict": "Amp is the limit"
+      }
+    ],
+    "steps": [
+      "Pick a reference volume on the head unit and write it down. Everything below is calibrated to it, and it becomes the ceiling you tune the system to reach without clipping.",
+      "Confirm where volume is applied. Play a fixed-level tone and sweep the BMW volume while watching one amp output on the scope. If amplitude tracks the head unit, the eWay box is passing post-volume audio and the reference matters absolutely.",
+      "Feed a −6 dBFS sine inside each channel's passband — 1 kHz for mids and center, 6 kHz for tweeters, 80 Hz for the under-seats, 40 Hz for the sub. A band-appropriate tone, or the crossover hides the clipping from you.",
+      "Scope each output on a dummy load or the driver itself and raise the DSP channel gain until the sine just begins to flatten, then back off until it is visibly clean with margin. Verify against the Vpp column, not the eye alone.",
+      "Clamp G and H hard. Set channel output so full drive lands near 21.9 Vpp, then enable the output limiter on those two — before any listening. One careless volume sweep cooks a 15 W wideband.",
+      "Re-verify at the reference volume with real music on the worst-case track you own, watching the sub and under-seat channels where the energy actually is."
+    ]
+  },
+  "dsp": {
+    "input": "S/PDIF optical, 48 kHz. With no high-level input in use, disable signal-sense turn-on and drive REM IN from the eWay box. Route the stereo digital input to all eleven DSP channels, then assign outputs per the channel map. Name every channel in DSP PC-Tool before tuning.",
+    "enclosure": "Sealed only — ResoNix does not recommend ported. Target 0.75 ft³ net (21.2 L) for Qtc 0.707, after driver displacement and bracing. Floor 0.4 ft³ (Qtc 0.875), ceiling 1.1 ft³ (Qtc 0.60, derate to ~500 W). Mounting depth 115.3 mm. Fs 14.5 Hz, Qts 0.28, Vas 119 L, Xmax 20 mm.",
+    "alignFormula": "delay (ms) = (dmax − d) ÷ 0.343 m/ms",
+    "alignNote": "Delay everything to the farthest driver — here the sub in the trunk, so it takes zero delay and every other channel pads up to it. Distances are representative for a LHD G80 driver's seat; measure yours, 5 cm of error is 0.15 ms.",
+    "align": [
+      {
+        "ch": "A",
+        "driver": "L tweeter",
+        "d": "0.60 m",
+        "delay": "3.79 ms"
+      },
+      {
+        "ch": "B",
+        "driver": "R tweeter",
+        "d": "1.15 m",
+        "delay": "2.19 ms"
+      },
+      {
+        "ch": "C",
+        "driver": "L midrange",
+        "d": "0.65 m",
+        "delay": "3.64 ms"
+      },
+      {
+        "ch": "D",
+        "driver": "R midrange",
+        "d": "1.20 m",
+        "delay": "2.04 ms"
+      },
+      {
+        "ch": "E",
+        "driver": "Center",
+        "d": "0.90 m",
+        "delay": "2.92 ms"
+      },
+      {
+        "ch": "G",
+        "driver": "L rear wideband",
+        "d": "1.15 m",
+        "delay": "2.19 ms",
+        "hot": true
+      },
+      {
+        "ch": "H",
+        "driver": "R rear wideband",
+        "d": "1.30 m",
+        "delay": "1.75 ms",
+        "hot": true
+      },
+      {
+        "ch": "I",
+        "driver": "L under-seat 8\"",
+        "d": "0.55 m",
+        "delay": "3.94 ms"
+      },
+      {
+        "ch": "J",
+        "driver": "R under-seat 8\"",
+        "d": "1.05 m",
+        "delay": "2.48 ms"
+      },
+      {
+        "ch": "SUB",
+        "driver": "GUS-12 — reference",
+        "d": "1.90 m",
+        "delay": "0.00 ms"
+      }
+    ],
+    "order": [
+      "Polarity first. Verify every driver individually before anything else. A flipped midrange sends you chasing an EQ problem that does not exist.",
+      "Crossovers and levels from the channel map, all EQ flat. Get the raw system coherent before adding a single filter.",
+      "Time alignment from measured distances, then refine by ear on centred vocal content until the image locks to the middle of the windscreen.",
+      "EQ last — per-channel first to fix each driver's own response, then a light global curve. Aim for a gentle downward tilt, roughly +6 to +8 dB at 30 Hz relative to 1 kHz.",
+      "Re-check the rear limiters after all of the above. Every level change upstream moves what arrives at G and H."
+    ]
+  },
+  "checklist": [
+    "eWay harness part number confirmed against VIN",
+    "Factory amp still powered, no fault codes stored",
+    "Chimes, PDC and Bluetooth calls still audible",
+    "Center confirmed 4 Ω, running on channel E",
+    "Under-seat 8s on I and J, not A–H",
+    "150 A ANL within 18 in of the battery post",
+    "Both grounds on chassis, none on the battery post",
+    "Battery change registered in ISTA, aging model reset",
+    "Pack BMS tolerates IGR peaks above 15 V",
+    "Toslink routed with no tight bends or ties",
+    "Every driver polarity verified individually",
+    "All nine channels named in DSP PC-Tool",
+    "Scope targets met on every channel",
+    "Output limiter armed on G and H",
+    "Enclosure sealed, net volume verified after bracing",
+    "Sub coils in parallel, measured at 2 Ω",
+    "Voltage at the amps stays above 13.2 V under load",
+    "Both amps sequence on and off together, no thump",
+    "Full-volume sweep with no clipping or rattles",
+    "DSP setup file backed up off the car"
+  ]
+}

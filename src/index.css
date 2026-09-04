@@ -1066,3 +1066,60 @@ body { background: var(--bg); min-height: 100vh; padding-left: env(safe-area-ins
   cursor: pointer;
   font-family: 'Inter', sans-serif;
 }
+
+/* ── Audio build tab ─────────────────────────────────────────────────────── */
+.au-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); border: 1px solid var(--bd); margin-bottom: 18px; }
+.au-fact { padding: 9px 12px; border-right: 1px solid var(--bd); background: var(--card); }
+.au-fact:last-child { border-right: none; }
+.au-fact-k { display: block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--t3); }
+.au-fact-v { display: block; font-size: 12px; font-weight: 500; color: var(--t1); margin-top: 3px; line-height: 1.3; }
+
+.au-fig { background: var(--card); border: 1px solid var(--bd); padding: 14px 10px 12px; }
+.au-svg { display: block; width: 100%; max-width: 420px; height: auto; margin: 0 auto; }
+.au-figcap { font-size: 11px; line-height: 1.6; color: var(--t2); font-weight: 300; border: 1px solid var(--bd); border-top: none; padding: 11px 14px; background: var(--card2); }
+
+.au-box { fill: var(--card2); stroke: var(--bd2); stroke-width: 1; }
+.au-ghost { fill: none; stroke: var(--bd2); stroke-width: 1; stroke-dasharray: 4 3; }
+.au-hotbox { fill: var(--amber-bg); stroke: var(--amber); stroke-width: 1; }
+.au-t { fill: var(--t1); font-size: 12px; font-weight: 700; }
+.au-t2 { fill: var(--t2); font-size: 9.5px; font-weight: 400; }
+.au-m { fill: var(--t3); font-size: 8.5px; font-weight: 700; letter-spacing: 0.08em; }
+.au-mh { fill: var(--amber); font-size: 8.5px; font-weight: 700; letter-spacing: 0.08em; }
+.au-gh { fill: var(--t3); font-size: 9.5px; }
+.au-w-eth { stroke: #9b4fd4; stroke-width: 1.6; fill: none; stroke-dasharray: 5 3; }
+.au-w-opt { stroke: var(--red); stroke-width: 2; fill: none; }
+.au-w-spk { stroke: var(--blue); stroke-width: 1.6; fill: none; }
+.au-w-line { stroke: var(--t3); stroke-width: 1.4; fill: none; stroke-dasharray: 2 3; }
+.au-l-eth { fill: #9b4fd4; font-size: 8.5px; font-weight: 700; letter-spacing: 0.08em; }
+.au-l-opt { fill: var(--red); font-size: 8.5px; font-weight: 700; letter-spacing: 0.08em; }
+.au-l-spk { fill: var(--blue); font-size: 8.5px; font-weight: 700; letter-spacing: 0.08em; }
+.au-l-line { fill: var(--t3); font-size: 8.5px; font-weight: 700; letter-spacing: 0.08em; }
+
+.au-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--bd); font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--t3); }
+.au-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.au-legend i { width: 14px; height: 2px; display: inline-block; }
+
+.au-list { border: 1px solid var(--bd); margin-bottom: 8px; }
+.au-row { display: flex; gap: 12px; padding: 11px 12px; border-bottom: 1px solid var(--bd); background: var(--card); align-items: flex-start; }
+.au-row:last-child { border-bottom: none; }
+.au-row.hot { background: var(--amber-bg); }
+.au-row.hot .au-key { color: var(--amber); }
+.au-row.spare { opacity: 0.5; }
+.au-key { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--blue); min-width: 40px; flex-shrink: 0; padding-top: 1px; font-variant-numeric: tabular-nums; }
+.au-body { flex: 1; min-width: 0; }
+.au-nm { font-size: 12px; color: var(--t1); font-weight: 400; line-height: 1.35; }
+.au-sub { font-size: 10px; color: var(--t3); margin-top: 2px; line-height: 1.5; font-weight: 300; }
+.au-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+.au-chip { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--t2); border: 1px solid var(--bd2); padding: 2px 6px; white-space: nowrap; }
+.au-chip.hot { color: var(--amber); border-color: var(--amber); background: var(--amber-bg); }
+.au-chip.warn { color: var(--red); border-color: var(--red-bd); background: var(--red-bg); }
+
+.au-formula { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 12px; background: var(--card2); border: 1px solid var(--bd); padding: 11px 13px; color: var(--t1); overflow-x: auto; white-space: nowrap; }
+
+.au-check { display: flex; width: 100%; gap: 10px; align-items: flex-start; text-align: left; padding: 11px 12px; border: none; border-bottom: 1px solid var(--bd); background: var(--card); color: var(--t2); font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 300; line-height: 1.4; cursor: pointer; }
+.au-check:last-child { border-bottom: none; }
+.au-check i { font-size: 15px; color: var(--t3); flex-shrink: 0; line-height: 1.2; }
+.au-check.on { color: var(--t3); }
+.au-check.on i { color: var(--iom); }
+.au-check.on span { text-decoration: line-through; }
+.au-check:active { background: var(--card2); }

@@ -30,6 +30,7 @@ import TabUpgrades from './components/TabUpgrades'
 import TabHistory from './components/TabHistory'
 import TabReminders from './components/TabReminders'
 import TabSettings from './components/TabSettings'
+import TabAudio from './components/TabAudio'
 import { AddChemicalForm, AddToolForm, AddUpgradeForm } from './components/SyncForm'
 import WeatherBanner from './components/WeatherBanner'
 import WashDayPicker from './components/WashDayPicker'
@@ -42,6 +43,7 @@ const TABS = [
   { id: 'inventory', label: 'Inventory', icon: 'ti-flask' },
   { id: 'care', label: 'Care', icon: 'ti-calendar-event' },
   { id: 'upgrades', label: 'Upgrades', icon: 'ti-tools' },
+  { id: 'audio', label: 'Audio', icon: 'ti-device-speaker' },
   { id: 'more', label: 'More', icon: 'ti-dots' },
 ]
 
@@ -61,6 +63,10 @@ const SUBTABS = {
     { id: 'between', label: 'Between Washes' },
     { id: 'seasonal', label: 'Seasonal' },
   ],
+  audio: [
+    { id: 'signal', label: 'Signal Chain' },
+    { id: 'install', label: 'Install' },
+  ],
   more: [
     { id: 'history', label: 'History' },
     { id: 'settings', label: 'Settings' },
@@ -72,7 +78,7 @@ export default function App() {
   const [error, setError] = useState(null)
   // Tab position is persisted so a reload - including the automatic one after a
   // deploy - puts you back where you were instead of on the landing tab.
-  const DEFAULT_SUB = { wash: 'steps', inventory: 'chems', care: 'reminders', more: 'history' }
+  const DEFAULT_SUB = { wash: 'steps', inventory: 'chems', care: 'reminders', audio: 'signal', more: 'history' }
   const [activeTab, setActiveTab] = useState(() => {
     try { return localStorage.getItem('gwp_tab') || 'wash' } catch { return 'wash' }
   })
@@ -328,6 +334,8 @@ export default function App() {
         {activeTab === 'care' && activeSub === 'seasonal' && <TabSeasonal data={data} />}
 
         {activeTab === 'upgrades' && <ErrorBoundary><TabUpgrades data={data} /></ErrorBoundary>}
+
+        {activeTab === 'audio' && <ErrorBoundary><TabAudio view={activeSub} /></ErrorBoundary>}
 
         {activeTab === 'more' && activeSub === 'history' && <ErrorBoundary><TabHistory data={data} mode={mode} done={done} /></ErrorBoundary>}
         {activeTab === 'more' && activeSub === 'settings' && <ErrorBoundary><TabSettings /></ErrorBoundary>}
