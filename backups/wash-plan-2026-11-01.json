@@ -4,8 +4,9 @@
     "car": "Isle of Man Green BMW M3 G80 - S58",
     "coating": "Ceramic coated",
     "lastUpdated": "2026-08-07",
-    "version": "4.0.0",
+    "version": "3.4",
     "changelog": [
+      "v3.4 (2026-09-03) - Audio tab: signal chain and install sheet for the G80 audio build. Vertical SVG chain (ID8 to eWay optical box to TOSLINK to MATCH UP 10DSP to speakers, plus the UP 1FX and GUS-12 leg), 11-row channel map, wire schedule, scope gain targets, DSP crossover and time-alignment tables, and a commissioning checklist persisted locally. Reference data in public/audio-build.json, outside the D1 plan.",
       "v4.0.0 (2026-08-07) - Storage moved from GitHub to Cloudflare D1, served by the m3care Worker. Saves apply in under 200ms instead of a ~35s commit and CI deploy, and no longer touch git. Fixes an asymmetric base64 round-trip that doubled every non-ASCII character on each save, growing the plan from 106KB to 1.15MB over 12 saves until it crossed GitHub's 1MiB API limit and all writes failed; the file was repaired and is now 85KB. The Worker rejects any save that grows the payload more than 1.5x and validates structure on write. The Anthropic proxy is no longer an open relay - it requires the plan token. Upgrade phases sort by number rather than array position, and new upgrades slot in by priority without colliding. The PWA updates itself: checks for a new build on focus and on a timer, reloads when hidden or refocused, and restores your tab position. Saves apply to the view immediately, and the plan re-reads on focus so another device's edits appear. Weekly validated backup of D1 to the repo.",
       "v3.3.2 (2026-06-28) - Verification polling adjusted to 6 attempts x 10s (60s max window) based on real-world GitHub processing time.",
       "v3.3.1 (2026-06-28) - Verification polish: notes comparison now trims whitespace before matching (was causing false timeout). Polling window extended to 12 x 4s (48s max). Save bar stays visible during full verification window. Live progress counter shows Checking GitHub (1/12) etc so you can see it is actively working.",
@@ -2223,10 +2224,10 @@
         "id": "u22",
         "phase": "Phase 8 - Shop: Front-End Batch",
         "priority": 8.5,
-        "item": "Vorsteiner G8X M3 / M4 ABS Aero Front Grille - Gloss Black - PPF",
-        "source": "Shop",
+        "item": "Vorsteiner G8X M3 / M4 ABS Aero Front Grille - Gloss Black - Ceramic Coat",
+        "source": "Self",
         "done": false,
-        "notes": "PPF - Vorsteiner G8X M3 / M4 ABS Aero Front Grille - Gloss Black",
+        "notes": "PPF - Vorsteiner G8X M3 / M4 ABS Aero Front Grille - Gloss Black - Armour Detail Pro Coating",
         "group": "Vorsteiner G8X M3 / M4 ABS Aero Front Grille"
       },
       {
@@ -2246,6 +2247,15 @@
         "source": "Self",
         "done": false,
         "notes": "Install with spacers to prevent inner liner rub at full compression. Bolt-on, fully reversible."
+      },
+      {
+        "id": "u1787428756622",
+        "phase": "Phase 3 - Wheels & Fitment",
+        "item": "Sound deadening wheel arches - Resonix CLD/Fiber Mat",
+        "source": "Self",
+        "done": false,
+        "notes": "",
+        "priority": 10.5
       },
       {
         "id": "u11",
@@ -2345,10 +2355,11 @@
         "id": "u19",
         "phase": "Phase 9 - Shop: Exhaust",
         "priority": 19,
-        "item": "IRL or MAD Midpipe",
+        "item": "IRL V2 Modular Midpipe G8X",
         "source": "Shop",
         "done": false,
-        "notes": "Pair with exhaust controller install in same underbody session."
+        "notes": "Pair with Cando+ valve controller",
+        "group": ""
       },
       {
         "id": "u1783830479251",
@@ -2362,20 +2373,20 @@
       {
         "id": "u1786077608212",
         "phase": "Phase 8 - Shop: Front-End Batch",
-        "item": "MHC Black BMW M3/M4 Performance Style Front Splitter In Gloss Black - PPF",
-        "source": "Shop",
+        "item": "MHC Black BMW M3/M4 Performance Style Front Splitter In Gloss Black - Ceramic Coat",
+        "source": "Self",
         "done": false,
-        "notes": "MHC Black BMW M3/M4 Performance Style Front Splitter In Gloss Black - PPF",
+        "notes": "MHC Black BMW M3/M4 Performance Style Front Splitter In Gloss Black - Armour Detail Pro Coating",
         "priority": 19,
         "group": "MHC Black BMW M3/M4 Performance Style Front Splitter In Gloss Black"
       },
       {
         "id": "u1786078623727",
         "phase": "Phase 8 - Shop: Front-End Batch",
-        "item": "MHC Black BMW M3/M4 Performance Style Front Ducts In Gloss Black - PPF",
-        "source": "Shop",
+        "item": "MHC Black BMW M3/M4 Performance Style Front Ducts In Gloss Black - Ceramic Coat",
+        "source": "Self",
         "done": false,
-        "notes": "MHC Black BMW M3/M4 Performance Style Front Ducts In Gloss Black",
+        "notes": "MHC Black BMW M3/M4 Performance Style Front Ducts In Gloss Black - Armour Detail Pro Coating",
         "priority": 20,
         "group": "MHC Black BMW M3/M4 Performance Style Front Ducts In Gloss Black"
       },
